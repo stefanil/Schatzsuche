@@ -8,7 +8,7 @@ import de.saxsys.treasurehunting.admin.views.html.*;
 public class AdminController extends Controller {
   
     public static Result index() {
-        return ok(index.render("Administration Module"));
+        return TODO;
     }
   
 }

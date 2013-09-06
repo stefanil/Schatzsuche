@@ -1,0 +1,11 @@
+# common
+common.index.title=Treasure Hunting - Start Page
+common.index.heading=Welcome to Treasure Hunting
+common.index.auth.label=Name:
+common.index.auth.submit=Enter
+
+common.lang.label=Language:
+common.lang.a.cz.tooltip=Czech
+common.lang.a.pl.tooltip=Polish
+common.lang.a.de.tooltip=German
+common.lang.a.en.tooltip=English

@@ -1,0 +1,12 @@
+# common
+common.index.title=Schatzsuche - Startseite
+common.index.heading=Willkommen zur Schatzsuche
+common.index.auth.label=Name:
+common.index.auth.submit=Weiter
+
+# common.lang
+common.lang.label=Sprache:
+common.lang.a.cz.tooltip=Tschechisch
+common.lang.a.pl.tooltip=Polnisch
+common.lang.a.de.tooltip=Deutsch
+common.lang.a.en.tooltip=Englisch

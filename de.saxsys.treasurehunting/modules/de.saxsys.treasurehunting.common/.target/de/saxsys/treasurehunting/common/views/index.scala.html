@@ -1,10 +1,48 @@
-@(message: String)
 
 @import de.saxsys.treasurehunting.common.views.html._
+@import de.saxsys.treasurehunting.common.controllers._
 
-@* @views.html.de.saxsys.treasurehunting.common.views.main("Welcome to Play 2.1") { *@
-@main("Welcome to Play 2.1") {
+@import helper._
+@import play.api.i18n._
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@Messages("common.index.title")</title>
+        @bootstrap.header()
+	   	<link rel="stylesheet" media="screen" type="text/css" href="@routes.Assets.at("stylesheets/common-index.css")" />
+	   	@lang.header()        
+    </head>
     
-    @play20.welcome(message, style = "Java")
+    <body>
     
-}
+    	<div id="div-start" class="container well">
+	      <h4 id="index-heading"><img id="img-index-heading" src="@routes.Assets.at("images/logo/logo32.png")" />@Messages("common.index.heading")</h4>
+	      
+	      @lang.content()
+	      
+	      <form method="post">
+	        <div id="div-username" class="pull-left">
+	          <div class="pull-left">
+	            <label id="lbl-username">@Messages("common.index.auth.label")</label>
+	          </div>
+	          <div class="pull-right">
+	            <input id="tf-uName" type="text">
+	          </div>
+	        </div>
+	        <div id="div-username-submit" class="pull-right">
+	          <button id="btn-start" type="submit" class="btn btn-inverse">@Messages("common.index.auth.submit")</button>
+	        </div>
+	      </form>
+	      
+	      @*
+	      @helper.form(routes.CommonController.authenticate) {
+	      	<button id="btn-start" type="submit" class="btn btn-inverse">@Messages("common.index.auth.submit")</button>
+	      }
+	      *@  
+	      
+	    </div>
+        
+    </body>
+</html>

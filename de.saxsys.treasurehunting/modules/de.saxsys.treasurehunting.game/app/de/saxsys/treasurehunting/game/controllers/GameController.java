@@ -7,7 +7,7 @@ import de.saxsys.treasurehunting.game.views.html.*;
 public class GameController extends Controller {
   
     public static Result index() {
-        return ok(index.render("Game Module"));
+        return TODO;
     }
   
     public static Result singleplayer() {

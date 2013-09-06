@@ -1,0 +1,39 @@
+#div-start {
+	width: 300px;
+	height: 170px;
+	padding: 10px;
+	margin: auto;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	top: 0;
+	right: 0;
+}
+
+#index-heading {
+	height: 32px;
+	margin-top: 0px;
+	padding-top: 5pt;
+	padding-left: 0px;
+}
+
+#img-index-heading {
+	margin-top: 0px;
+	margin-right: 10px;
+}
+
+/* Login Form */
+#div-username {
+	width: 300px;
+	height: 30px;
+	margin-top: 10px;
+}
+
+#lbl-username {
+	padding-top: 3pt;
+	padding-bottom: 3pt;
+}
+
+#div-username-submit {
+	margin-top: 10px;
+}
