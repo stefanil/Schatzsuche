@@ -13,6 +13,6 @@ dist
 /.project
 /RUNNING_PID
 /.settings
-/.target
-/.cache
+*/.target/*
+*/.cache
 conf/evolutions
