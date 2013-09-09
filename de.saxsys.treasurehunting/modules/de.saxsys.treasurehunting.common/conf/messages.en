@@ -1,8 +1,10 @@
 # common
 common.index.title=Treasure Hunting - Start Page
-common.index.heading=Welcome to Treasure Hunting
-common.index.auth.label=Name:
-common.index.auth.submit=Enter
+common.index.heading=Welcome to the Arena!
+common.index.login.username.label=Username:
+common.index.login.username.placeholder=Your name
+common.index.login.username.error=The user name must have at least 5 characters and must not only consist out of spaces.
+common.index.login.submit=Enter
 
 common.lang.label=Language:
 common.lang.a.cz.tooltip=Czech

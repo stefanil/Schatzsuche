@@ -1,8 +1,11 @@
 # common
 common.index.title=Schatzsuche - Startseite
-common.index.heading=Willkommen zur Schatzsuche
-common.index.auth.label=Name:
-common.index.auth.submit=Weiter
+common.index.heading=Willkommen in der Arena!
+common.index.login.username.label=Nutzername:
+common.index.login.username.placeholder=Dein Name
+common.index.login.username.error.length.min=Der Anwendername muss mindestens {0} Zeichen lang sein.
+common.index.login.username.error.empty.string=Der Anwendername kann nicht auschließlich aus Leerzeichen bestehen..
+common.index.login.submit=Weiter
 
 # common.lang
 common.lang.label=Sprache:

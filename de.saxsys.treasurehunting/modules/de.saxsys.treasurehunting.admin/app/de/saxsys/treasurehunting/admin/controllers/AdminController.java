@@ -1,12 +1,13 @@
 package de.saxsys.treasurehunting.admin.controllers;
 
-import play.*;
-import play.mvc.*;
-
-import de.saxsys.treasurehunting.admin.views.html.*;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.mvc.Security;
+import de.saxsys.treasurehunting.common.controllers.Secured;
 
 public class AdminController extends Controller {
   
+	@Security.Authenticated(Secured.class)
     public static Result index() {
         return TODO;
     }

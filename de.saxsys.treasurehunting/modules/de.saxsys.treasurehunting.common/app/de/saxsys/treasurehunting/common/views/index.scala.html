@@ -1,48 +1,52 @@
+@(lang: Lang = Lang.defaultLang)(loginForm: Form[de.saxsys.treasurehunting.common.controllers.CommonController.Login])
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(de.saxsys.treasurehunting.common.views.html.bootstrap.horizontalFieldConstructor.f) }
+
+@import play.api.i18n._
+@import play.api.data.Form._
+
+@import play.mvc._
 
 @import de.saxsys.treasurehunting.common.views.html._
 @import de.saxsys.treasurehunting.common.controllers._
-
-@import helper._
-@import play.api.i18n._
 
 <!DOCTYPE html>
 
 <html>
     <head>
-        <title>@Messages("common.index.title")</title>
+        <title>@Messages("common.index.title")(lang)</title>
         @bootstrap.header()
 	   	<link rel="stylesheet" media="screen" type="text/css" href="@routes.Assets.at("stylesheets/common-index.css")" />
-	   	@lang.header()        
+	   	@i18n.header()
     </head>
     
-    <body>
-    
+    <body>      
     	<div id="div-start" class="container well">
-	      <h4 id="index-heading"><img id="img-index-heading" src="@routes.Assets.at("images/logo/logo32.png")" />@Messages("common.index.heading")</h4>
+	      <span>
+	      	
+	      	<h4 id="index-heading">
+	      		<img id="img-index-heading" src="@routes.Assets.at("images/logo/logo64.png")" />
+	      		@Messages("common.index.heading")(lang)
+	      	</h4>
+	      </span>
 	      
-	      @lang.content()
+	      @i18n.content(lang)	      
 	      
-	      <form method="post">
-	        <div id="div-username" class="pull-left">
-	          <div class="pull-left">
-	            <label id="lbl-username">@Messages("common.index.auth.label")</label>
-	          </div>
-	          <div class="pull-right">
-	            <input id="tf-uName" type="text">
-	          </div>
-	        </div>
-	        <div id="div-username-submit" class="pull-right">
-	          <button id="btn-start" type="submit" class="btn btn-inverse">@Messages("common.index.auth.submit")</button>
-	        </div>
-	      </form>
-	      
-	      @*
-	      @helper.form(routes.CommonController.authenticate) {
-	      	<button id="btn-start" type="submit" class="btn btn-inverse">@Messages("common.index.auth.submit")</button>
-	      }
-	      *@  
-	      
-	    </div>
-        
+	      <!-- form-horizontal -->
+	      @helper.form(routes.CommonController.authenticate, args = 'method -> "post", 'id -> "form-username") { 	      	 
+	      	 
+	      	 @helper.inputText(loginForm("username"),
+	      	   	'_label -> Messages("common.index.login.username.label")(lang), 
+	      	   	'placeholder -> Messages("common.index.login.username.placeholder")(lang))
+	         
+	         <div id="div-username-submit" class="form-actions">
+	           <button id="btn-start" type="submit" class="btn btn-large btn-block btn-inverse pull-left">
+	           		@Messages("common.index.login.submit")(lang)
+	           </button>
+	         </div>	      	
+	      }        	      
+	    </div>       
     </body>
 </html>
+

@@ -1,13 +1,14 @@
 @* main template file *@
+@(lang: Lang = null)
 
 @import de.saxsys.treasurehunting.common.views.html._
 @import de.saxsys.treasurehunting.common.controllers._
 
 <html>
     <head>
-        <title>@Messages("common.index.title")</title>
+        <title>@Messages("common.index.title")(lang)</title>
         @bootstrap.header()
-	   	@lang.header()        
+	   	@i18n.header()        
     </head>
     
     <body>    
