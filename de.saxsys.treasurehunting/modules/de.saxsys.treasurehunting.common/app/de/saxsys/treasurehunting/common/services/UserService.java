@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.validator.internal.cfg.context.ConfiguredConstraint;
 
+import play.Logger;
 import play.api.i18n.Lang;
 import play.db.ebean.Model;
 import play.mvc.Http.Request;
@@ -36,6 +37,8 @@ public class UserService {
 		User user = new User();
 		user.name = username;
 		user.save();
+		
+		Logger.info("User "+user.name+" was added to the authenticated users.");
 
 		return user;
 	}

@@ -1,3 +1,4 @@
+conf/evolutions
 logs
 project/project
 project/target
@@ -15,4 +16,3 @@ dist
 /.settings
 /.target
 /.cache
-conf/evolutions
