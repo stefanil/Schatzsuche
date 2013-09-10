@@ -1,0 +1,6 @@
+# -------------------
+# |   user   |
+# -------------------
+
+user:
+- &1 !!de.saxsys.treasurehunting.common.models.User {name: stefan}

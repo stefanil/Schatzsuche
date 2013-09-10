@@ -11,7 +11,9 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     javaCore,
     javaJdbc,
-    javaEbean
+    javaEbean,
+    "play" %% "play-test" % play.core.PlayVersion.current % "test" exclude("com.novocode", "junit-interface"),
+    "com.novocode" % "junit-interface" % "0.9" % "test"
   )
   
   val common = play.Project(

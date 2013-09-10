@@ -5,8 +5,6 @@ package de.saxsys.treasurehunting.common.services;
 
 import java.util.List;
 
-import org.hibernate.validator.internal.cfg.context.ConfiguredConstraint;
-
 import play.Logger;
 import play.api.i18n.Lang;
 import play.db.ebean.Model;
@@ -61,7 +59,7 @@ public class UserService {
 
 		// matching application supported and browser accepted language
 		if (sLang == null) {
-			String sSupportedLangs = play.Configuration.root()
+			String sSupportedLangs = play.Play.application().configuration()
 					.getString("application.langs");
 			List<play.i18n.Lang> acceptedLangs = request.acceptLanguages();
 			for (play.i18n.Lang acceptedLang : acceptedLangs) {

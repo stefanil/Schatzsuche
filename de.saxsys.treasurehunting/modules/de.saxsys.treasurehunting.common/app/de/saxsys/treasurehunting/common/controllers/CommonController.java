@@ -10,7 +10,6 @@ import play.data.Form;
 import play.data.validation.ValidationError;
 import play.mvc.Controller;
 import play.mvc.Result;
-import de.saxsys.treasurehunting.common.controllers.CommonController.Login;
 import de.saxsys.treasurehunting.common.models.User;
 import de.saxsys.treasurehunting.common.services.UserService;
 import de.saxsys.treasurehunting.common.views.html.index;
@@ -35,25 +34,29 @@ public class CommonController extends Controller {
 		public String username;
 
 		public Map<String, List<ValidationError>> validate() {
-	        
-			Map<String, List<ValidationError>> result = new HashMap<String,List<ValidationError>>();
-			
-			if(username.trim().length() < 5) {
+
+			Map<String, List<ValidationError>> result = new HashMap<String, List<ValidationError>>();
+
+			if (username.trim().length() < 5) {
 				List<ValidationError> errors = new ArrayList<ValidationError>();
-				errors.add(new ValidationError("username", "common.index.login.username.error"));
-	            result.put("username", errors);
-	        }
-			
+				errors.add(new ValidationError("username",
+						play.i18n.Messages.get(UserService.getSessionLanguage(
+								session(), request()),
+								"common.index.login.username.error")));
+				result.put("username", errors);
+			}
+
 			return result;
-	    }
+		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	public static Result index() {		
-		return ok(index.render(UserService.getSessionLanguage(session(), request()),
+	public static Result index() {
+		return ok(index.render(
+				UserService.getSessionLanguage(session(), request()),
 				Form.form(Login.class)));
 	}
 
@@ -67,7 +70,8 @@ public class CommonController extends Controller {
 
 		if (loginForm.hasErrors())
 			return badRequest(index.render(
-					UserService.getSessionLanguage(session(), request()), loginForm));
+					UserService.getSessionLanguage(session(), request()),
+					loginForm));
 
 		String username = loginForm.data().get("username");
 
