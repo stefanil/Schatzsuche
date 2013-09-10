@@ -18,11 +18,11 @@ public class BaseModelTest {
 	public static FakeApplication fakeApplication;
 
 	/**
-	 * Initialisiert eine {@link FakeApplication} mit InMemory-DB.
+	 * Initialisiert eine {@link FakeApplication}.
 	 */
 	@BeforeClass
 	public static void startFakeApplication() {
-		fakeApplication = Helpers.fakeApplication(Helpers.inMemoryDatabase());
+		fakeApplication = Helpers.fakeApplication();
 		Helpers.start(fakeApplication);
 	}
 

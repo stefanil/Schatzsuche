@@ -1,13 +1,14 @@
 package de.saxsys.treasurehunting;
+
 import java.util.LinkedHashMap;
 import java.util.List;
-
-import com.avaje.ebean.Ebean;
 
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
 import play.libs.Yaml;
+
+import com.avaje.ebean.Ebean;
 
 /**
  * This class configures the following global settings for this project:
@@ -24,26 +25,15 @@ public class Global extends GlobalSettings {
 
 	@Override
 	public void onStart(Application app) {
-		loadConfiguration(app);
 		loadModelData(app);
-	}
-
-	private void loadConfiguration(Application app) {
-
-		/*
-		 * If the application is development mode, load H2 InMemory-Database.
-		 * Otherwise use PostgreSQL-DB.
-		 */
-		if (app.isDev()) {
-			
-		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private void loadModelData(Application app) {
+
 		/*
-		 * If the application is not in test mode (run (prod) or debug (dev))
-		 * load model by conf/initial-data.yml.
+		 * If the application is not in test mode (DEV (play run) or PROD (play
+		 * start|stage)) load model by conf/initial-data.yml.
 		 */
 		if (!app.isTest()) {
 			Logger.info("Loading YAML test data from conf/initial-data.yml.");

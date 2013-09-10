@@ -3,3 +3,21 @@
 cd treasurehunting
 play
 [treasurehunting] $ eclipse with-source=true skip-parents=false 
+
+### Run Application for System Testing and Production ###
+
+For development the default InMemory-DB H2 is configured with the 
+conf/application.conf. Thus develop out of the box and never use
+Helpers.inMemoryDB() so the tests may also be run as integration or 
+system tests using PostgreSQL!
+
+For running and testing the application in real life circumstances
+(i.e. the production environment) 
+use the alternative configuration file production.conf (using PostgreSQL-DB) 
+by specifying the dynamic parameter config.resource like this:
+
+Deployment:
+play start -Dconfig.resource=production.conf
+
+System Testing:
+play test -Dconfig.resource=production.conf

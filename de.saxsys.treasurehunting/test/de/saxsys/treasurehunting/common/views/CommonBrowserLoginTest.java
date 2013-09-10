@@ -24,7 +24,7 @@ public class CommonBrowserLoginTest {
 	public void loginSuccessFirefox() {
 		Helpers.running(
 				Helpers.testServer(3333,
-						Helpers.fakeApplication(Helpers.inMemoryDatabase())),
+						Helpers.fakeApplication()),
 				Helpers.FIREFOX, new LoginSuccessCallback());
 	}
 
@@ -37,7 +37,7 @@ public class CommonBrowserLoginTest {
 				"d:/DEVEL/ide/chromedriver_win32_2.0/chromedriver.exe");
 		Helpers.running(
 				Helpers.testServer(3333,
-						Helpers.fakeApplication(Helpers.inMemoryDatabase())),
+						Helpers.fakeApplication()),
 				ChromeDriver.class, new LoginSuccessCallback());
 	}
 
@@ -48,7 +48,7 @@ public class CommonBrowserLoginTest {
 	public void loginSuccessIE() {
 		Helpers.running(
 				Helpers.testServer(3333,
-						Helpers.fakeApplication(Helpers.inMemoryDatabase())),
+						Helpers.fakeApplication()),
 				InternetExplorerDriver.class, new LoginSuccessCallback());
 	}
 	
@@ -59,7 +59,7 @@ public class CommonBrowserLoginTest {
 	public void loginFailureFirefox() {
 		Helpers.running(
 				Helpers.testServer(3333,
-						Helpers.fakeApplication(Helpers.inMemoryDatabase())),
+						Helpers.fakeApplication()),
 				Helpers.FIREFOX, new LoginFailureCallback());
 	}
 
@@ -72,7 +72,7 @@ public class CommonBrowserLoginTest {
 				"d:/DEVEL/ide/chromedriver_win32_2.0/chromedriver.exe");
 		Helpers.running(
 				Helpers.testServer(3333,
-						Helpers.fakeApplication(Helpers.inMemoryDatabase())),
+						Helpers.fakeApplication()),
 				ChromeDriver.class, new LoginFailureCallback());
 	}
 
@@ -83,7 +83,7 @@ public class CommonBrowserLoginTest {
 	public void loginFailureIE() {
 		Helpers.running(
 				Helpers.testServer(3333,
-						Helpers.fakeApplication(Helpers.inMemoryDatabase())),
+						Helpers.fakeApplication()),
 				InternetExplorerDriver.class, new LoginFailureCallback());
 	}
 
