@@ -11,17 +11,17 @@ import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 /**
+ * This entity encapsulates the user of the application.
+ * 
  * @author stefan.illgen
- *
  */
 @Entity
-//@Table(name = "user")
 public class User extends Model {
 
 	private static final long serialVersionUID = 7161475759049877636L;
 	
 	/**
-	 * 
+	 * The user name also defines its id.
 	 */
 	@Id
     @Constraints.Required

@@ -15,21 +15,20 @@ import de.saxsys.treasurehunting.common.services.UserService;
 import de.saxsys.treasurehunting.common.views.html.index;
 
 /**
+ * This {@link Controller} implements the administration actions.
  * 
  * @author stefan.illgen
- * 
  */
 public class CommonController extends Controller {
 
 	/**
-	 * extra Login.class because that way the heavy User object will not waste
-	 * memory
-	 * 
+	 * There is an extra Login.class because that way the heavy User object will
+	 * not waste memory.
 	 * 
 	 * @author stefan.illgen
 	 * 
 	 */
-	public static class Login {
+	static class Login {
 
 		public String username;
 
@@ -51,6 +50,7 @@ public class CommonController extends Controller {
 	}
 
 	/**
+	 * The start page for the whole application.
 	 * 
 	 * @return
 	 */
@@ -61,6 +61,9 @@ public class CommonController extends Controller {
 	}
 
 	/**
+	 * This operation implements the authorization process by evaluating the
+	 * {@link Form<Login>} (sent as HTTP-POST request) instance. If no errors
+	 * are found it redirects to the main page of the application.
 	 * 
 	 * @return
 	 */
@@ -87,8 +90,13 @@ public class CommonController extends Controller {
 	}
 
 	/**
+	 * This action method sets the language for the given user session and
+	 * afterwards redirects to the route given by the parameter
+	 * <code>from</code>.
 	 * 
-	 * @param lang
+	 * @param id the language code
+	 * @param from the original route where the request stems from
+	 * @return
 	 */
 	public static Result setLang(String id, String from) {
 		UserService.setSessionLang(session(), id);

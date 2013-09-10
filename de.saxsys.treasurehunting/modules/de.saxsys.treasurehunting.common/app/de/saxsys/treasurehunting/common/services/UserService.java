@@ -16,8 +16,15 @@ import com.avaje.ebean.ExpressionList;
 import de.saxsys.treasurehunting.common.models.User;
 
 /**
- * @author stefan.illgen
+ * This service class provides an implementation for: 
  * 
+ * <ul>
+ * 	<li>managing the {@link User} model</li>
+ * 	<li>managing authentication</li>
+ * </ul>
+ * 
+ * 
+ * @author stefan.illgen
  */
 public class UserService {
 
@@ -76,6 +83,7 @@ public class UserService {
 	}
 
 	/**
+	 * Sets the session specific language.
 	 * 
 	 * @param lang
 	 */
@@ -118,6 +126,12 @@ public class UserService {
 		return findUser(session.get("username"));
 	}
 
+	/**
+	 * Finds the user identified by its user id.
+	 * 
+	 * @param username
+	 * @return
+	 */
 	public static User findUser(String username) {
 		if (username != null && find.where() != null) {
 			ExpressionList<User> ul = find.where().eq("name", username);
