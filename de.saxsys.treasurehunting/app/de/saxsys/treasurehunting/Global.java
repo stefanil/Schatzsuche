@@ -1,3 +1,4 @@
+package de.saxsys.treasurehunting;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -22,9 +23,24 @@ import play.libs.Yaml;
 public class Global extends GlobalSettings {
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void onStart(Application app) {
+		loadConfiguration(app);
+		loadModelData(app);
+	}
 
+	private void loadConfiguration(Application app) {
+
+		/*
+		 * If the application is development mode, load H2 InMemory-Database.
+		 * Otherwise use PostgreSQL-DB.
+		 */
+		if (app.isDev()) {
+			
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void loadModelData(Application app) {
 		/*
 		 * If the application is not in test mode (run (prod) or debug (dev))
 		 * load model by conf/initial-data.yml.
