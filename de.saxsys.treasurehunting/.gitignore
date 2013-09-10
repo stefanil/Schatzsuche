@@ -15,9 +15,3 @@ dist
 /.classpath
 /.project
 /.cache
-
-/RUNNING_PID
-modules/*/.target
-/.settings
-*/.target
-/.cache
