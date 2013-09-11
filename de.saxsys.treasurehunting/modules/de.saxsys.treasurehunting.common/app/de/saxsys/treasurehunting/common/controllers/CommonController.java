@@ -48,6 +48,7 @@ public class CommonController extends Controller {
 			return result;
 		}
 	}
+	
 
 	/**
 	 * The start page for the whole application.
