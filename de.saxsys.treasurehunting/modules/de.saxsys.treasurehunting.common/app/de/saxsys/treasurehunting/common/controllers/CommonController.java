@@ -28,7 +28,7 @@ public class CommonController extends Controller {
 	 * @author stefan.illgen
 	 * 
 	 */
-	static class Login {
+	public static class Login {
 
 		public String username;
 
