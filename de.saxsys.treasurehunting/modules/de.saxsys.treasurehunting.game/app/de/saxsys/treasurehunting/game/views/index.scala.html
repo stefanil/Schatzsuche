@@ -1,9 +1,14 @@
-@(message: String)
+@()
 
-@import de.saxsys.treasurehunting.game.views.html._
+@import play.api.i18n._
+@import de.saxsys.treasurehunting.common.views.html._
+@import de.saxsys.treasurehunting.common.controllers._
 
-@main("Welcome to Play 2.1") {
-    
-    @play20.welcome(message, style = "Java")
-    
+@defining(CommonController.getLang()) { lang =>
+	
+	@main(Messages("game.index.title")(lang), "game") {
+		
+		@* content *@
+		
+	}
 }

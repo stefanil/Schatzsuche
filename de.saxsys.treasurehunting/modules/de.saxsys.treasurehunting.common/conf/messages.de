@@ -6,9 +6,19 @@ common.index.login.username.placeholder=Dein Name
 common.index.login.username.error=Der Anwendername kann nicht auschließlich aus Leerzeichen bestehen und muss mindestens 5 Zeichen lang sein.
 common.index.login.submit=Weiter
 
-# common.lang
+# i18n
 common.lang.label=Sprache:
 common.lang.a.cz.tooltip=Tschechisch
 common.lang.a.pl.tooltip=Polnisch
 common.lang.a.de.tooltip=Deutsch
 common.lang.a.en.tooltip=Englisch
+
+
+# main template: nav
+common.main.nav.brand=Schatzsuche
+common.main.nav.a.game=Spiel
+common.main.nav.a.admin=Administration
+common.main.nav.uname=Angemeldet als {0}
+
+# main template: footer
+common.main.copyright=Saxonia Systems 2013

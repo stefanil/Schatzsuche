@@ -1,0 +1,15 @@
+hr {
+	border-color: #222222;
+}
+
+#img-logo {
+	float: left;
+	display: block;
+	margin-right: 5px;
+	width: 32px;
+	padding: 5px 0px 5px;
+}
+
+#lbl-logged-uname {
+	margin-left: 30px;
+}

@@ -34,7 +34,7 @@ public class CommonBrowserLoginTest {
 	@Test
 	public void loginSuccessChrome() {
 		System.setProperty("webdriver.chrome.driver",
-				"d:/DEVEL/ide/chromedriver_win32_2.0/chromedriver.exe");
+				"test/de/saxsys/treasurehunting/webdrivers/chromedriver.exe");
 		Helpers.running(
 				Helpers.testServer(3333,
 						Helpers.fakeApplication()),
@@ -69,7 +69,7 @@ public class CommonBrowserLoginTest {
 	@Test
 	public void loginFailureChrome() {
 		System.setProperty("webdriver.chrome.driver",
-				"d:/DEVEL/ide/chromedriver_win32_2.0/chromedriver.exe");
+				"test/de/saxsys/treasurehunting/webdrivers/chromedriver.exe");
 		Helpers.running(
 				Helpers.testServer(3333,
 						Helpers.fakeApplication()),

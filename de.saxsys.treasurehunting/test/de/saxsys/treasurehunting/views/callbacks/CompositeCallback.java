@@ -22,8 +22,8 @@ public class CompositeCallback extends Callback {
 	/**
 	 * Fügt einen {@link Callback} als Kind hinzu.
 	 * 
-	 * @param callback
-	 * @return
+	 * @param callback Der hinzuzufügende {@link Callback}.
+	 * @return Gibt <code>true</code> zurück, wenn der Callback hinzugefügt werden konnte.
 	 */
 	public boolean addCallback(Callback callback) {
 		return children.add(callback);
@@ -32,8 +32,8 @@ public class CompositeCallback extends Callback {
 	/**
 	 * Gibt einen bestimmten {@link Callback} per Index zurück.
 	 * 
-	 * @param index
-	 * @return
+	 * @param index Der Index des zurückzugebenden {@link Callback}s.
+	 * @return Der gesuchte {@link Callback}.
 	 */
 	public Callback getCallback(int index) {
 		return children.get(index);
@@ -42,6 +42,11 @@ public class CompositeCallback extends Callback {
 	/**
 	 * Ruft die Methode {@link Callback#invoke(TestBrowser)} für alle Kinder vom
 	 * Typ {@link Callback} unter Verwendung desselben {@link TestBrowser}s auf.
+	 * 
+	 * @param a Der {@link TestBrowser}.
+	 * @throws Throwable Das geworfene Throwable.
+	 * 
+	 * @see play.libs.F.Callback
 	 */
 	@Override
 	public void invoke(TestBrowser a) throws Throwable {

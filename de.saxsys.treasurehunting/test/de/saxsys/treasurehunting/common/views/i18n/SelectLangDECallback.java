@@ -17,9 +17,6 @@ import play.test.TestBrowser;
  */
 public class SelectLangDECallback extends Callback {
 
-	/**
-	 * This operation checks the language selection on the start page.
-	 */
 	@Override
 	public void invoke(TestBrowser browser) throws Throwable {
 		browser.goTo("http://localhost:3333/");

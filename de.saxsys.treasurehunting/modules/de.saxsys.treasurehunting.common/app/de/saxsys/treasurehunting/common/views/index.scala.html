@@ -1,5 +1,5 @@
 @* the start page of the application *@
-@(lang: Lang = Lang.defaultLang)(loginForm: Form[de.saxsys.treasurehunting.common.controllers.CommonController.Login])
+@(loginForm: Form[de.saxsys.treasurehunting.common.controllers.CommonController.Login])
 
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(de.saxsys.treasurehunting.common.views.html.bootstrap.horizontalFieldConstructor.f) }
@@ -11,6 +11,8 @@
 
 @import de.saxsys.treasurehunting.common.views.html._
 @import de.saxsys.treasurehunting.common.controllers._
+
+@defining(CommonController.getLang()) { lang =>
 
 <!DOCTYPE html>
 
@@ -51,3 +53,4 @@
     </body>
 </html>
 
+}

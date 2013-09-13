@@ -15,16 +15,16 @@ public class GameController extends Controller {
   
 	/**
 	 * .
-	 * @return
+	 * @return The {@link Result}.
 	 */
 	@Security.Authenticated(Secured.class)
     public static Result index() {
-        return TODO;
+        return ok(index.render());
     }
   
 	/**
 	 * .
-	 * @return
+	 * @return The {@link Result}.
 	 */
 	@Security.Authenticated(Secured.class)
     public static Result singleplayer() {
@@ -33,7 +33,7 @@ public class GameController extends Controller {
     
 	/**
 	 * .
-	 * @return
+	 * @return The {@link Result}.
 	 */
 	@Security.Authenticated(Secured.class)
     public static Result startSPGame() {
@@ -42,7 +42,7 @@ public class GameController extends Controller {
     
 	/**
 	 * .
-	 * @return
+	 * @return The {@link Result}.
 	 */
 	@Security.Authenticated(Secured.class)
     public static Result visitorarena() {
@@ -51,7 +51,7 @@ public class GameController extends Controller {
     
 	/**
 	 * .
-	 * @return
+	 * @return The {@link Result}.
 	 */
 	@Security.Authenticated(Secured.class)
     public static Result startVAGame() {

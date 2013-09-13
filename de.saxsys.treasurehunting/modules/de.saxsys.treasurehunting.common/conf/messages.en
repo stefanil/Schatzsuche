@@ -1,4 +1,4 @@
-# common
+# index
 common.index.title=Treasure Hunting - Start Page
 common.index.heading=Welcome to the Arena!
 common.index.login.username.label=Username:
@@ -6,8 +6,18 @@ common.index.login.username.placeholder=Your name
 common.index.login.username.error=The user name must have at least 5 characters and must not only consist out of spaces.
 common.index.login.submit=Enter
 
+# i18n
 common.lang.label=Language:
 common.lang.a.cz.tooltip=Czech
 common.lang.a.pl.tooltip=Polish
 common.lang.a.de.tooltip=German
 common.lang.a.en.tooltip=English
+
+# main template: nav
+common.main.nav.brand=Treasurehunting
+common.main.nav.a.game=Game
+common.main.nav.a.admin=Administration
+common.main.nav.uname=Logged in as {0}
+
+# main template: footer
+common.main.copyright=Saxonia Systems 2013

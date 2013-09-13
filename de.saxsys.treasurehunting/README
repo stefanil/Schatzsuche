@@ -16,8 +16,11 @@ For running and testing the application in real life circumstances
 use the alternative configuration file production.conf (using PostgreSQL-DB) 
 by specifying the dynamic parameter config.resource like this:
 
-Deployment:
-play start -Dconfig.resource=production.conf
+Running with production conf:
+play -Dconfig.resource=production.conf run
 
-System Testing:
-play test -Dconfig.resource=production.conf
+Deployment with production conf:
+play -Dconfig.resource=production.conf start
+
+System Testing with production.conf:
+play -Dconfig.resource=production.conf test

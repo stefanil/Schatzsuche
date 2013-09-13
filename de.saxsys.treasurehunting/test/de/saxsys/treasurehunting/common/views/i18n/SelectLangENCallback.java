@@ -18,9 +18,6 @@ import de.saxsys.treasurehunting.views.callbacks.Callback;
  */
 public class SelectLangENCallback extends Callback {
 
-	/**
-	 * This operation checks the language selection on the start page.
-	 */
 	@Override
 	public void invoke(TestBrowser browser) throws Throwable {
 		browser.goTo("http://localhost:3333/");

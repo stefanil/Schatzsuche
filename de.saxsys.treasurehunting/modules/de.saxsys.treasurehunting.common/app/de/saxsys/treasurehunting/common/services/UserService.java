@@ -16,34 +16,36 @@ import com.avaje.ebean.ExpressionList;
 import de.saxsys.treasurehunting.common.models.User;
 
 /**
- * This service class provides an implementation for: 
+ * This service class provides an implementation for.
  * 
  * <ul>
- * 	<li>managing the {@link User} model</li>
- * 	<li>managing authentication</li>
+ * <li>managing the {@link User} model</li>
+ * <li>managing authentication</li>
  * </ul>
  * 
  * 
  * @author stefan.illgen
  */
-public class UserService {
+public abstract class UserService {
 
 	private static Model.Finder<String, User> find = new Model.Finder<String, User>(
 			String.class, User.class);
 
 	/**
-	 * Creates an anonymous user if the user with the given user name does not
-	 * yet exist.
+	 * Creates an anonymous user.
 	 * 
-	 * @return
+	 * @param username
+	 *            The name of the user to be created.
+	 * @return The {@link User}.
 	 */
 	public static User createAnonymousUser(String username) {
 
 		User user = new User();
 		user.name = username;
 		user.save();
-		
-		Logger.info("User "+user.name+" was added to the authenticated users.");
+
+		Logger.info("User " + user.name
+				+ " was added to the authenticated users.");
 
 		return user;
 	}
@@ -54,8 +56,12 @@ public class UserService {
 	 * supported and browser accepted language is returned. If there is no match
 	 * found, the first application supported language is returned.
 	 * 
+	 * @param session
+	 *            The session the language is registered with.
 	 * @param request
-	 * @return
+	 *            The current HTTP request need for accing browser accepted
+	 *            langugages.
+	 * @return The {@link Lang}.
 	 */
 	public static Lang getSessionLanguage(Session session, Request request) {
 
@@ -78,14 +84,17 @@ public class UserService {
 		}
 
 		// no matching between supported and accepted languages found: return
-		// firstly configured language
+		// the first configured language
 		return Lang.defaultLang();
 	}
 
 	/**
 	 * Sets the session specific language.
 	 * 
-	 * @param lang
+	 * @param session
+	 *            The {@link Session}.
+	 * @param id
+	 *            The language code ID.
 	 */
 	public static void setSessionLang(Session session, String id) {
 		session.put("lang", id);
@@ -98,8 +107,11 @@ public class UserService {
 	 * If the user isn't registered yet this operation will dynamically create
 	 * an anonymous user identified by parameter username.
 	 * 
+	 * @param session
+	 *            The {@link Session} the user has to be authenticated with.
 	 * @param username
-	 * @return
+	 *            The user name to be authenticated.
+	 * @return The {@link User}.
 	 */
 	public static User authenticate(Session session, String username) {
 
@@ -120,7 +132,8 @@ public class UserService {
 	 * This Operation returns the currently authenticated {@link User}.
 	 * 
 	 * @param session
-	 * @return
+	 *            The Session the user is authenticated with.
+	 * @return The {@link User}.
 	 */
 	public static User getAuthUser(Session session) {
 		return findUser(session.get("username"));
@@ -130,7 +143,9 @@ public class UserService {
 	 * Finds the user identified by its user id.
 	 * 
 	 * @param username
-	 * @return
+	 *            The users name, which act as id and base for finding the
+	 *            {@link User}.
+	 * @return The {@link User} or null if the {@link User} could not be found.
 	 */
 	public static User findUser(String username) {
 		if (username != null && find.where() != null) {

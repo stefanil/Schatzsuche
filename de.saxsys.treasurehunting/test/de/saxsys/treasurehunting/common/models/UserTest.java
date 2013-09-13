@@ -1,12 +1,9 @@
 package de.saxsys.treasurehunting.common.models;
 
-import org.junit.*;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.avaje.ebean.Ebean;
-
-import de.saxsys.treasurehunting.common.models.User;
 import de.saxsys.treasurehunting.models.BaseModelTest;
 
 /**

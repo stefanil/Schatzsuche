@@ -9,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import play.libs.Yaml;
-import play.test.FakeApplication;
 import de.saxsys.treasurehunting.models.BaseModelTest;
 
 /**
@@ -23,7 +22,7 @@ import de.saxsys.treasurehunting.models.BaseModelTest;
 public class BaseYamlTest extends BaseModelTest {
 
 	/**
-	 * YAML Testdaten
+	 * YAML Testdaten.
 	 */
 	public static LinkedHashMap<String, List<Object>> yamlData;
 

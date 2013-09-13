@@ -15,14 +15,6 @@ import de.saxsys.treasurehunting.views.callbacks.Callback;
  */
 public class LoginFailureCallback extends Callback {
 
-	/**
-	 * This operation implements a error prone login procedure and may be reused
-	 * for composite test callbacks.
-	 * 
-	 * @param browser
-	 *            The {@link TestBrowser} to be used for implementing the
-	 *             error prone login procedure.
-	 */
 	@Override
 	public void invoke(TestBrowser browser) throws Throwable {
 

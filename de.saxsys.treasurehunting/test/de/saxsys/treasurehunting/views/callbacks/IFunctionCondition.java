@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 
 /**
  * Kondition zur Entscheidung auf Erreichen des gewünschten Zustands eines
- * {@link WebElement}s, der zum Abbruch des Wartens auf ein asynchronen 
+ * {@link WebElement}s.
  * 
  * @author stefan.illgen
  * 
@@ -17,9 +17,9 @@ public interface IFunctionCondition {
 	/**
 	 * Wendet die Bedingung auf das {@link WebElement} an.
 	 * 
-	 * @param e
-	 * @return
+	 * @param e Das {@link WebElement}.
+	 * @return Gibt <code>true</code> zurück, wenn die Bedingung wahr ist.
 	 */
-	public boolean apply(WebElement e);
+	boolean apply(WebElement e);
 
 }

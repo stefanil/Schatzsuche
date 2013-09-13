@@ -13,8 +13,11 @@ import play.test.Helpers;
  * @author andre.tschirch
  * 
  */
-public class BaseModelTest {
+public abstract class BaseModelTest {
 
+	/**
+	 * Die {@link FakeApplication}.
+	 */
 	public static FakeApplication fakeApplication;
 
 	/**

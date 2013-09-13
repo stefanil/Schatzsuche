@@ -4,6 +4,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import de.saxsys.treasurehunting.common.controllers.Secured;
+import de.saxsys.treasurehunting.admin.views.html.*;
 
 /**
  * This {@link Controller} implements the administration actions.
@@ -15,11 +16,11 @@ public class AdminController extends Controller {
 	/**
 	 * The start page for the administration module.
 	 * 
-	 * @return
+	 * @return The {@link Result}.
 	 */
 	@Security.Authenticated(Secured.class)
     public static Result index() {
-        return TODO;
+        return ok(index.render());
     }
   
 }
