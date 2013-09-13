@@ -29,7 +29,7 @@ public class CommonBrowserLangSelectTest {
 	@Test
 	public void langSelectDEChrome() {
 		System.setProperty("webdriver.chrome.driver",
-				"d:/DEVEL/ide/chromedriver_win32_2.0/chromedriver.exe");
+				"test/de/saxsys/treasurehunting/webdrivers/chromedriver.exe");
 		Helpers.running(Helpers.testServer(3333, Helpers.fakeApplication()),
 				ChromeDriver.class, new SelectLangDECallback());
 	}
@@ -60,7 +60,7 @@ public class CommonBrowserLangSelectTest {
 	@Test
 	public void langSelectENChrome() {
 		System.setProperty("webdriver.chrome.driver",
-				"d:/DEVEL/ide/chromedriver_win32_2.0/chromedriver.exe");
+				"test/de/saxsys/treasurehunting/webdrivers/chromedriver.exe");
 		Helpers.running(Helpers.testServer(3333, Helpers.fakeApplication()),
 				ChromeDriver.class, new SelectLangENCallback());
 	}
