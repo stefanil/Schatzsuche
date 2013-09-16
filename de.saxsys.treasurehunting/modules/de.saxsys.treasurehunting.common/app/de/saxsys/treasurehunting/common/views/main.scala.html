@@ -1,5 +1,5 @@
 @* the main template file *@
-@(title: String = "", nav: String)(content: Html)
+@(title: String = "", nav: String)(header: Html)(content: Html)
 
 @import play.api.i18n._
 
@@ -20,7 +20,10 @@
         @bootstrap.header()
 	   	@i18n.header()
 	   	
-	   	<link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/common-main.css")" >       
+	   	<link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/common-main.css")" >
+	   	
+	   	@header
+	   	       
     </head>
     
     <body>

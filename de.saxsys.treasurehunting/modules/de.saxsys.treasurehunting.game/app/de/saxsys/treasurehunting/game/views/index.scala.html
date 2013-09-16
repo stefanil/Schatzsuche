@@ -2,13 +2,27 @@
 
 @import play.api.i18n._
 @import de.saxsys.treasurehunting.common.views.html._
-@import de.saxsys.treasurehunting.common.controllers._
+@import de.saxsys.treasurehunting._
 
-@defining(CommonController.getLang()) { lang =>
+@defining(common.controllers.CommonController.getLang()) { lang =>
 	
-	@main(Messages("game.index.title")(lang), "game") {
-		
+	@main(Messages("game.index.title")(lang), "game") { 
+		@* header *@
+		<link rel="stylesheet" type="text/css" href="@game.controllers.routes.Assets.at("stylesheets/game/index.css")" />
+		<script type="text/javascript" src="@game.controllers.routes.Assets.at("javascripts/game/game.js")" 
+			type="text/javascript"></script>
+	} {
 		@* content *@
-		
+		<div class="row-fluid">
+			<div id="div-welcome-container" class="span12">
+			  <div class="hero-unit">
+	            <h1>@Messages("game.index.welcome.heading")(lang)</h1>
+	            <div style="width:	128px;	height:	128px; float: left;">
+	            	<img id="div-welcome-img" src="@game.controllers.routes.Assets.at("images/logo/logo128.png")" />
+	            </div>
+	            @Messages("game.index.welcome.text")(lang)
+	          </div>
+			</div>
+		</div>		
 	}
 }
