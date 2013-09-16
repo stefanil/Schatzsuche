@@ -1,3 +1,16 @@
 game.index.title=Treasurehunting - Game
 game.index.welcome.heading=Welcome to the Arena! 
 game.index.welcome.text="Introducing text .."
+
+# singleplayer conf
+game.index.sp.conf.heading=Single Player
+game.index.sp.conf.gameName.label=Name:
+game.index.sp.conf.gameName.label.placeholder=Name of the Game
+game.index.sp.conf.gameName.error=The name of the game must not only consist out of spaces.
+game.index.sp.conf.counterColor.label=Counter Color:
+game.index.sp.conf.counterColor.red=Red
+game.index.sp.conf.counterColor.green=Green
+game.index.sp.conf.counterColor.blue=Blue
+game.index.sp.conf.playgroundName.label=Playground:
+game.index.sp.conf.submit=Let's go!
+

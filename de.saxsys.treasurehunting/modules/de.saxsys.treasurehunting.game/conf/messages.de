@@ -1,3 +1,16 @@
 game.index.title=Schatzsuche - Spiel
 game.index.welcome.heading=Willkommen in der Arena!
 game.index.welcome.text="Die Schatzsuche ist ein Lernspiel für die Sprachen Sorbisch, Polnisch, Tschechisch und Deutsch. [Weitere Inhalte aus der Spielanleitung]"
+
+# singleplayer conf
+game.index.sp.conf.heading=Single Player
+game.index.sp.conf.gameName.label=Name:
+game.index.sp.conf.gameName.label.placeholder=Spielname
+game.index.sp.conf.gameName.error=Der Name des Spiels kann nicht ausschließlich aus Leerzeichen bestehen.
+game.index.sp.conf.counterColor.label=Farbe der Spielfigur:
+game.index.sp.conf.counterColor.red=Rot
+game.index.sp.conf.counterColor.green=Grün
+game.index.sp.conf.counterColor.blue=Blau
+game.index.sp.conf.playgroundName.label=Spielfeld:
+game.index.sp.conf.submit=Los geht's!
+

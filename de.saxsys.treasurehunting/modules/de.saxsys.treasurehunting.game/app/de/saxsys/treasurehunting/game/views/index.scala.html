@@ -1,4 +1,7 @@
-@()
+@(spConfForm: Form[de.saxsys.treasurehunting.game.controllers.GameController.SingleplayerGameConfiguration])
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(de.saxsys.treasurehunting.common.views.html.bootstrap.horizontalFieldConstructor.f) }
 
 @import play.api.i18n._
 @import de.saxsys.treasurehunting.common.views.html._
@@ -8,7 +11,8 @@
 	
 	@main(Messages("game.index.title")(lang), "game") { 
 		@* header *@
-		<link rel="stylesheet" type="text/css" href="@game.controllers.routes.Assets.at("stylesheets/game/index.css")" />
+		<link rel="stylesheet" type="text/css" href="@game.controllers.routes.Assets.at("stylesheets/game/index.css")" />	
+		<link rel="stylesheet" type="text/css" href="@game.controllers.routes.Assets.at("stylesheets/game/singleplayer/sp-conf.css")" />
 		<script type="text/javascript" src="@game.controllers.routes.Assets.at("javascripts/game/game.js")" 
 			type="text/javascript"></script>
 	} {
@@ -23,6 +27,49 @@
 	            @Messages("game.index.welcome.text")(lang)
 	          </div>
 			</div>
-		</div>		
+		</div>
+		
+		<div class="row-fluid">
+		  <div id="div-sp-conf" class="span6 well">
+		  
+		  	<span><h4>@Messages("game.index.sp.conf.heading")(lang)</h4></span>
+		  
+		  	@helper.form(game.controllers.routes.GameController.configureSingleplayer, args = 'method -> "post", 'id -> "form-singleplayer-conf") {
+						
+						<!--  #tf-gameName -->
+						@helper.inputText(spConfForm("gameName"),
+				      	   	'_label -> Messages("game.index.sp.conf.gameName.label")(lang), 
+				      	   	'placeholder -> Messages("game.index.sp.conf.gameName.label.placeholder")(lang),
+				      	   	'class -> "input-block-level")						
+						
+						<!--  #cb-counterColor  -->						
+						@defining(game.controllers.GameController.SingleplayerGameConfiguration.getCounterColors()) { colors: Map[Integer,String] =>
+							@helper.select(spConfForm("counterColor"), 
+								options = colors.map{case(k,v) => ("0x%x".format(k) -> v)} toList, 
+				      	   		'_label -> Messages("game.index.sp.conf.counterColor.label")(lang),
+				      	   		'class -> "input-block-level")
+						}
+						
+						<!--  #cb-playground  -->
+						@defining(game.controllers.GameController.PlaygroundService.getAllPlaygroundNames()) { playgroundNames: List[String] =>
+							@helper.select(spConfForm("playgroundName"), 
+								options = playgroundNames.map(s => s -> s),
+				      	   		'_label -> Messages("game.index.sp.conf.playgroundName.label")(lang),
+				      	   		'class -> "input-block-level")
+						}
+						
+						<!--  #div-vGameModes  -->
+						<!--  TODO  -->						
+						
+						<!--  #btn-startSPGame  -->
+						<div id="div-sp-conf-submit" class="form-actions">
+				           <button id="btn-startSPGame" type="submit" class="btn btn-large btn-block btn-inverse pull-left">
+				           		@Messages("game.index.sp.conf.submit")(lang)
+				           </button>
+				        </div>				        
+					}
+		  </div>
+		</div>
+
 	}
 }

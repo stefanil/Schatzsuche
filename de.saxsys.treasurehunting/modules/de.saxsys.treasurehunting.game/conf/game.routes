@@ -4,6 +4,7 @@
 
 GET     /game                       		de.saxsys.treasurehunting.game.controllers.GameController.index
 GET     /game/singleplayer                  de.saxsys.treasurehunting.game.controllers.GameController.singleplayer
+POST	/game/singleplayer/configure		de.saxsys.treasurehunting.game.controllers.GameController.configureSingleplayer
 GET     /game/singleplayer/startSPGame      de.saxsys.treasurehunting.game.controllers.GameController.startSPGame
 GET     /game/visitorarena                  de.saxsys.treasurehunting.game.controllers.GameController.visitorarena
 GET     /game/visitorarena/startVAGame      de.saxsys.treasurehunting.game.controllers.GameController.startVAGame

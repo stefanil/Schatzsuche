@@ -1,0 +1,19 @@
+#form-singleplayer-conf {
+	margin: 0 0 0 0;
+}
+
+#div-gameName, #div-counterColor, #div-playgroundName {
+
+}
+
+#lbl-gameName, #lbl-counterColor, #lbl-playgroundName {
+	vertical-align: middle;
+}
+
+#div-input-gameName, #div-input-counterColor, #div-input-playgroundName {
+
+}
+
+#div-sp-conf-submit {
+
+}
