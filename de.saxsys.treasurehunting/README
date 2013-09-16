@@ -22,5 +22,7 @@ play -Dconfig.resource=production.conf run
 Deployment with production conf:
 play -Dconfig.resource=production.conf start
 
+Play is not supporting windows in production mode, therefore <stage> and <start> won’t work under windows.
+
 System Testing with production.conf:
 play -Dconfig.resource=production.conf test
