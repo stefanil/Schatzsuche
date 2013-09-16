@@ -17,7 +17,9 @@ use the alternative configuration file production.conf (using PostgreSQL-DB)
 by specifying the dynamic parameter config.resource like this:
 
 Deployment:
-play start -Dconfig.resource=production.conf
+play -Dconfig.resource=production.conf start
+
+Play is not supporting windows in production mode, therefore <stage> and <start> won’t work under windows.
 
 System Testing:
-play test -Dconfig.resource=production.conf
+play -Dconfig.resource=production.conf test
