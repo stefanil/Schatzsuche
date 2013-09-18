@@ -11,7 +11,7 @@ import play.data.Form;
 import play.data.validation.ValidationError;
 import play.mvc.Controller;
 import play.mvc.Result;
-import de.saxsys.treasurehunting.common.models.User;
+import de.saxsys.treasurehunting.common.models.user.User;
 import de.saxsys.treasurehunting.common.services.UserService;
 import de.saxsys.treasurehunting.common.views.html.index;
 

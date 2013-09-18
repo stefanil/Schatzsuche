@@ -13,7 +13,7 @@ import play.mvc.Http.Session;
 
 import com.avaje.ebean.ExpressionList;
 
-import de.saxsys.treasurehunting.common.models.User;
+import de.saxsys.treasurehunting.common.models.user.User;
 
 /**
  * This service class provides an implementation for.
@@ -152,6 +152,21 @@ public abstract class UserService {
 			ExpressionList<User> ul = find.where().eq("name", username);
 			return ul.findUnique();
 		} else
+			return null;
+	}
+
+	/**
+	 * Returns the authenticated users name.
+	 * 
+	 * @param session
+	 *            The Session the user is authenticated with.
+	 * @return The authenticated {@link User}'s name or null if the {@link User} could not be found.
+	 */
+	public static String getAuthUserName(Session session) {
+		User authUser = getAuthUser(session);
+		if(authUser!=null)
+			return authUser.name;
+		else
 			return null;
 	}
 }

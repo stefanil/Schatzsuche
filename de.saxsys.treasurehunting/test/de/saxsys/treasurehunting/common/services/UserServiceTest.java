@@ -6,7 +6,7 @@ package de.saxsys.treasurehunting.common.services;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.saxsys.treasurehunting.common.models.User;
+import de.saxsys.treasurehunting.common.models.user.User;
 import de.saxsys.treasurehunting.models.BaseModelTest;
 
 /**

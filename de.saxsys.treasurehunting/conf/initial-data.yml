@@ -3,4 +3,4 @@
 # -------------------
 
 user:
-- &1 !!de.saxsys.treasurehunting.common.models.User {name: stefan}
+- &1 !!de.saxsys.treasurehunting.common.models.user.User {name: stefan}

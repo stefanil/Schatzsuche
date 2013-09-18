@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.saxsys.treasurehunting.common.models;
+package de.saxsys.treasurehunting.common.models.user;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

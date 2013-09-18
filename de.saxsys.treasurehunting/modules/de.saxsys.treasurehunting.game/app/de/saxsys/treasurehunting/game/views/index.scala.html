@@ -4,8 +4,8 @@
 @implicitFieldConstructor = @{ FieldConstructor(de.saxsys.treasurehunting.common.views.html.bootstrap.horizontalFieldConstructor.f) }
 
 @import play.api.i18n._
-@import de.saxsys.treasurehunting.common.views.html._
 @import de.saxsys.treasurehunting._
+@import de.saxsys.treasurehunting.common.views.html._
 
 @defining(common.controllers.CommonController.getLang()) { lang =>
 	
@@ -37,7 +37,7 @@
 		  
 		  	<span><h4>@Messages("game.index.sp.conf.heading")(lang)</h4></span>
 		  
-		  	@helper.form(game.controllers.routes.GameController.configureSingleplayer, args = 'method -> "post", 'id -> "form-singleplayer-conf") {
+		  	@helper.form(game.controllers.routes.GameController.createSinglePlayerGame, args = 'method -> "post", 'id -> "form-singleplayer-conf") {
 						
 						<!--  #tf-gameName -->
 						@helper.inputText(spConfForm("gameName"),
@@ -54,7 +54,7 @@
 						}
 						
 						<!--  #cb-playground  -->
-						@defining(game.controllers.GameController.PlaygroundService.getAllPlaygroundNames()) { playgroundNames: List[String] =>
+						@defining(game.services.PlaygroundService.getAllPlaygroundNames()) { playgroundNames: List[String] =>
 							@helper.select(spConfForm("playgroundName"), 
 								options = playgroundNames.map(s => s -> s),
 				      	   		'_label -> Messages("game.index.sp.conf.playgroundName.label")(lang),

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import play.Logger;
 import play.data.Form;
 import play.data.validation.Constraints.Required;
 import play.data.validation.ValidationError;
@@ -14,6 +15,10 @@ import play.mvc.Result;
 import play.mvc.Security;
 import de.saxsys.treasurehunting.common.controllers.Secured;
 import de.saxsys.treasurehunting.common.services.UserService;
+import de.saxsys.treasurehunting.game.services.GameHall;
+import de.saxsys.treasurehunting.game.services.GameService;
+import de.saxsys.treasurehunting.game.services.PlaygroundService;
+import de.saxsys.treasurehunting.game.services.exceptions.GameCreationException;
 import de.saxsys.treasurehunting.game.views.html.index;
 
 /**
@@ -22,22 +27,14 @@ import de.saxsys.treasurehunting.game.views.html.index;
  * @author stefan.illgen
  */
 public class GameController extends Controller {
-	
-	public static class PlaygroundService {
-		
-		public static List<String> getAllPlaygroundNames() {
-			return new ArrayList<String>(){
-				private static final long serialVersionUID = -3717111435695650045L;
-			{
-				add("Playground 1");
-				add("Playground 2");
-				add("Playground 3");
-			}};
-		}
-		
-	}
-	
-	
+
+	/**
+	 * Represents a SingleplayGameConfiguration with game name, counter color
+	 * and play ground name.
+	 * 
+	 * @author stefan.illgen
+	 * 
+	 */
 	public static class SingleplayerGameConfiguration {
 
 		/**
@@ -49,37 +46,33 @@ public class GameController extends Controller {
 		 * The counters color as hexadezimal RGB int value.
 		 */
 		@Required
-		public Integer counterColor = COUNTER_COLOR_GREEN;
+		public Integer counterColor = GameService.COUNTER_COLOR_GREEN;
 
-		public static Integer COUNTER_COLOR_RED = Integer
-				.valueOf(0xff0000);
-		public static Integer COUNTER_COLOR_GREEN = Integer
-				.valueOf(0xff00);
-		public static Integer COUNTER_COLOR_BLUE = Integer.valueOf(0xff);
-		
 		public static Map<Integer, String> getCounterColors() {
 			return new HashMap<Integer, String>() {
 				private static final long serialVersionUID = -4984259332509141788L;
 				{
-					put(COUNTER_COLOR_RED, Messages.get(
-							UserService.getSessionLanguage(session(), request()),
+					put(GameService.COUNTER_COLOR_RED, Messages.get(UserService
+							.getSessionLanguage(session(), request()),
 							"game.index.sp.conf.counterColor.red"));
-					put(COUNTER_COLOR_GREEN, Messages.get(
-							UserService.getSessionLanguage(session(), request()),
+					put(GameService.COUNTER_COLOR_GREEN, Messages.get(
+							UserService
+									.getSessionLanguage(session(), request()),
 							"game.index.sp.conf.counterColor.green"));
-					put(COUNTER_COLOR_BLUE, Messages.get(
-							UserService.getSessionLanguage(session(), request()),
+					put(GameService.COUNTER_COLOR_BLUE, Messages.get(
+							UserService
+									.getSessionLanguage(session(), request()),
 							"game.index.sp.conf.counterColor.blue"));
 				}
 			};
 		}
-		
+
 		/**
 		 * The name of the playground to be used for the single player game.
 		 */
 		@Required
-		public String playgroundName = PlaygroundService.getAllPlaygroundNames().get(0);
-		
+		public String playgroundName = PlaygroundService
+				.getAllPlaygroundNames().get(0);
 
 		/**
 		 * The validation method checks the following conditions.
@@ -98,9 +91,10 @@ public class GameController extends Controller {
 			// trimmed length must be greater 0
 			if (gameName.trim().length() == 0) {
 				List<ValidationError> errors = new ArrayList<ValidationError>();
-				errors.add(new ValidationError("gameName", play.i18n.Messages
-						.get(UserService.getSessionLanguage(session(),
-								request()), "game.index.sp.conf.gameName.error")));
+				errors.add(new ValidationError("gameName",
+						play.i18n.Messages.get(UserService.getSessionLanguage(
+								session(), request()),
+								"game.index.sp.conf.gameName.error")));
 				result.put("gameName", errors);
 			}
 
@@ -109,9 +103,10 @@ public class GameController extends Controller {
 	}
 
 	/**
-	 * .
+	 * Returns the rendered index page for the game.
 	 * 
-	 * @return The {@link Result}.
+	 * @return The {@link Result}, which represents the rendered index page for
+	 *         the game.
 	 */
 	@Security.Authenticated(Secured.class)
 	public static Result index() {
@@ -119,11 +114,14 @@ public class GameController extends Controller {
 	}
 
 	/**
+	 * Validates the single player configuration form and if there are no
+	 * errors, creates the single player game. If there is a validation error,
+	 * it shows the corresponding error message to the user.
 	 * 
-	 * @return
+	 * @return The {@link Result}.
 	 */
 	@Security.Authenticated(Secured.class)
-	public static Result configureSingleplayer() {
+	public static Result createSinglePlayerGame() {
 
 		Form<SingleplayerGameConfiguration> spConfForm = Form.form(
 				SingleplayerGameConfiguration.class).bindFromRequest();
@@ -131,10 +129,22 @@ public class GameController extends Controller {
 		if (spConfForm.hasErrors())
 			return badRequest(index.render(spConfForm));
 
-		// TODO stefan create single player game
+		Map<String, String> spConfMap = spConfForm.data();
 
-		return redirect(de.saxsys.treasurehunting.game.controllers.routes.GameController
-				.singleplayer());
+		try {
+			GameHall.createSinglePlayerGame(UserService
+					.getAuthUserName(session()), spConfMap.get("gameName"),
+					Integer.parseInt(
+							spConfMap.get("counterColor").substring(2), 16),
+					spConfMap.get("playgroundName"));
+
+			return redirect(de.saxsys.treasurehunting.game.controllers.routes.GameController
+					.singleplayer());
+		} catch (GameCreationException e) {
+			e.printStackTrace();
+			Logger.error(e.getMessage());
+			return internalServerError(e.getMessage());
+		}
 	}
 
 	/**

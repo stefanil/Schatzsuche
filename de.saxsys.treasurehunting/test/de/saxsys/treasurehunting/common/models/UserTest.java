@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.avaje.ebean.Ebean;
+
+import de.saxsys.treasurehunting.common.models.user.User;
 import de.saxsys.treasurehunting.models.BaseModelTest;
 
 /**
