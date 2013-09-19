@@ -10,10 +10,10 @@ import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
 /**
- * TODO.
+ * An {@link Action} represent an action, which is identified by a
+ * {@link #heading}, an {@link #info} and a {@link #button} text.
  * 
  * @author stefan.illgen
- *
  */
 @Entity
 public class Action extends Model {
@@ -21,25 +21,25 @@ public class Action extends Model {
 	private static final long serialVersionUID = 7792547412100770281L;
 
 	/**
-	 * TODO.
+	 * Internal ID.
 	 */
 	@Id
 	long id;
-	
+
 	/**
-	 * TODO.
+	 * The heading of the {@link Action}.
 	 */
 	@Required
 	public String heading;
-	
+
 	/**
-	 * TODO.
+	 * The info text of the {@link Action}.
 	 */
 	@Required
 	public String info;
-	
+
 	/**
-	 * TODO.
+	 * The label of the button to confirm the {@link Action}.
 	 */
 	@Required
 	public String button;

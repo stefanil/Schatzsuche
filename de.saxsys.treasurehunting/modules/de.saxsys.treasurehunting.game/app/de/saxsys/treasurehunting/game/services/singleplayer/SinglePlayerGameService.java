@@ -15,13 +15,6 @@ import de.saxsys.treasurehunting.game.services.GameService;
  *
  */
 public class SinglePlayerGameService extends GameService {
-
-	/**
-	 * TODO.
-	 */
-	public static int H_MODE_SINGLEPLAYER;
-	
-	public long gameID;
 	
 	@Override
 	public void initializeGame() {

@@ -14,56 +14,6 @@ import de.saxsys.treasurehunting.common.models.actions.Action;
  *
  */
 public abstract class GameService {
-
-	/**
-	 * 
-	 */
-	public static int STATE_READY;
-	
-	/**
-	 * 
-	 */
-	public static int STATE_ACTIVE;
-	
-	/**
-	 * 
-	 */
-	public static int STATE_DICING;
-	
-	/**
-	 * 
-	 */
-	public static int STATE_MOVING;
-	
-	/**
-	 * 
-	 */
-	public static int STATE_PERFORMING;
-	
-	/**
-	 * 
-	 */
-	public static int STATE_FINISHED;
-	
-	/**
-	 * 
-	 */
-	public static int STATE_PAUSED;
-	
-	/**
-	 * 
-	 */
-	public static Integer COUNTER_COLOR_RED = Integer.valueOf(0xff0000);
-	
-	/**
-	 * 
-	 */
-	public static Integer COUNTER_COLOR_GREEN = Integer.valueOf(0xff00);
-	
-	/**
-	 * 
-	 */
-	public static Integer COUNTER_COLOR_BLUE = Integer.valueOf(0xff);
 	
 	/**
 	 * 

@@ -1,5 +1,6 @@
 package de.saxsys.treasurehunting.common.models.playgrounds;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,18 +8,16 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
+import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
-import com.avaje.ebean.Ebean;
-
 /**
- * TODO.
- * 
- * Playground stellt das gesamte Spielfeld dar. Auf dem Spielfeld befinden sich die Pfade auf denen sich der Spieler bewegt.
+ * A Playground represents a ground for playing the game. It consists out of
+ * {@link Path}s, a start- and an endpoint of type {@link Point}.
  * 
  * @author justus.markert
- *
  */
 @Entity
 public class Playground extends Model {
@@ -26,88 +25,50 @@ public class Playground extends Model {
 	private static final long serialVersionUID = -4414282978639082476L;
 
 	/**
-	 * TODO.
-	 * 
-	 * Name des Spielfelds
+	 * The name of the playground.
 	 */
 	@Id
 	public String name;
-	
+
 	/**
-	 * TODO.
-	 * 
-	 * Die zum Spielfeld gehörenden Pfade
+	 * The background of the {@link Playground}.
 	 */
-    @ManyToMany(cascade=CascadeType.ALL)
+	@Required
+	public URI background;
+
+	/**
+	 * The width of the {@link Playground}.
+	 */
+	@Required
+	public int width;
+
+	/**
+	 * The height of the {@link Playground}.
+	 */
+	@Required
+	public int height;
+
+	/**
+	 * The {@link Path}s related to the {@link Playground}.
+	 * 
+	 * Propagates only persist to its children. Thus if the Playground is deleted the
+	 * related {@link Path} won't be removed.
+	 */
+	@ManyToMany(cascade = CascadeType.ALL)
 	public List<Path> paths = new ArrayList<Path>();
 
 	/**
-	 * TODO.
-	 * 
-	 * Standard C'tor
+	 * The start point of the {@link Playground}.
 	 */
-	public Playground(String name) {
-
-		this.name = name;
-	}
-	
-	/**
-	 * TODO.
-	 * 
-	 * Füge dem Spielfeld einen Path hinzu
-	 * 
-	 * @param path
-	 */
-	public void addPath(Path path) {
-
-		this.paths.add(path);
-	}
-	
-	/**
-	 * TODO.
-	 * 
-	 * Füge dem Spielfeld einen Path hinzu
-	 * 
-	 * @param path
-	 */
-	public void deletePath(Path path) {
-
-		this.paths.remove(path);
-	}
+	@Required
+	@ManyToOne
+	public Point startPoint;
 
 	/**
-	 * TODO.
-	 * 
-	 * Finde Spielfeld anhand des Namens
-	 * 
-	 * @param name
-	 * @return
+	 * The end point of the {@link Playground}.
 	 */
-	public static Playground findByName(String name) {
-
-		return Ebean.find(Playground.class).fetch("paths").fetch("paths.fromPoint").fetch("paths.toPoint").where().eq("name", name).findUnique();
-	}
-
-	/**
-	 * TODO.
-	 * 
-	 * Finde alle Spielfelder
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public static List<Playground> findByAllLazy() {
-
-		return Ebean.find(Playground.class).findList();
-	}	
-
-	/**
-	 * TODO.
-	 * 
-	 * @param path
-	 */
-	public void createPath(Path path) {
-		path.save();
-	}
+	@Required
+	@ManyToOne
+	public Point endPoint;
 
 }

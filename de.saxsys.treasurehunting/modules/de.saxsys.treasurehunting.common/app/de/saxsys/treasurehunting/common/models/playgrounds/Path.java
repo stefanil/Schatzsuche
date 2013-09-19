@@ -1,7 +1,6 @@
 package de.saxsys.treasurehunting.common.models.playgrounds;
 
-import java.util.List;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -9,132 +8,37 @@ import javax.persistence.ManyToOne;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
-import com.avaje.ebean.Ebean;
-
 /**
- * TODO.
- * 
- * Ein Pfad stellt eine Verbindung zwischen zwei Punkten dar, die ein Spieler
- * benutzen darf. Der Pfad ist gerichtet (von - nach).
- * 
- * Achtung zum Finder:
- * Hier gibt es in Play keine brauchbare Möglichkeit für Ebean die Pointklassen
- * beim Laden mitzuholen (eager fetching); deshalb weicht man auf eine
- * Hilfklasse aus:
- * 
- * Quelle:
- * http://stackoverflow.com/questions/13171476/eager-fetch-does-not-seem-to-join
- * 
- * Also nicht: return find.where().eq("fromPoint", point).findList();
- * 
- * Die Umstellung auf JPA wird das Problem beseitigen
+ * A {@link Path} represents a directed graph between two {@link Point}s.
  * 
  * @author justus.markert
- * 
  */
 @Entity
 public class Path extends Model {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5967830143439716451L;
 
 	/**
-	 * Interne Id
+	 * Internal ID.
 	 */
 	@Id
 	public long id;
 
 	/**
-	 * Punkt 'von'
+	 * Source {@link Point} of the directed graph.
+	 * 
+	 * Problem: If we use CascadeType.ALL the Point is automatically deleted
+	 * too. But what if it is at the same time the startpoint of a playground?
 	 */
 	@Required
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	public Point fromPoint;
 
 	/**
-	 * Punkt 'nach'
+	 * Sink {@link Point} of the directed graph.
 	 */
 	@Required
 	@ManyToOne
 	public Point toPoint;
 
-	/**
-	 * Standard C'tor
-	 * 
-	 * @param fromPoint
-	 * @param toPoint
-	 */
-	public Path(Point fromPoint, Point toPoint) {
-
-		this.fromPoint = fromPoint;
-		this.toPoint = toPoint;
-	}
-
-	/**
-	 * Play-Definition eines Finders. Der Zugriff findet dann über die
-	 * public-Methoden statt.
-	 */
-	private static Finder<String, Path> find = new Finder<String, Path>(
-			String.class, Path.class);
-
-	/**
-	 * Gib mir alle existierenden Pfade
-	 * 
-	 * @return List<Path>
-	 */
-	public static List<Path> findByAll() {
-
-		return Ebean.find(Path.class).fetch("fromPoint").fetch("toPoint")
-				.findList();
-	}
-	
-	/**
-	 * Gib mir alle existierenden Pfade
-	 * 
-	 * @return List<Path>
-	 */
-	public static Path findById(Long id) {
-
-		return find.ref(id.toString());
-	}
-
-	/**
-	 * Gib mir alle existierenden Pfade die ab diesem Punkt starten
-	 * 
-	 * @return List<Path>
-	 */
-	public static List<Path> findByFromPoint(Point point) {
-
-		return Ebean.find(Path.class).fetch("fromPoint").fetch("toPoint")
-				.where().eq("fromPoint", point).findList();
-	}
-
-	/**
-	 * Gib mir alle existierenden Pfade die ab diesem Punkt starten
-	 * lazy loading
-	 * 
-	 * @return List<Path>
-	 */
-	public static List<Path> findByFromPointLazy(Point point) {
-
-		return find.where().eq("fromPoint", point).findList();
-	}
-
-	/**
-	 * Gib mir alle existierenden Pfade zu diesem Punkt hinführen
-	 * 
-	 * @return List<Path>
-	 */
-	public static List<Path> findByToPoint(Point point) {
-
-		return Ebean.find(Path.class).fetch("fromPoint").fetch("toPoint")
-				.where().eq("toPoint", point).findList();
-	}
-	
-	public static void delete(Long id) {
-		find.ref(id.toString()).delete();
-	}
-	
 }

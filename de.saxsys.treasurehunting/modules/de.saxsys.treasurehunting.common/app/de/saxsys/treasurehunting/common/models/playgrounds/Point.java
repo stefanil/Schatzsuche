@@ -2,120 +2,62 @@ package de.saxsys.treasurehunting.common.models.playgrounds;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
+import de.saxsys.treasurehunting.common.models.actions.Action;
+import de.saxsys.treasurehunting.common.models.game.Counter;
 
 /**
- * TODO.
- * 
- * Referenziert einen Spielpunkt auf der Karte auf dem sich der Spieler bewegen
- * kann.
+ * Represents a point on the {@link Playground}, onto which multiple
+ * {@link Counter}s may be positioned.
  * 
  * @author justus.markert
- * 
  */
 @Entity
 public class Point extends Model implements Comparable<Point> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1846958748629611213L;
 
 	/**
-	 * Interne Id des Punkts 
+	 * Internal Id.
 	 */
 	@Id
 	public long id;
 
 	/**
-	 * Position X auf dem Spielfeld
+	 * Position x on the {@link Playground}.
 	 */
 	@Required
 	public int x;
 
 	/**
-	 * Position Y auf dem Spielfeld
+	 * Position y on the {@link Playground}.
 	 */
 	@Required
 	public int y;
 
 	/**
-	 * Handelt es sich um eine Stadt
-	 */
-	@Required
-	public boolean city = false;
-
-	/**
-	 * Standard C´tor
+	 * A {@link Point} may have multiple {@link Action}s related.
 	 * 
-	 * @param x
-	 * @param y
-	 */
-	public Point(int x, int y) {
-
-		this.x = x;
-		this.y = y;
-	}
-
-	/**
-	 * Play-Definition eines Finders. Der Zugriff findet dann über die public-Methoden statt.
-	 */
-	private static Finder<String, Point> find = new Finder<String, Point>(
-			String.class, Point.class);
-
-	/**
-	 * Gib mir alle existierenden Spielpunkte
 	 * 
-	 * @return List<Point>
 	 */
-	public static List<Point> findByAll() {
-
-		return find.all();
-	}
-	
-	/**
-	 * Finde den {@link Point} anhand der ID.
-	 * 
-	 * @param arg0
-	 * @return
-	 */
-	public static Point findById(String arg0) {
-		return find.byId(arg0);
-	}
+	@ManyToMany(cascade=CascadeType.ALL)
+	public List<Action> actions;
 
 	/**
-	 * Gib mir alle existierenden Spielpunkte für diese Koordinaten
-	 * 
-	 * @return List<Point>
+	 * Implementation for {@link Comparable} interface.
 	 */
-	public static List<Point> findByXandY(int x, int y) {
-
-		return find.where().eq("x", x).eq("y", y).findList();
-	}
-	
-	// ################# CRUD operations ####################
-
-	public static void create(Point point) {
-		point.save();
-	}
-	
-	public static void delete(Long id) {
-		find.ref(id.toString()).delete();
-	}
-	
-	// ################ Comaparable #########################
-
 	@Override
 	public int compareTo(Point o) {
-		if(o.id>this.id)
+		if (o.id > this.id)
 			return -1;
-		else if(o.id<this.id)
+		else if (o.id < this.id)
 			return 1;
-		// o.id==this.id
 		else
 			return 0;
 	}

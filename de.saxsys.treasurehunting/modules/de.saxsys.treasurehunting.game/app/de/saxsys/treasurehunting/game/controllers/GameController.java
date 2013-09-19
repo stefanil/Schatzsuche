@@ -14,9 +14,9 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import de.saxsys.treasurehunting.common.controllers.Secured;
+import de.saxsys.treasurehunting.common.models.game.Counter;
 import de.saxsys.treasurehunting.common.services.UserService;
 import de.saxsys.treasurehunting.game.services.GameHall;
-import de.saxsys.treasurehunting.game.services.GameService;
 import de.saxsys.treasurehunting.game.services.PlaygroundService;
 import de.saxsys.treasurehunting.game.services.exceptions.GameCreationException;
 import de.saxsys.treasurehunting.game.views.html.index;
@@ -46,20 +46,20 @@ public class GameController extends Controller {
 		 * The counters color as hexadezimal RGB int value.
 		 */
 		@Required
-		public Integer counterColor = GameService.COUNTER_COLOR_GREEN;
+		public Integer counterColor = Counter.COUNTER_COLOR_GREEN;
 
 		public static Map<Integer, String> getCounterColors() {
 			return new HashMap<Integer, String>() {
 				private static final long serialVersionUID = -4984259332509141788L;
 				{
-					put(GameService.COUNTER_COLOR_RED, Messages.get(UserService
+					put(Counter.COUNTER_COLOR_RED, Messages.get(UserService
 							.getSessionLanguage(session(), request()),
 							"game.index.sp.conf.counterColor.red"));
-					put(GameService.COUNTER_COLOR_GREEN, Messages.get(
+					put(Counter.COUNTER_COLOR_GREEN, Messages.get(
 							UserService
 									.getSessionLanguage(session(), request()),
 							"game.index.sp.conf.counterColor.green"));
-					put(GameService.COUNTER_COLOR_BLUE, Messages.get(
+					put(Counter.COUNTER_COLOR_BLUE, Messages.get(
 							UserService
 									.getSessionLanguage(session(), request()),
 							"game.index.sp.conf.counterColor.blue"));
