@@ -38,7 +38,7 @@ public class Path extends Model {
 	 * Sink {@link Point} of the directed graph.
 	 */
 	@Required
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	public Point toPoint;
 
 }

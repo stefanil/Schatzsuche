@@ -69,8 +69,8 @@ public class Counter extends Model {
 	public Point position;
 	
 	/**
-	 * The bidirectional user (, mappedBy="name").
+	 * The bidirectional user.
 	 */
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne
 	public User user;
 }

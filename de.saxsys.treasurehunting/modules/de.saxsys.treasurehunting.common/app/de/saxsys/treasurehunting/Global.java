@@ -58,9 +58,9 @@ public class Global extends GlobalSettings {
 		Ebean.save(map.get("points"));
 		Ebean.save(map.get("paths"));
 		Ebean.save(map.get("playgrounds"));
-		Ebean.save(map.get("counters"));
-		Ebean.save(map.get("games"));
 		Ebean.save(map.get("users"));
+		Ebean.save(map.get("games"));
+//		Ebean.save(map.get("counters"));
 	}
 
 };
