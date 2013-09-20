@@ -11,7 +11,7 @@ import de.saxsys.treasurehunting.common.models.BaseYamlTest;
 import de.saxsys.treasurehunting.common.models.playgrounds.Point;
 
 /**
- * Test for testing basic insert / update / delete behavior.
+ * Test for testing basic CRUD operations.
  * 
  * @author stefan.illgen
  *
@@ -19,21 +19,27 @@ import de.saxsys.treasurehunting.common.models.playgrounds.Point;
 public class PointTest extends BaseYamlTest {
 
 	/**
-	 * Tests the deletion of a {@link Point}.
+	 * Tests creation.
 	 */
 	@Test
-	public void testInsert() {
-		Point point1 = Ebean.find(Point.class, 1);
-		// TODO
+	public void testCreate() {
+		
 	}
 	
 	/**
-	 * Tests the update of a {@link Point}.
+	 * Tests read.
+	 */
+	@Test
+	public void testRead() {
+		
+	}
+
+	/**
+	 * Tests update.
 	 */
 	@Test
 	public void testUpdate() {
-		Point point1 = Ebean.find(Point.class, 1);
-		// TODO
+		
 	}
 	
 	/**

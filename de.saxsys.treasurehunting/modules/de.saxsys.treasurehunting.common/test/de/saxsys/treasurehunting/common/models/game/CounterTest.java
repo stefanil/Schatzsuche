@@ -9,7 +9,7 @@ import de.saxsys.treasurehunting.common.models.BaseYamlTest;
 import de.saxsys.treasurehunting.common.models.playgrounds.Path;
 
 /**
- * Test for testing basic insert / update / delete behavior.
+ * Test for testing basic CRUD operations.
  * 
  * @author stefan.illgen
  *
@@ -17,15 +17,23 @@ import de.saxsys.treasurehunting.common.models.playgrounds.Path;
 public class CounterTest extends BaseYamlTest {
 
 	/**
-	 * Tests the deletion of a {@link Path}.
+	 * Tests creation.
 	 */
 	@Test
-	public void testInsert() {
+	public void testCreate() {
+		
+	}
+	
+	/**
+	 * Tests read.
+	 */
+	@Test
+	public void testRead() {
 		
 	}
 
 	/**
-	 * Tests the update of a {@link Path}.
+	 * Tests update.
 	 */
 	@Test
 	public void testUpdate() {
@@ -33,7 +41,7 @@ public class CounterTest extends BaseYamlTest {
 	}
 
 	/**
-	 * Tests the deletion of a {@link Path}.
+	 * Tests deletion.
 	 */
 	@Test
 	public void testDelete() {

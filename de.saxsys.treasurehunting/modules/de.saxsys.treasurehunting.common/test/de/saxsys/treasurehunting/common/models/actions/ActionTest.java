@@ -8,7 +8,7 @@ import org.junit.Test;
 import de.saxsys.treasurehunting.common.models.BaseYamlTest;
 
 /**
- * Test for testing basic insert / update / delete behavior.
+ * Test for testing basic CRUD operations.
  * 
  * @author stefan.illgen
  *
@@ -16,15 +16,23 @@ import de.saxsys.treasurehunting.common.models.BaseYamlTest;
 public class ActionTest extends BaseYamlTest {
 
 	/**
-	 * Tests the deletion of a {@link Action}.
+	 * Tests creation.
 	 */
 	@Test
-	public void testInsert() {
+	public void testCreate() {
+		
+	}
+	
+	/**
+	 * Tests read.
+	 */
+	@Test
+	public void testRead() {
 		
 	}
 
 	/**
-	 * Tests the update of a {@link Action}.
+	 * Tests update.
 	 */
 	@Test
 	public void testUpdate() {
@@ -32,7 +40,7 @@ public class ActionTest extends BaseYamlTest {
 	}
 
 	/**
-	 * Tests the deletion of a {@link Action}.
+	 * Tests deletion.
 	 */
 	@Test
 	public void testDelete() {
