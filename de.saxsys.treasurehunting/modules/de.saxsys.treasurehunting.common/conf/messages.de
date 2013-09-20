@@ -22,3 +22,8 @@ common.main.nav.uname=Angemeldet als {0}
 
 # main template: footer
 common.main.copyright=Saxonia Systems 2013
+
+# actions
+common.actions.StartGame.heading=Spielstart
+common.actions.StartGame.info=Betätige die Schaltfläche, um das Spiel zu starten.
+common.actions.StartGame.button=Starten

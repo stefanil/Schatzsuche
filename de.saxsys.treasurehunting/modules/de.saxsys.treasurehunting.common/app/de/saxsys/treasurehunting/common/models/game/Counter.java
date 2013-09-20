@@ -3,7 +3,6 @@
  */
 package de.saxsys.treasurehunting.common.models.game;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;

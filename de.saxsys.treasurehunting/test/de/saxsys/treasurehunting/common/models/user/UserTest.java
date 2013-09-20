@@ -1,11 +1,14 @@
 /**
  * 
  */
-package de.saxsys.treasurehunting.common.models.actions;
+package de.saxsys.treasurehunting.common.models.user;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import de.saxsys.treasurehunting.common.models.BaseYamlTest;
+import com.avaje.ebean.Ebean;
+
+import de.saxsys.treasurehunting.common.models.BaseModelTest;
 
 /**
  * Test for testing basic CRUD operations.
@@ -13,7 +16,7 @@ import de.saxsys.treasurehunting.common.models.BaseYamlTest;
  * @author stefan.illgen
  *
  */
-public class ActionTest extends BaseYamlTest {
+public class UserTest extends BaseModelTest {
 
 	/**
 	 * Tests creation.
@@ -28,7 +31,9 @@ public class ActionTest extends BaseYamlTest {
 	 */
 	@Test
 	public void testRead() {
-		
+		User user = Ebean.find(User.class, "stefan");
+		Assert.assertNotNull(user);
+		Assert.assertEquals(user.name, "stefan");
 	}
 
 	/**

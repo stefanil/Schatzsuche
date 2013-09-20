@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import play.data.format.Formats;
-import play.data.validation.Constraints;
+import play.data.format.Formats.NonEmpty;
+import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
 /**
@@ -27,15 +27,8 @@ public class User extends Model {
 	 * The user name also defines its id.
 	 */
 	@Id
-	@Constraints.Required
-	@Formats.NonEmpty
+	@Required
+	@NonEmpty
 	public String name;
-
-//	/**
-//	 * A user may play an arbitrary amount of games at the same time and
-//	 * therefore can have as many {@link Counter}s as he wants.
-//	 */
-//	@OneToMany(cascade=CascadeType.ALL)
-//	public List<Counter> counters;
 
 }

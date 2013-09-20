@@ -24,7 +24,7 @@ public class Action extends Model {
 	 * Internal ID.
 	 */
 	@Id
-	long id;
+	public long id;
 
 	/**
 	 * The heading of the {@link Action}.

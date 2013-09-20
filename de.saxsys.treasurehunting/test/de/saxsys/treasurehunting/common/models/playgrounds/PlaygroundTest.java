@@ -1,12 +1,11 @@
 /**
  * 
  */
-package de.saxsys.treasurehunting.common.models.game;
+package de.saxsys.treasurehunting.common.models.playgrounds;
 
 import org.junit.Test;
 
-import de.saxsys.treasurehunting.common.models.BaseYamlTest;
-import de.saxsys.treasurehunting.common.models.playgrounds.Path;
+import de.saxsys.treasurehunting.common.models.BaseModelTest;
 
 /**
  * Test for testing basic CRUD operations.
@@ -14,7 +13,7 @@ import de.saxsys.treasurehunting.common.models.playgrounds.Path;
  * @author stefan.illgen
  *
  */
-public class CounterTest extends BaseYamlTest {
+public class PlaygroundTest extends BaseModelTest {
 
 	/**
 	 * Tests creation.
