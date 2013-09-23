@@ -70,7 +70,7 @@ public class Game extends Model {
 	 * Internal ID.
 	 */
 	@Id
-	long id;
+	public long id;
 
 	/**
 	 * The name of the {@link Game}.
@@ -104,6 +104,6 @@ public class Game extends Model {
 	/**
 	 * The {@link Playground} the {@link Game} is related to.
 	 */
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne
 	public Playground playground;
 }

@@ -1,13 +1,14 @@
 /**
  * 
  */
-package de.saxsys.treasurehunting.common.services;
+package de.saxsys.treasurehunting.common.services.user;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.saxsys.treasurehunting.common.models.BaseModelTest;
 import de.saxsys.treasurehunting.common.models.user.User;
-import de.saxsys.treasurehunting.models.BaseModelTest;
+import de.saxsys.treasurehunting.common.services.UserService;
 
 /**
  * This class tests the service class {@link User}.

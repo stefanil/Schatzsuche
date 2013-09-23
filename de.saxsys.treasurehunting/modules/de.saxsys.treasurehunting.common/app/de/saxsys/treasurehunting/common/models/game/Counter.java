@@ -3,7 +3,6 @@
  */
 package de.saxsys.treasurehunting.common.models.game;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -69,8 +68,8 @@ public class Counter extends Model {
 	public Point position;
 	
 	/**
-	 * The bidirectional user (, mappedBy="name").
+	 * The bidirectional user.
 	 */
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne
 	public User user;
 }

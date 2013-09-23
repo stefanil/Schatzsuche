@@ -7,31 +7,37 @@ import org.junit.Test;
 
 import com.avaje.ebean.Ebean;
 
-import de.saxsys.treasurehunting.common.models.BaseYamlTest;
+import de.saxsys.treasurehunting.common.models.BaseModelTest;
 
 /**
- * Test for testing basic insert / update / delete behavior for {@link Path}.
+ * Test for testing basic CRUD operations.
  * 
  * @author stefan.illgen
  */
-public class PathTest extends BaseYamlTest {
+public class PathTest extends BaseModelTest {
 
 	/**
-	 * Tests the deletion of a {@link Path}.
+	 * Tests creation.
 	 */
 	@Test
-	public void testInsert() {
-		Path path1 = Ebean.find(Path.class, 1);
-		// TODO
+	public void testCreate() {
+		
+	}
+	
+	/**
+	 * Tests read.
+	 */
+	@Test
+	public void testRead() {
+		
 	}
 
 	/**
-	 * Tests the update of a {@link Path}.
+	 * Tests update.
 	 */
 	@Test
 	public void testUpdate() {
-		Path path1 = Ebean.find(Path.class, 1);
-		// TODO
+		
 	}
 
 	/**

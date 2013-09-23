@@ -41,7 +41,7 @@
 	            	</div>
 	         </span>
 		  		           
-		  	@helper.form(game.controllers.routes.GameController.createSinglePlayerGame, args = 'method -> "post", 'id -> "form-singleplayer-conf") {
+		  	@helper.form(game.controllers.routes.GameController.startSPGame, args = 'method -> "post", 'id -> "form-singleplayer-conf") {
 						
 						<!--  #tf-gameName -->
 						@helper.inputText(spConfForm("gameName"),

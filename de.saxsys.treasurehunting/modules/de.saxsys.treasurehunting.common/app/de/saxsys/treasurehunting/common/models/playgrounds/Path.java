@@ -1,6 +1,5 @@
 package de.saxsys.treasurehunting.common.models.playgrounds;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -31,7 +30,7 @@ public class Path extends Model {
 	 * too. But what if it is at the same time the startpoint of a playground?
 	 */
 	@Required
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	public Point fromPoint;
 
 	/**
