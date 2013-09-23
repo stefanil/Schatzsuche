@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonNode;
+
 import play.Logger;
 import play.data.Form;
 import play.data.validation.Constraints.Required;
@@ -13,12 +15,15 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import play.mvc.WebSocket;
 import de.saxsys.treasurehunting.common.controllers.Secured;
 import de.saxsys.treasurehunting.common.models.game.Counter;
+import de.saxsys.treasurehunting.common.models.user.User;
 import de.saxsys.treasurehunting.common.services.UserService;
 import de.saxsys.treasurehunting.game.services.GameHall;
 import de.saxsys.treasurehunting.game.services.PlaygroundService;
 import de.saxsys.treasurehunting.game.services.exceptions.GameCreationException;
+import de.saxsys.treasurehunting.game.services.singleplayer.SinglePlayerGameHall;
 import de.saxsys.treasurehunting.game.views.html.index;
 
 /**
@@ -43,7 +48,7 @@ public class GameController extends Controller {
 		public String gameName;
 
 		/**
-		 * The counters color as hexadezimal RGB int value.
+		 * The counters color as hexa decimal RGB int value.
 		 */
 		@Required
 		public Integer counterColor = Counter.COUNTER_COLOR_GREEN;
@@ -121,8 +126,8 @@ public class GameController extends Controller {
 	 * @return The {@link Result}.
 	 */
 	@Security.Authenticated(Secured.class)
-	public static Result createSinglePlayerGame() {
-
+	public static Result startSPGame() {
+		
 		Form<SingleplayerGameConfiguration> spConfForm = Form.form(
 				SingleplayerGameConfiguration.class).bindFromRequest();
 
@@ -132,7 +137,7 @@ public class GameController extends Controller {
 		Map<String, String> spConfMap = spConfForm.data();
 
 		try {
-			GameHall.createSinglePlayerGame(UserService
+			SinglePlayerGameHall.createGame(UserService
 					.getAuthUserName(session()), spConfMap.get("gameName"),
 					Integer.parseInt(
 							spConfMap.get("counterColor").substring(2), 16),
@@ -146,7 +151,7 @@ public class GameController extends Controller {
 			return internalServerError(e.getMessage());
 		}
 	}
-
+	
 	/**
 	 * .
 	 * 
@@ -157,15 +162,26 @@ public class GameController extends Controller {
 		return TODO;
 	}
 
-	/**
-	 * .
-	 * 
-	 * @return The {@link Result}.
-	 */
-	@Security.Authenticated(Secured.class)
-	public static Result startSPGame() {
-		return TODO;
-	}
+	
+	
+//	/**
+//	 * Controller Action for initiating the websocket (called by the Client).
+//	 */
+//	public static WebSocket<JsonNode> initializeSinglePlayerGame() {
+//		
+//		final User user = UserService.getAuthUser(session());
+//		
+//		return new WebSocket<JsonNode>() {
+//            
+//            public void onReady(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out){                
+//                try { 
+//                    SinglePlayerGameHall.join(user, in, out);
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//        };		
+//	}
 
 	/**
 	 * .

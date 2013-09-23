@@ -12,5 +12,5 @@
     	<span class="control-label">@elements.args.get('_label)</span> 
     </div>
     <div id="div-input-@elements.id">@elements.input</div>   
-    <span class="help-block">@elements.errors(elements.lang).mkString(", ")</span>   
+    <span id="help-@elements.id" class="help-block">@elements.errors(elements.lang).mkString(", ")</span>   
 </div>

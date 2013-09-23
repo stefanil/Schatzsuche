@@ -4,10 +4,9 @@
 
 GET     /game                       		de.saxsys.treasurehunting.game.controllers.GameController.index
 GET     /game/singleplayer                  de.saxsys.treasurehunting.game.controllers.GameController.singleplayer
-POST	/game/singleplayer/create			de.saxsys.treasurehunting.game.controllers.GameController.createSinglePlayerGame
-GET     /game/singleplayer/startSPGame      de.saxsys.treasurehunting.game.controllers.GameController.startSPGame
+POST    /game/singleplayer/startSPGame      de.saxsys.treasurehunting.game.controllers.GameController.startSPGame
 GET     /game/visitorarena                  de.saxsys.treasurehunting.game.controllers.GameController.visitorarena
-GET     /game/visitorarena/startVAGame      de.saxsys.treasurehunting.game.controllers.GameController.startVAGame
+POST    /game/visitorarena/startVAGame      de.saxsys.treasurehunting.game.controllers.GameController.startVAGame
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file           	de.saxsys.treasurehunting.game.controllers.Assets.at(path="/public", file)

@@ -3,30 +3,32 @@
  */
 package de.saxsys.treasurehunting.game.services;
 
-import de.saxsys.treasurehunting.game.services.exceptions.GameCreationException;
+import java.util.List;
+
+import de.saxsys.treasurehunting.common.models.actions.Action;
 
 /**
- * TODO.
+ * This class represents an abstract game service for managing arbitrary typed
+ * games. It has one central method for handling client actions
+ * {@link #handleClientAction(Action)}, which is abstract. Concrete classes must
+ * implement it, to define the transitions for the game states for each games
+ * modes.
  * 
  * @author stefan.illgen
  * 
  */
-public abstract class GameHall {
+public abstract class GameHall{
 
 	/**
-	 * TODO.
+	 * This is the central method for handling client actions. Concrete classes
+	 * must implement it, to define the transitions for the game states for each
+	 * games modes.
 	 * 
-	 * @param username
-	 * @param gamename
-	 * @param countercolor
-	 * @param playgroundname
-	 * 
-	 * @throws TODO.
+	 * @param action
+	 *            The action received from the client.
+	 * @return Returns a {@link List} of {@link Action}, which follows up the
+	 *         parameterized {@link Action}.
 	 */
-	public static void createSinglePlayerGame(String username, String gamename,
-			int countercolor, String playgroundname)
-			throws GameCreationException {
-		// TODO
-	}
+	public abstract List<Action> handleClientAction(Action action);
 
 }

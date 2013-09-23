@@ -70,7 +70,7 @@ public class Game extends Model {
 	 * Internal ID.
 	 */
 	@Id
-	long id;
+	public long id;
 
 	/**
 	 * The name of the {@link Game}.
