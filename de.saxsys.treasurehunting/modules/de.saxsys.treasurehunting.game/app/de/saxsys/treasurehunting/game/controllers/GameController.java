@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.JsonNode;
-
 import play.Logger;
 import play.data.Form;
 import play.data.validation.Constraints.Required;
@@ -15,12 +13,9 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import play.mvc.WebSocket;
 import de.saxsys.treasurehunting.common.controllers.Secured;
 import de.saxsys.treasurehunting.common.models.game.Counter;
-import de.saxsys.treasurehunting.common.models.user.User;
 import de.saxsys.treasurehunting.common.services.UserService;
-import de.saxsys.treasurehunting.game.services.GameHall;
 import de.saxsys.treasurehunting.game.services.PlaygroundService;
 import de.saxsys.treasurehunting.game.services.exceptions.GameCreationException;
 import de.saxsys.treasurehunting.game.services.singleplayer.SinglePlayerGameHall;
@@ -53,6 +48,12 @@ public class GameController extends Controller {
 		@Required
 		public Integer counterColor = Counter.COUNTER_COLOR_GREEN;
 
+		/**
+		 * Returns the colors red, green and blue used for counter coloring.
+		 * 
+		 * @return Returns the colors red, green and blue used for counter
+		 *         coloring.
+		 */
 		public static Map<Integer, String> getCounterColors() {
 			return new HashMap<Integer, String>() {
 				private static final long serialVersionUID = -4984259332509141788L;
@@ -60,13 +61,11 @@ public class GameController extends Controller {
 					put(Counter.COUNTER_COLOR_RED, Messages.get(UserService
 							.getSessionLanguage(session(), request()),
 							"game.index.sp.conf.counterColor.red"));
-					put(Counter.COUNTER_COLOR_GREEN, Messages.get(
-							UserService
-									.getSessionLanguage(session(), request()),
+					put(Counter.COUNTER_COLOR_GREEN, Messages.get(UserService
+							.getSessionLanguage(session(), request()),
 							"game.index.sp.conf.counterColor.green"));
-					put(Counter.COUNTER_COLOR_BLUE, Messages.get(
-							UserService
-									.getSessionLanguage(session(), request()),
+					put(Counter.COUNTER_COLOR_BLUE, Messages.get(UserService
+							.getSessionLanguage(session(), request()),
 							"game.index.sp.conf.counterColor.blue"));
 				}
 			};
@@ -127,7 +126,7 @@ public class GameController extends Controller {
 	 */
 	@Security.Authenticated(Secured.class)
 	public static Result startSPGame() {
-		
+
 		Form<SingleplayerGameConfiguration> spConfForm = Form.form(
 				SingleplayerGameConfiguration.class).bindFromRequest();
 
@@ -151,7 +150,7 @@ public class GameController extends Controller {
 			return internalServerError(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * .
 	 * 
@@ -162,26 +161,25 @@ public class GameController extends Controller {
 		return TODO;
 	}
 
-	
-	
-//	/**
-//	 * Controller Action for initiating the websocket (called by the Client).
-//	 */
-//	public static WebSocket<JsonNode> initializeSinglePlayerGame() {
-//		
-//		final User user = UserService.getAuthUser(session());
-//		
-//		return new WebSocket<JsonNode>() {
-//            
-//            public void onReady(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out){                
-//                try { 
-//                    SinglePlayerGameHall.join(user, in, out);
-//                } catch (Exception ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//        };		
-//	}
+	// /**
+	// * Controller Action for initiating the websocket (called by the Client).
+	// */
+	// public static WebSocket<JsonNode> initializeSinglePlayerGame() {
+	//
+	// final User user = UserService.getAuthUser(session());
+	//
+	// return new WebSocket<JsonNode>() {
+	//
+	// public void onReady(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode>
+	// out){
+	// try {
+	// SinglePlayerGameHall.join(user, in, out);
+	// } catch (Exception ex) {
+	// ex.printStackTrace();
+	// }
+	// }
+	// };
+	// }
 
 	/**
 	 * .

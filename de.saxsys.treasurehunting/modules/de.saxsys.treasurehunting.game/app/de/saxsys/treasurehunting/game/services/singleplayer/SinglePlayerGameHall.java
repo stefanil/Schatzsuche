@@ -35,9 +35,9 @@ public class SinglePlayerGameHall extends GameHall {
 	 * @param playgroundname
 	 *            The name of the playground.
 	 * 
-	 * @throws Throws
-	 *             an {@link GameCreationException} in case of an error while
-	 *             creating the {@link Game}.
+	 * @throws GameCreationException
+	 *             Throws an {@link GameCreationException} in case of an error
+	 *             while creating the {@link Game}.
 	 * 
 	 * @return The ID of the created {@link Game}.
 	 */
@@ -56,13 +56,13 @@ public class SinglePlayerGameHall extends GameHall {
 							+ "be a trimmed non empty String value.");
 		if (countercolor < 0 || countercolor > 0xffffff)
 			throw new GameCreationException(
-					"Integer value for countercolor must be in the " +
-					"range from 0 to 0xffffff.");
+					"Integer value for countercolor must be in the "
+							+ "range from 0 to 0xffffff.");
 		if (playgroundname == null || playgroundname.trim().isEmpty())
 			throw new GameCreationException(
 					"Parameter playgroundname must not be null and "
 							+ "must be a trimmed non empty String value.");
-		
+
 		// do it
 		try {
 

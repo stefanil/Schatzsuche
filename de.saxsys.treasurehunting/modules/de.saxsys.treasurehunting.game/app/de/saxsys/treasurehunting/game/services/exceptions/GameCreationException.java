@@ -3,10 +3,9 @@
  */
 package de.saxsys.treasurehunting.game.services.exceptions;
 
-import de.saxsys.treasurehunting.common.models.game.Game;
 
 /**
- * An Exception which is thrown during the creation process for the {@link Game}
+ * An Exception which is thrown during the creation process for the game
  * .
  * 
  * @author stefan.illgen
