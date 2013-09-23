@@ -1,5 +1,9 @@
 #form-singleplayer-conf {
-	margin: 0 0 0 0;
+	margin: 0 10 0 10;
+	padding-right: 15px;
+	
+	
+	
 }
 
 #div-gameName, #div-counterColor, #div-playgroundName {
@@ -7,7 +11,8 @@
 }
 
 #lbl-gameName, #lbl-counterColor, #lbl-playgroundName {
-	vertical-align: middle;
+	
+	
 }
 
 #div-input-gameName, #div-input-counterColor, #div-input-playgroundName {

@@ -34,9 +34,13 @@
 		
 		<div class="row-fluid">
 		  <div id="div-sp-conf" class="span6 well">
-		  
-		  	<span><h4>@Messages("game.index.sp.conf.heading")(lang)</h4></span>
-		  
+		   
+		  	<span><h4>@Messages("game.index.sp.conf.heading")(lang)</h4>
+		  			<div id = picholder" style="width:	64px;height:64px; float: left;">
+	            		<img id="div-avatar" src="@game.controllers.routes.Assets.at("images/game/singleplayer/conf.svg")" />
+	            	</div>
+	         </span>
+		  		           
 		  	@helper.form(game.controllers.routes.GameController.createSinglePlayerGame, args = 'method -> "post", 'id -> "form-singleplayer-conf") {
 						
 						<!--  #tf-gameName -->
