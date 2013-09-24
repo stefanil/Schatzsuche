@@ -19,6 +19,21 @@ import play.db.ebean.Model;
 public class Action extends Model {
 
 	private static final long serialVersionUID = 7792547412100770281L;
+	
+	/**
+	 * Type of {@link Action} identifying the initialization of a game.
+	 */
+	public static final int TYPE_INITIALIZE_GAME = 0;
+	
+	/**
+	 * Type of {@link Action} identifying the start of a game.
+	 */
+	public static final int TYPE_START_GAME = 1;
+	
+	/**
+	 * Type of {@link Action} identifying the finish of a game.
+	 */
+	public static final int TYPE_FINSIH_GAME = 2;
 
 	/**
 	 * Internal ID.

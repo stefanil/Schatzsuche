@@ -17,3 +17,11 @@ game.index.sp.conf.counterColor.blue=Blue
 game.index.sp.conf.playgroundName.label=Playground:
 game.index.sp.conf.submit=Let's go!
 
+# game template
+game.template.info.heading=Scores
+game.template.info.modename.label=Game Mode:
+game.template.info.gamename.label=Game Name:
+
+# singleplayer
+game.singleplayer.title=Treasurehunting - Single Player Game
+game.singleplayer.modename=Single Player

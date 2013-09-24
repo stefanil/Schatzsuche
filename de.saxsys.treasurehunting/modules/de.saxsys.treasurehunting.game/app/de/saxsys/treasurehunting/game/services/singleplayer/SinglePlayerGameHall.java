@@ -3,11 +3,26 @@
  */
 package de.saxsys.treasurehunting.game.services.singleplayer;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import play.mvc.WebSocket;
+
+import com.avaje.ebean.Ebean;
+
 import de.saxsys.treasurehunting.common.models.actions.Action;
+import de.saxsys.treasurehunting.common.models.actions.ActionResponse;
 import de.saxsys.treasurehunting.common.models.game.Counter;
 import de.saxsys.treasurehunting.common.models.game.Game;
+import de.saxsys.treasurehunting.common.models.playgrounds.Playground;
 import de.saxsys.treasurehunting.common.services.UserService;
 import de.saxsys.treasurehunting.game.services.GameHall;
 import de.saxsys.treasurehunting.game.services.PlaygroundService;
@@ -65,12 +80,14 @@ public class SinglePlayerGameHall extends GameHall {
 
 		// do it
 		try {
+			Playground playground = PlaygroundService.findPlayground(playgroundname);
 
 			// create counter
 			Counter counter = new Counter();
 			counter.color = countercolor;
 			counter.cards = 0;
 			counter.user = UserService.findUser(username);
+//			counter.position = playground.startPoint;
 
 			// create game
 			Game game = new Game();
@@ -79,7 +96,7 @@ public class SinglePlayerGameHall extends GameHall {
 			game.hMode = Game.H_MODE_SINGLEPLAYER;
 			game.activeCounter = 0;
 			game.counters.add(counter);
-			game.playground = PlaygroundService.findPlayground(playgroundname);
+			game.playground = playground;
 
 			game.save();
 
@@ -90,48 +107,110 @@ public class SinglePlayerGameHall extends GameHall {
 		}
 	}
 
+	/**
+	 * Finds the {@link Game}s name belonging to the given game ID.
+	 * 
+	 * @param id
+	 *            The ID of the Game.
+	 * @return Return the {@link Game}s name belonging to the given game ID or
+	 *         null if the Game was not found.
+	 */
+	public static String findGameName(Long id) {
+		Game game = Ebean.find(Game.class, id);
+		if (game != null)
+			return game.name;
+		else
+			return null;
+	}
+
 	// ##########################################################################
 
-	// public static void join(final User user, play.mvc.WebSocket.In<JsonNode>
-	// in,
-	// play.mvc.WebSocket.Out<JsonNode> out) {
-	//
-	// // Send a Join message
-	// String result = null;
-	// // (String) Await.result(
-	// // ask(gameActor, new Join(user, out), 1000),
-	// // Duration.create(10, SECONDS));
-	//
-	// // Wenn der Zutritt genehmigt wurde, ...
-	// if ("OK".equals(result)) {
-	//
-	// // Für jede empfangene Nachricht (Spielfelddaten) ...
-	// in.onMessage(new Callback<JsonNode>() {
-	// public void invoke(JsonNode event) throws Throwable {
-	//
-	// ObjectMapper mapper = new ObjectMapper();
-	// Action action = mapper.readValue(event,
-	// new TypeReference<Action>() {
-	// });
-	//
-	// // Sende die Spielfelddaten an die Spielhalle.
-	// gameActor.tell(action);
-	// }
-	// });
-	//
-	// // Wenn der Websocket geschlossen wird, ...
-	// in.onClose(new Callback0() {
-	// public void invoke() {
-	//
-	// // Sende eine Quit-Nachricht zum Entfernen des Nutzers aus
-	// // der Map.
-	// gameActor.tell(new Quit(user));
-	//
-	// }
-	// });
-	// }
-	// }
-	//
+	/**
+	 * .
+	 * @param gameid 
+	 * 
+	 * @param username
+	 * @param in
+	 * @param out
+	 */
+	public static void join(Long gameid, final String username, WebSocket.In<JsonNode> in,
+			WebSocket.Out<JsonNode> out) {
+
+		// check if connection loss
+		// TODO
+
+		try {
+			final Game game = Ebean.find(Game.class, gameid);
+			// create initial response action
+			ActionResponse response = new ActionResponse();
+			response.initializer = Action.TYPE_INITIALIZE_GAME;			
+			response.data = new Object[] {
+				game.playground,
+				game.counters.get(0)
+			};
+			response.followers = new ArrayList<Action>() {
+				private static final long serialVersionUID = 1L;
+				{
+					add(Ebean.find(Action.class, 1));
+					add(Ebean.find(Action.class, 2));
+				}
+			};
+
+			// map it to Json
+			ObjectMapper mapper = new ObjectMapper();
+			String sResult = mapper.writeValueAsString(response);
+			JsonFactory factory = new JsonFactory();
+			JsonParser jp = factory.createJsonParser(sResult);
+			JsonNode actualObj = mapper.readTree(jp);
+
+			// send it via web socket
+			out.write(actualObj);
+
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		//
+		// // Send a Join message
+		// String result = null;
+		// // (String) Await.result(
+		// // ask(gameActor, new Join(user, out), 1000),
+		// // Duration.create(10, SECONDS));
+		//
+		// // Wenn der Zutritt genehmigt wurde, ...
+		// if ("OK".equals(result)) {
+		//
+		// // Für jede empfangene Nachricht (Spielfelddaten) ...
+		// in.onMessage(new Callback<JsonNode>() {
+		// public void invoke(JsonNode event) throws Throwable {
+		//
+		// ObjectMapper mapper = new ObjectMapper();
+		// Action action = mapper.readValue(event,
+		// new TypeReference<Action>() {
+		// });
+		//
+		// // Sende die Spielfelddaten an die Spielhalle.
+		// gameActor.tell(action);
+		// }
+		// });
+		//
+		// // Wenn der Websocket geschlossen wird, ...
+		// in.onClose(new Callback0() {
+		// public void invoke() {
+		//
+		// // Sende eine Quit-Nachricht zum Entfernen des Nutzers aus
+		// // der Map.
+		// gameActor.tell(new Quit(user));
+		//
+		// }
+		// });
+		// }
+	}
+
 	// Map<User, WebSocket.Out<JsonNode>> members = new HashMap<User,
 	// WebSocket.Out<JsonNode>>();
 	// // Falsch weil es nicht einen statischen gameActor geben kann

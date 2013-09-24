@@ -15,4 +15,13 @@ game.index.sp.conf.counterColor.red=Rot
 game.index.sp.conf.counterColor.green=Grün
 game.index.sp.conf.counterColor.blue=Blau
 game.index.sp.conf.playgroundName.label=Spielfeld:
-game.index.sp.conf.submit=Los geht's! 
+game.index.sp.conf.submit=Los geht's!
+
+# game template
+game.template.info.heading=Spielstand
+game.template.info.modename.label=Spielmodus:
+game.template.info.gamename.label=Spielname:
+
+# singleplayer
+game.singleplayer.title=Schatzsuche - Single Player Game
+game.singleplayer.modename=Single Player
