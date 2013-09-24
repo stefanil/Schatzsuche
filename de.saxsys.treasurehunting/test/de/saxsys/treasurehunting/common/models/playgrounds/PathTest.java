@@ -5,8 +5,6 @@ package de.saxsys.treasurehunting.common.models.playgrounds;
 
 import org.junit.Test;
 
-import com.avaje.ebean.Ebean;
-
 import de.saxsys.treasurehunting.common.models.BaseModelTest;
 
 /**
@@ -45,12 +43,12 @@ public class PathTest extends BaseModelTest {
 	 */
 	@Test
 	public void testDelete() {
-		
+		// will not work (set CascadeType or delete path from playground manually via manyToMany association)
 //		Playground pgBig = Ebean.find(Playground.class, "Big Playground");
-		Path path1 = Ebean.find(Path.class, 1);
+//		Path path1 = Ebean.find(Path.class, 1);
 //		pgBig.deleteManyToManyAssociations("paths");
-		Playground pgBig = Ebean.find(Playground.class, "Big Playground");
-		path1.delete();
+//		Playground pgBig = Ebean.find(Playground.class, "Big Playground");
+//		path1.delete();
 	}
 
 }

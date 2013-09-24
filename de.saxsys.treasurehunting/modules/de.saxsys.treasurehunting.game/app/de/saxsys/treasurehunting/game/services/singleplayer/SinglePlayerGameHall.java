@@ -87,7 +87,7 @@ public class SinglePlayerGameHall extends GameHall {
 			counter.color = countercolor;
 			counter.cards = 0;
 			counter.user = UserService.findUser(username);
-//			counter.position = playground.startPoint;
+			counter.position = playground.startPoint;
 
 			// create game
 			Game game = new Game();

@@ -15,7 +15,7 @@ game.index.sp.conf.counterColor.red=Red
 game.index.sp.conf.counterColor.green=Green
 game.index.sp.conf.counterColor.blue=Blue
 game.index.sp.conf.playgroundName.label=Playground:
-game.index.sp.conf.submit=Let's go!
+game.index.sp.conf.submit=Let''s go!
 
 # game template
 game.template.info.heading=Scores
