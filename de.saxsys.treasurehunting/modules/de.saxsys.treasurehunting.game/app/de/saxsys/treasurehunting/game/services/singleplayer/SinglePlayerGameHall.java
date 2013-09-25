@@ -15,10 +15,14 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import play.mvc.WebSocket;
+import scala.concurrent.Await;
+import scala.concurrent.duration.Duration;
 
 import com.avaje.ebean.Ebean;
+import com.sun.jna.platform.unix.X11.XClientMessageEvent.Data;
 
 import de.saxsys.treasurehunting.common.models.actions.Action;
+import de.saxsys.treasurehunting.common.models.actions.ActionRequest;
 import de.saxsys.treasurehunting.common.models.actions.ActionResponse;
 import de.saxsys.treasurehunting.common.models.game.Counter;
 import de.saxsys.treasurehunting.common.models.game.Game;
@@ -80,7 +84,8 @@ public class SinglePlayerGameHall extends GameHall {
 
 		// do it
 		try {
-			Playground playground = PlaygroundService.findPlayground(playgroundname);
+			Playground playground = PlaygroundService
+					.findPlayground(playgroundname);
 
 			// create counter
 			Counter counter = new Counter();
@@ -127,59 +132,37 @@ public class SinglePlayerGameHall extends GameHall {
 
 	/**
 	 * .
-	 * @param gameid 
+	 * 
+	 * @param gameid
 	 * 
 	 * @param username
 	 * @param in
 	 * @param out
 	 */
-	public static void join(Long gameid, final String username, WebSocket.In<JsonNode> in,
-			WebSocket.Out<JsonNode> out) {
+	public static void join(Long gameid, final String username,
+			WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
 
-		// check if connection loss
-		// TODO
-
-		try {
-			final Game game = Ebean.find(Game.class, gameid);
-			// create initial response action
-			ActionResponse response = new ActionResponse();
-			response.initializer = Action.TYPE_INITIALIZE_GAME;			
-			response.data = new Object[] {
-				game.playground,
-				game.counters.get(0)
+		if (isActiveGame(gameid)) {
+			
+			ActionRequest actionRequest = new ActionRequest();
+			actionRequest.initializer = Action.TYPE_INITIALIZE_GAME;
+			actionRequest.data = new Object[] {
+				gameid,
+				out // TODO remove > get from members
 			};
-			response.followers = new ArrayList<Action>() {
-				private static final long serialVersionUID = 1L;
-				{
-					add(Ebean.find(Action.class, 1));
-					add(Ebean.find(Action.class, 2));
-				}
-			};
+			
+			// initialize the game
+			initializeGame(actionRequest);
+			
+			
+		} else {
 
-			// map it to Json
-			ObjectMapper mapper = new ObjectMapper();
-			String sResult = mapper.writeValueAsString(response);
-			JsonFactory factory = new JsonFactory();
-			JsonParser jp = factory.createJsonParser(sResult);
-			JsonNode actualObj = mapper.readTree(jp);
-
-			// send it via web socket
-			out.write(actualObj);
-
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			// TYPE_RESUME oder so..
+			
 		}
 
-		//
-		// // Send a Join message
-		// String result = null;
-		// // (String) Await.result(
-		// // ask(gameActor, new Join(user, out), 1000),
-		// // Duration.create(10, SECONDS));
+		// Send a Join message
+//		String result = (String) Await.result(ask(gameActor, new Join(user, out), 1000), Duration.create(10, SECONDS));
 		//
 		// // Wenn der Zutritt genehmigt wurde, ...
 		// if ("OK".equals(result)) {
@@ -269,7 +252,46 @@ public class SinglePlayerGameHall extends GameHall {
 		return null;
 	}
 
-	private void initializeGame() {
+	private static void initializeGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long)actionRequest.data[0]);
+		
+		// create initial response action
+		ActionResponse response = new ActionResponse();
+		response.initializer = Action.TYPE_INITIALIZE_GAME;
+		response.data = new Object[] { game.playground,
+				game.counters.get(0) };
+		response.followers = new ArrayList<Action>() {
+			private static final long serialVersionUID = 1L;
+			{
+				add(Ebean.find(Action.class, 1));
+				add(Ebean.find(Action.class, 2));
+			}
+		};
+		
+		
+		
+		try {
+			// map it to Json
+			ObjectMapper mapper = new ObjectMapper();
+			String sResult = mapper.writeValueAsString(actionRequest);
+			JsonFactory factory = new JsonFactory();
+			JsonParser jp = factory.createJsonParser(sResult);
+			JsonNode actualObj = mapper.readTree(jp);
+
+			// send it via web socket
+			((WebSocket.Out<JsonNode>)actionRequest.data[1]).write(actualObj);
+
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void reinitializeGame() {
 
 	}
 
