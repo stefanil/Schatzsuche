@@ -22,6 +22,6 @@ public class ActionRequest {
 	 * This attribute represent the data, sent from the client to the server,
 	 * which is correlated to the initializer.
 	 */
-	public Object data;
+	public Object[] data;
 
 }
