@@ -10,8 +10,8 @@ import org.junit.Test;
 import de.saxsys.treasurehunting.common.models.BaseModelTest;
 import de.saxsys.treasurehunting.common.models.playgrounds.Playground;
 import de.saxsys.treasurehunting.common.services.UserService;
+import de.saxsys.treasurehunting.game.services.GameHall;
 import de.saxsys.treasurehunting.game.services.PlaygroundService;
-import de.saxsys.treasurehunting.game.services.singleplayer.SinglePlayerGameHall;
 
 /**
  * Test for testing basic CRUD operations.
@@ -47,9 +47,9 @@ public class GameTest extends BaseModelTest {
 
 		game.save();
 
-		assertThat(SinglePlayerGameHall.findGameName(game.id)).isEqualTo(
+		assertThat(GameHall.findGameName(game.id)).isEqualTo(
 				"Spiel 1");
-		assertThat(SinglePlayerGameHall.findCounterColor(counter.id)).isEqualTo(
+		assertThat(GameHall.findCounterColor(counter.id)).isEqualTo(
 				0xff0000);
 	}
 

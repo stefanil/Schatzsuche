@@ -15,12 +15,20 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import play.libs.Akka;
+import play.libs.F.Callback;
+import play.libs.F.Callback0;
 import play.mvc.WebSocket;
 import scala.concurrent.Await;
 import scala.concurrent.duration.Duration;
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
+import static akka.pattern.Patterns.ask;
+import static java.util.concurrent.TimeUnit.*;
 
 import com.avaje.ebean.Ebean;
-import com.sun.jna.platform.unix.X11.XClientMessageEvent.Data;
 
 import de.saxsys.treasurehunting.common.models.actions.Action;
 import de.saxsys.treasurehunting.common.models.actions.ActionRequest;
@@ -106,14 +114,16 @@ public class SinglePlayerGameHall extends GameHall {
 
 			game.save();
 
+			// caches as active game
+			Props props = new Props(SinglePlayerGameHall.class);
+			activeGames.put(game.id, Akka.system().actorOf(props));
+
 			return game.id;
 
 		} catch (Exception e) {
 			throw new GameCreationException(e.getLocalizedMessage());
 		}
 	}
-
-	// ##########################################################################
 
 	/**
 	 * .
@@ -127,56 +137,47 @@ public class SinglePlayerGameHall extends GameHall {
 	public static void join(Long gameid, final String username,
 			WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
 
-		if (isActiveGame(gameid)) {
-			
-			ActionRequest actionRequest = new ActionRequest();
-			actionRequest.initializer = Action.TYPE_INITIALIZE_GAME;
-			actionRequest.data = new Object[] {
-				gameid,
-				out // TODO remove > get from members
-			};
-			
-			// initialize the game
-			initializeGame(actionRequest);
-			
-			
-		} else {
-
-			// TYPE_RESUME oder so..
-			
-		}
-
 		// Send a Join message
-//		String result = (String) Await.result(ask(gameActor, new Join(user, out), 1000), Duration.create(10, SECONDS));
-		//
-		// // Wenn der Zutritt genehmigt wurde, ...
-		// if ("OK".equals(result)) {
-		//
-		// // Für jede empfangene Nachricht (Spielfelddaten) ...
-		// in.onMessage(new Callback<JsonNode>() {
-		// public void invoke(JsonNode event) throws Throwable {
-		//
-		// ObjectMapper mapper = new ObjectMapper();
-		// Action action = mapper.readValue(event,
-		// new TypeReference<Action>() {
-		// });
-		//
-		// // Sende die Spielfelddaten an die Spielhalle.
-		// gameActor.tell(action);
-		// }
-		// });
-		//
-		// // Wenn der Websocket geschlossen wird, ...
-		// in.onClose(new Callback0() {
-		// public void invoke() {
-		//
-		// // Sende eine Quit-Nachricht zum Entfernen des Nutzers aus
-		// // der Map.
-		// gameActor.tell(new Quit(user));
-		//
-		// }
-		// });
-		// }
+		try {
+			String result = (String) Await.result(
+					ask(activeGames.get(gameid), 
+							new Join(gameid, findCounter(username).id, out), 1000),
+						Duration.create(10, SECONDS));		
+
+		// if access was granted
+		if ("OK".equals(result)) {
+			
+			// for every received message
+			in.onMessage(new Callback<JsonNode>() {
+				
+				public void invoke(JsonNode event) throws Throwable {
+					
+//					ObjectMapper mapper = new ObjectMapper();
+//					Action action = mapper.readValue(event, new TypeReference<Action>() {});
+//					
+//					// Sende die Spielfelddaten an die Spielhalle.
+//					gameActor.tell(action);
+				}
+			});
+			
+			// Wenn der Websocket geschlossen wird, ...
+			in.onClose(new Callback0() {
+				
+				public void invoke() {			
+					// Sende eine Quit-Nachricht zum Entfernen des Nutzers aus
+					// der Map.
+//					gameActor.tell(new Quit(user));
+				}
+				
+			});
+		}
+		
+		
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 
 	}
 
 	// Map<User, WebSocket.Out<JsonNode>> members = new HashMap<User,
@@ -185,37 +186,60 @@ public class SinglePlayerGameHall extends GameHall {
 	// static ActorRef gameActor = Akka.system().actorOf(
 	// new Props(SinglePlayerGameService.class));
 	//
-	// @Override
-	// public void onReceive(Object message) throws Exception {
-	//
-	// // Bei einem Beitrittsgesuch ...
-	// if (message instanceof Join) {
-	//
-	// Join join = (Join) message;
-	// if (members.containsKey(join.user)) {
-	// // getSender().tell("This user is already used");
-	// } else {
-	// members.put(join.user, join.channel);
-	// initializeGame();
-	// }
-	//
-	// } else
-	//
-	// if (message instanceof Action) {
-	// handleClientAction((Action)message);
-	// } else
-	//
-	// // Beim Schließen des Websockets (z.B. infolge eines Routenwechsels) ..
-	// if (message instanceof Quit) {
-	// Quit quit = (Quit) message;
-	// // .. entferne den Websocket aus der Map
-	// members.remove(quit.user);
-	// // ................................ Was passiert danach?
-	// ......................
-	// } else {
-	// unhandled(message);
-	// }
-	// }
+	@Override
+	public void onReceive(Object message) throws Exception {
+
+		// Bei einem Beitrittsgesuch ...
+		if (message instanceof Join) {
+
+			Join join = (Join) message;
+			
+			if (isActiveGame(join.gameid)) {
+
+				// TODO
+
+			} else {
+				
+				// TODO check members
+				
+//				if (members.containsKey(join.user)) {
+//					// getSender().tell("This user is already used");
+//				} else {
+					
+				members.put(join.counterID, join.out);
+					
+				// if this is not an active game
+				ActionRequest actionRequest = new ActionRequest();
+				actionRequest.initializer = Action.TYPE_INITIALIZE_GAME;
+				actionRequest.data = new Object[] { 
+						join.gameid, join.out
+				};
+
+				// initialize the game
+				initializeGame(actionRequest);
+				
+//				}
+			}
+			
+			
+
+		} else
+
+		if (message instanceof Action) {
+			handleClientAction((Action) message);
+		} else
+
+		// Beim Schließen des Websockets (z.B. infolge eines Routenwechsels) ..
+		if (message instanceof Quit) {
+			Quit quit = (Quit) message;
+			// .. entferne den Websocket aus der Map
+			members.remove(quit.user);
+			// ................................ Was passiert danach?
+
+		} else {
+			unhandled(message);
+		}
+	}
 
 	// ##########################################################################
 
@@ -239,13 +263,12 @@ public class SinglePlayerGameHall extends GameHall {
 
 	private static void initializeGame(ActionRequest actionRequest) {
 
-		final Game game = findGame((Long)actionRequest.data[0]);
-		
+		final Game game = findGame((Long) actionRequest.data[0]);
+
 		// create initial response action
 		ActionResponse response = new ActionResponse();
 		response.initializer = Action.TYPE_INITIALIZE_GAME;
-		response.data = new Object[] { game.playground,
-				game.counters.get(0) };
+		response.data = new Object[] { game.playground, game.counters.get(0) };
 		response.followers = new ArrayList<Action>() {
 			private static final long serialVersionUID = 1L;
 			{
@@ -253,9 +276,7 @@ public class SinglePlayerGameHall extends GameHall {
 				add(Ebean.find(Action.class, 2));
 			}
 		};
-		
-		
-		
+
 		try {
 			// map it to Json
 			ObjectMapper mapper = new ObjectMapper();
@@ -265,7 +286,7 @@ public class SinglePlayerGameHall extends GameHall {
 			JsonNode actualObj = mapper.readTree(jp);
 
 			// send it via web socket
-			((WebSocket.Out<JsonNode>)actionRequest.data[1]).write(actualObj);
+			((WebSocket.Out<JsonNode>) actionRequest.data[1]).write(actualObj);
 
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();

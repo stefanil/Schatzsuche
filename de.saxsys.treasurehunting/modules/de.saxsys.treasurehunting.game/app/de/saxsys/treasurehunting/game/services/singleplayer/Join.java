@@ -6,27 +6,31 @@ package de.saxsys.treasurehunting.game.services.singleplayer;
 import org.codehaus.jackson.JsonNode;
 
 import play.mvc.WebSocket;
-import de.saxsys.treasurehunting.common.models.user.User;
+import de.saxsys.treasurehunting.common.models.game.Counter;
 
 /**
- * Join the game hall.
+ * Represents a {@link Join} to the game hall.
  * 
  * @author stefan.illgen
  * 
  */
 public class Join {
 
-	final User user;
-	final WebSocket.Out<JsonNode> channel;
+	final Long counterID;
+	final WebSocket.Out<JsonNode> out;
+	final Long gameid;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param user The user.
-	 * @param channel The websocket out channel.
+	 * @param counterID
+	 *            The {@link Counter}s ID.
+	 * @param out
+	 *            The web socket out channel.
 	 */
-	public Join(User user, WebSocket.Out<JsonNode> channel) {
-		this.user = user;
-		this.channel = channel;
+	public Join(Long gameid, Long counterID, WebSocket.Out<JsonNode> out) {
+		this.gameid = gameid;
+		this.counterID = counterID;
+		this.out = out;
 	}
 }

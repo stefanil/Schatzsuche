@@ -46,7 +46,7 @@ public class Counter extends Model {
 	 * Internal ID.
 	 */
 	@Id
-	long id;
+	public long id;
 
 	/**
 	 * The {@link Counter}s color.
