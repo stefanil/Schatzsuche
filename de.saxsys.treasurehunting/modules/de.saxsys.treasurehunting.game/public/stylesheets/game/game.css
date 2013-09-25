@@ -2,3 +2,16 @@
 	min-width: 160px;
 	padding: 10px;
 }
+
+#div-resume, #div-pause, #div-restart, #div-cancel {
+	margin-top:5px;
+	width:64px;
+	hight:64px;
+	
+}
+
+#div-resume:hover, #div-pause:hover, #div-restart:hover, #div-cancel:hover, #div-info:hover{
+	box-shadow: 0 0 10px white;
+	transition: all .2s linear;
+	
+}

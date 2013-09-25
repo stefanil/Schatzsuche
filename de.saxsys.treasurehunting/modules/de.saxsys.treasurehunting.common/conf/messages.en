@@ -1,9 +1,9 @@
 # index
 common.index.title=Treasure Hunting - Start Page
-common.index.heading=Welcome to the Arena!
+common.index.heading=Welcome!
 common.index.login.username.label=Username:
 common.index.login.username.placeholder=Your name
-common.index.login.username.error=The user name must have at least 5 characters and must not only consist out of spaces.
+common.index.login.username.error=Error: Please check out your input!
 common.index.login.submit=Enter
 
 # i18n
