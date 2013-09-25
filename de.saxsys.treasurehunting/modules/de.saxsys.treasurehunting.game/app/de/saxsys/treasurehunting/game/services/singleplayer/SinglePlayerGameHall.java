@@ -4,6 +4,7 @@
 package de.saxsys.treasurehunting.game.services.singleplayer;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,22 +111,6 @@ public class SinglePlayerGameHall extends GameHall {
 		} catch (Exception e) {
 			throw new GameCreationException(e.getLocalizedMessage());
 		}
-	}
-
-	/**
-	 * Finds the {@link Game}s name belonging to the given game ID.
-	 * 
-	 * @param id
-	 *            The ID of the Game.
-	 * @return Return the {@link Game}s name belonging to the given game ID or
-	 *         null if the Game was not found.
-	 */
-	public static String findGameName(Long id) {
-		Game game = Ebean.find(Game.class, id);
-		if (game != null)
-			return game.name;
-		else
-			return null;
 	}
 
 	// ##########################################################################

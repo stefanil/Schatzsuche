@@ -68,6 +68,24 @@ public abstract class GameHall {
 	protected static Game findGame(long id) {
 		return Ebean.find(Game.class, id);
 	}
+	
+	/**
+	 * Finds the {@link Game}s name belonging to the given game ID.
+	 * 
+	 * @param id
+	 *            The ID of the Game.
+	 * @return Return the {@link Game}s name belonging to the given game ID or
+	 *         null if the Game was not found.
+	 */
+	public static String findGameName(Long id) {
+		Game game = findGame(id);
+		if (game != null)
+			return game.name;
+		else
+			return null;
+	}
+	
+	
 
 	/**
 	 * This is the central method for handling client actions. Concrete classes
