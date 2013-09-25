@@ -29,42 +29,47 @@ public class Game extends Model {
 	/**
 	 * Game state ready.
 	 */
-	public static int STATE_READY = 0;
+	public static final int STATE_CREATED = 4;
+	
+	/**
+	 * Game state ready.
+	 */
+	public static final int STATE_READY = 0;
 	
 	/**
 	 * Game state active.
 	 */
-	public static int STATE_ACTIVE = 1;
+	public static final int STATE_ACTIVE = 1;
 	
 	/**
 	 * Game state dicing (sub state of active).
 	 */
-	public static int STATE_DICING = 10;
+	public static final int STATE_DICING = 10;
 	
 	/**
 	 * Game state moving (sub state of active).
 	 */
-	public static int STATE_MOVING = 11;
+	public static final int STATE_MOVING = 11;
 	
 	/**
 	 * Game state moving (sub state of active).
 	 */
-	public static int STATE_PERFORMING = 12;
+	public static final int STATE_PERFORMING = 12;
 	
 	/**
 	 * Game state finished.
 	 */
-	public static int STATE_FINISHED = 2;
+	public static final int STATE_FINISHED = 2;
 	
 	/**
 	 * Game state paused.
 	 */
-	public static int STATE_PAUSED = 3;
+	public static final int STATE_PAUSED = 3;
 	
 	/**
 	 * Horizontal (stand alone) game mode for single player games.
 	 */
-	public static int H_MODE_SINGLEPLAYER = 0;
+	public static final int H_MODE_SINGLEPLAYER = 0;
 
 	/**
 	 * Internal ID.

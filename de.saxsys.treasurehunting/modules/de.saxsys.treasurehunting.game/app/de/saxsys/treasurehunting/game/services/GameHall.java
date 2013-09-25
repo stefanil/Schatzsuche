@@ -4,20 +4,18 @@
 package de.saxsys.treasurehunting.game.services;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
 
-import play.db.ebean.Model;
 import play.mvc.WebSocket;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 
 import com.avaje.ebean.Ebean;
-import com.avaje.ebean.ExpressionList;
 
 import de.saxsys.treasurehunting.common.models.actions.Action;
+import de.saxsys.treasurehunting.common.models.actions.ActionRequest;
 import de.saxsys.treasurehunting.common.models.game.Counter;
 import de.saxsys.treasurehunting.common.models.game.Game;
 import de.saxsys.treasurehunting.common.models.user.User;
@@ -59,7 +57,7 @@ public abstract class GameHall extends UntypedActor{
 	public static boolean isActiveGame(long id) {
 		Game game = findGame(id);
 		return activeGames.containsKey(id) && game != null
-				&& game.state != Game.STATE_READY;
+				&& game.state != Game.STATE_CREATED;
 	}
 
 	/**
@@ -89,9 +87,6 @@ public abstract class GameHall extends UntypedActor{
 		else
 			return null;
 	}
-	
-	private static Model.Finder<String, Counter> counterFind = new Model.Finder<String, Counter>(
-			String.class, Counter.class);
 
 	/**
 	 * Find the {@link Counter}s color value (hexa).
@@ -142,10 +137,8 @@ public abstract class GameHall extends UntypedActor{
 	 * must implement it, to define the transitions for the game states for each
 	 * games modes.
 	 * 
-	 * @param action
-	 *            The action received from the client.
-	 * @return Returns a {@link List} of {@link Action}, which follows up the
-	 *         parameterized {@link Action}.
+	 * @param actionRequest
+	 *            The {@link ActionRequest} received from the client.
 	 */
-	public abstract List<Action> handleClientAction(Action action);
+	public abstract void handleClientAction(ActionRequest actionRequest);
 }
