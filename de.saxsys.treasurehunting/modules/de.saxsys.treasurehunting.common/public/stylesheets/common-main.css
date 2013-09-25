@@ -6,8 +6,9 @@
 	float: left;
 	display: block;
 	margin-right: 5px;
-	width: 32px;
-	padding: 5px 0px 5px;
+	width: 128px;
+	
+	
 }
 
 #lbl-logged-uname {
