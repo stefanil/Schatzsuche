@@ -39,6 +39,8 @@ public class CommonBrowserLangSelectTest {
 	 */
 	@Test
 	public void langSelectDEIE() {
+		System.setProperty("webdriver.ie.driver",
+				"test/de/saxsys/treasurehunting/webdrivers/IEDriverServer.exe");
 		Helpers.running(Helpers.testServer(3333, Helpers.fakeApplication()),
 				InternetExplorerDriver.class, new SelectLangDECallback());
 	}
@@ -70,6 +72,8 @@ public class CommonBrowserLangSelectTest {
 	 */
 	@Test
 	public void langSelectENIE() {
+		System.setProperty("webdriver.ie.driver",
+				"test/de/saxsys/treasurehunting/webdrivers/IEDriverServer.exe");
 		Helpers.running(Helpers.testServer(3333, Helpers.fakeApplication()),
 				InternetExplorerDriver.class, new SelectLangENCallback());
 	}

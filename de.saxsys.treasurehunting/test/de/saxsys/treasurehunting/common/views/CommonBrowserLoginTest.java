@@ -46,6 +46,8 @@ public class CommonBrowserLoginTest {
 	 */
 	@Test
 	public void loginSuccessIE() {
+		System.setProperty("webdriver.ie.driver",
+				"test/de/saxsys/treasurehunting/webdrivers/IEDriverServer.exe");
 		Helpers.running(
 				Helpers.testServer(3333,
 						Helpers.fakeApplication()),
@@ -81,6 +83,8 @@ public class CommonBrowserLoginTest {
 	 */
 	@Test
 	public void loginFailureIE() {
+		System.setProperty("webdriver.ie.driver",
+				"test/de/saxsys/treasurehunting/webdrivers/IEDriverServer.exe");
 		Helpers.running(
 				Helpers.testServer(3333,
 						Helpers.fakeApplication()),

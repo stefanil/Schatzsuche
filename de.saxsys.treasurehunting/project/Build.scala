@@ -14,9 +14,8 @@ object ApplicationBuild extends Build {
     javaEbean,
     "play" %% "play-test" % play.core.PlayVersion.current % "test" exclude("com.novocode", "junit-interface"),
     "com.novocode" % "junit-interface" % "0.9" % "test",
-    // not found with standard resolvers (try unmanaged dep in lib folder or use another resolver / repo)
-	//,"postgresql" % "postgresql" % "9.2-1002.jdbc4"
-	"org.postgresql" % "postgresql" % "9.2-1002-jdbc4"
+	"org.postgresql" % "postgresql" % "9.2-1002-jdbc4",
+	"org.seleniumhq.selenium" % "selenium-java" % "2.35.0" % "test"
   )
   
   val common = play.Project(
