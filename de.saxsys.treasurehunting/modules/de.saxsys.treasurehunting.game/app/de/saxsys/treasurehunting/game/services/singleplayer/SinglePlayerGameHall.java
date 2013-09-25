@@ -141,36 +141,36 @@ public class SinglePlayerGameHall extends GameHall {
 		try {
 			String result = (String) Await.result(
 					ask(activeGames.get(gameid), 
-							new Join(gameid, findCounter(username).id, out), 1000),
-						Duration.create(10, SECONDS));		
+						new Join(gameid, findCounter(gameid, username).id, out), 1000),
+					Duration.create(10, SECONDS));		
 
-		// if access was granted
-		if ("OK".equals(result)) {
-			
-			// for every received message
-			in.onMessage(new Callback<JsonNode>() {
+			// if access was granted
+			if ("OK".equals(result)) {
 				
-				public void invoke(JsonNode event) throws Throwable {
+				// for every received message
+				in.onMessage(new Callback<JsonNode>() {
 					
-//					ObjectMapper mapper = new ObjectMapper();
-//					Action action = mapper.readValue(event, new TypeReference<Action>() {});
-//					
-//					// Sende die Spielfelddaten an die Spielhalle.
-//					gameActor.tell(action);
-				}
-			});
-			
-			// Wenn der Websocket geschlossen wird, ...
-			in.onClose(new Callback0() {
+					public void invoke(JsonNode event) throws Throwable {
+						
+	//					ObjectMapper mapper = new ObjectMapper();
+	//					Action action = mapper.readValue(event, new TypeReference<Action>() {});
+	//					
+	//					// Sende die Spielfelddaten an die Spielhalle.
+	//					gameActor.tell(action);
+					}
+				});
 				
-				public void invoke() {			
-					// Sende eine Quit-Nachricht zum Entfernen des Nutzers aus
-					// der Map.
-//					gameActor.tell(new Quit(user));
-				}
-				
-			});
-		}
+				// Wenn der Websocket geschlossen wird, ...
+				in.onClose(new Callback0() {
+					
+					public void invoke() {			
+						// Sende eine Quit-Nachricht zum Entfernen des Nutzers aus
+						// der Map.
+	//					gameActor.tell(new Quit(user));
+					}
+					
+				});
+			}
 		
 		
 		
@@ -268,6 +268,7 @@ public class SinglePlayerGameHall extends GameHall {
 		// create initial response action
 		ActionResponse response = new ActionResponse();
 		response.initializer = Action.TYPE_INITIALIZE_GAME;
+		game.counters.size();
 		response.data = new Object[] { game.playground, game.counters.get(0) };
 		response.followers = new ArrayList<Action>() {
 			private static final long serialVersionUID = 1L;
@@ -280,7 +281,7 @@ public class SinglePlayerGameHall extends GameHall {
 		try {
 			// map it to Json
 			ObjectMapper mapper = new ObjectMapper();
-			String sResult = mapper.writeValueAsString(actionRequest);
+			String sResult = mapper.writeValueAsString(response);
 			JsonFactory factory = new JsonFactory();
 			JsonParser jp = factory.createJsonParser(sResult);
 			JsonNode actualObj = mapper.readTree(jp);

@@ -21,7 +21,7 @@ public class Join {
 	final Long gameid;
 
 	/**
-	 * Constructor.
+	 * Constructor creating a {@link Join} to the gamehall.
 	 * 
 	 * @param counterID
 	 *            The {@link Counter}s ID.

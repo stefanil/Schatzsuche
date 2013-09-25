@@ -125,14 +125,16 @@ public abstract class GameHall extends UntypedActor{
 	 *            {@link User}.
 	 * @return The {@link User} or null if the {@link User} could not be found.
 	 */
-	protected static Counter findCounter(String username) {
+	protected static Counter findCounter(Long gameid, String username) {
+		
+		Game game = findGame(gameid.longValue());
 		User user = UserService.findUser(username);
 		
-		if (username != null && counterFind.where() != null) {
-			ExpressionList<Counter> ul = counterFind.where().eq("user", user);
-			return ul.findUnique();
-		} else
-			return null;
+		for(Counter counter : game.counters)
+			if(counter.user.name.compareTo(user.name)==0)
+				return counter;
+		
+		return null;
 	}
 
 	/**
