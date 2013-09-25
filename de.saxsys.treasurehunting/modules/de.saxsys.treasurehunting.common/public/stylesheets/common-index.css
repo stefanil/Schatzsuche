@@ -16,7 +16,13 @@
 	margin-bottom: 30px;
 	padding-top: 5pt;
 	padding-left: 0px;
+	vertical-align:middle;
 	
+}
+
+#p-heading{	
+	position:relative; 
+	padding-top:7px"
 }
 
 #img-index-heading {
