@@ -26,6 +26,7 @@ public class GameTest extends BaseModelTest {
 	 */
 	@Test
 	public void testCreate() {
+
 		Playground playground = PlaygroundService
 				.findPlayground("Big Playground");
 
@@ -39,7 +40,8 @@ public class GameTest extends BaseModelTest {
 		// create game
 		Game game = new Game();
 		game.name = "Spiel 1";
-		game.states[0] = Game.STATE_READY;
+		game.superState = Game.STATE_CREATED;
+		game.subState = 0; 
 		game.hMode = Game.H_MODE_SINGLEPLAYER;
 		game.activeCounter = 0;
 		game.counters.add(counter);

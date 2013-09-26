@@ -57,7 +57,7 @@ public abstract class GameHall extends UntypedActor{
 	public static boolean isActiveGame(long id) {
 		Game game = findGame(id);
 		return activeGames.containsKey(id) && game != null
-				&& game.states[0] != Game.STATE_CREATED;
+				&& game.superState != Game.STATE_CREATED;
 	}
 
 	/**

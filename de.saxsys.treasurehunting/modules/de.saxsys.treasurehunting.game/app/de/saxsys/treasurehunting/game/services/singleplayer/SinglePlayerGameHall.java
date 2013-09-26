@@ -111,7 +111,8 @@ public class SinglePlayerGameHall extends GameHall {
 			// create game
 			Game game = new Game();
 			game.name = gamename;
-			game.states[0] = Game.STATE_CREATED;
+			game.superState = Game.STATE_CREATED;
+			game.subState = 0; 
 			game.hMode = Game.H_MODE_SINGLEPLAYER;
 			game.activeCounter = 0;
 			game.counters.add(counter);
@@ -333,7 +334,8 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.states[0] = Game.STATE_READY;
+		game.superState = Game.STATE_READY;
+		game.subState = 0; 
 		// set active counter to first position in the list of counters
 		game.activeCounter = 0;
 
@@ -381,7 +383,8 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.states[0] = Game.STATE_ACTIVE;
+		game.superState = Game.STATE_ACTIVE;
+		game.subState = 0;
 
 		// TODO
 
@@ -399,8 +402,9 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.states[0] = Game.STATE_FINISHED;
-
+		game.superState = Game.STATE_FINISHED;
+		game.subState = 0;
+		
 		// TODO
 	}
 	
@@ -416,8 +420,9 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.states[0] = Game.STATE_FINISHED;
-
+		game.superState = Game.STATE_FINISHED;
+		game.subState = 0;
+		
 		// TODO
 	}
 	
@@ -433,8 +438,9 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.states[0] = Game.STATE_PAUSED;
-
+		game.superState = Game.STATE_PAUSED;
+		game.subState = 0;
+		
 		// TODO
 	}
 	
@@ -450,7 +456,8 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.states[0] = Game.STATE_READY;
+		game.superState = Game.STATE_READY;
+		game.subState = 0;
 
 		// TODO
 	}
@@ -467,8 +474,9 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.states[0] = Game.STATE_ACTIVE;
-
+		game.superState = Game.STATE_ACTIVE;
+		game.subState = 0;
+		
 		// TODO
 	}
 	
@@ -484,8 +492,9 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.states[0] = Game.STATE_ACTIVE;
-
+		game.superState = Game.STATE_ACTIVE;
+		game.subState = Game.STATE_MOVING;
+		
 		// TODO
 	}
 	
@@ -501,8 +510,9 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.states[0] = Game.STATE_ACTIVE;
-
+		game.superState = Game.STATE_ACTIVE;
+		game.subState = Game.STATE_DICING;
+			
 		// TODO
 	}
 	
@@ -518,7 +528,8 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.states[0] = Game.STATE_ACTIVE;
+		game.superState = Game.STATE_ACTIVE;
+//		game.subState = Game.STATE_
 
 		// TODO
 	}
@@ -536,10 +547,12 @@ public class SinglePlayerGameHall extends GameHall {
 		final Game game = findGame((Long) actionRequest.data[0]);
 
 		// change game state
-		game.states[0] = Game.STATE_ACTIVE;
+		game.superState = Game.STATE_ACTIVE;
+//		game.subState = Game.STATE_
 		// set active counter to the next counter in List Game.counters
 		game.activeCounter = (game.activeCounter++) % game.counters.size();
 
+		// TODO
 	}
 	
 	private static ActionResponse assemblePoiResponseData(Game game,
@@ -564,7 +577,7 @@ public class SinglePlayerGameHall extends GameHall {
 		response.initializer = Action.TYPE_REINITIALIZE_GAME;
 
 		// switch over current game state
-		switch (game.states[0]) {
+		switch (game.superState) {
 
 		// primary states of the game
 		case Game.STATE_READY:
@@ -574,7 +587,7 @@ public class SinglePlayerGameHall extends GameHall {
 		case Game.STATE_ACTIVE:
 			
 			// switch over secondary states of the game
-			switch(game.states[1]) {
+			switch(game.subState) {
 			
 			case Game.STATE_DICING:
 				response = assembleThrowDiceResponseData(game, response);
@@ -584,14 +597,12 @@ public class SinglePlayerGameHall extends GameHall {
 				response = assembleMoveResponseData(game, response);
 				break;
 				
-			case Game.STATE_PERFORMING:
-				Point point = game.counters.get(game.activeCounter).position;
-				for(Action action : point.actions) {
-					if(action.type == Action.TYPE_DICE_REPEAT)
-						response = assembleDiceRepeatResponseData(game, response);
-					if(action.type == Action.TYPE_POI)
-						response = assemblePoiResponseData(game, response);
-				}
+			case Game.STATE_PERFORMING_POI:
+				response = assemblePoiResponseData(game, response);
+				break;
+			
+			case Game.STATE_PERFORMING_DICE_REPEAT:
+				response = assembleDiceRepeatResponseData(game, response);
 				break;
 			
 			}
