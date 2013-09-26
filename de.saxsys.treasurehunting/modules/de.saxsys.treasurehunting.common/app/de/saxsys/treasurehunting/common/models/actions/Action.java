@@ -104,4 +104,9 @@ public class Action extends Model {
 	 */
 	@Required
 	public String button;
+	
+	/**
+	 * The type of the {@link Action}.
+	 */
+	public int type;
 }

@@ -37,6 +37,7 @@ import de.saxsys.treasurehunting.common.models.actions.ActionResponse;
 import de.saxsys.treasurehunting.common.models.game.Counter;
 import de.saxsys.treasurehunting.common.models.game.Game;
 import de.saxsys.treasurehunting.common.models.playgrounds.Playground;
+import de.saxsys.treasurehunting.common.models.playgrounds.Point;
 import de.saxsys.treasurehunting.common.services.UserService;
 import de.saxsys.treasurehunting.game.services.GameHall;
 import de.saxsys.treasurehunting.game.services.Join;
@@ -110,7 +111,7 @@ public class SinglePlayerGameHall extends GameHall {
 			// create game
 			Game game = new Game();
 			game.name = gamename;
-			game.state = Game.STATE_CREATED;
+			game.states[0] = Game.STATE_CREATED;
 			game.hMode = Game.H_MODE_SINGLEPLAYER;
 			game.activeCounter = 0;
 			game.counters.add(counter);
@@ -332,7 +333,7 @@ public class SinglePlayerGameHall extends GameHall {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
-		game.state = Game.STATE_READY;
+		game.states[0] = Game.STATE_READY;
 		// set active counter to first position in the list of counters
 		game.activeCounter = 0;
 
@@ -340,18 +341,8 @@ public class SinglePlayerGameHall extends GameHall {
 		ActionResponse response = new ActionResponse();
 		// define socket request initializing action
 		response.initializer = Action.TYPE_INITIALIZE_GAME;
-		// define socket response data
-		game.counters.size();
-		response.data = new Object[] { game.playground,
-				game.counters.get(game.activeCounter) };
-		// define follower action
-		response.followers = new ArrayList<Action>() {
-			private static final long serialVersionUID = 1L;
-			{
-				add(Ebean.find(Action.class, 1));
-				add(Ebean.find(Action.class, 2));
-			}
-		};
+		// assemble socket response data
+		response = assembleInitializeGameResponseData(game, response);
 
 		@SuppressWarnings("unchecked")
 		WebSocket.Out<JsonNode> out = (WebSocket.Out<JsonNode>) actionRequest.data[1];
@@ -364,8 +355,204 @@ public class SinglePlayerGameHall extends GameHall {
 	}
 
 	/**
+	 * Assembles action response data for {@link Action.TYPE_INITIALIZE_GAME}.
+	 */
+	private static ActionResponse assembleInitializeGameResponseData(Game game,
+			ActionResponse response) {
+
+		game.counters.size();
+		response.data = new Object[] { game.playground,
+				game.counters.get(game.activeCounter) };
+		// define follower action
+		response.followers = new ArrayList<Action>() {
+			private static final long serialVersionUID = 1L;
+			{
+				add(Ebean.find(Action.class, 1));
+				add(Ebean.find(Action.class, 2));
+			}
+		};
+
+		return response;
+	}
+
+	
+
+	private void startGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.states[0] = Game.STATE_ACTIVE;
+
+		// TODO
+
+	}
+	
+	private static ActionResponse assembleStartGameResponseData(Game game,
+			ActionResponse response) {
+		
+		// TODO
+		
+		return response;
+	}
+
+	private void finishGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.states[0] = Game.STATE_FINISHED;
+
+		// TODO
+	}
+	
+	private static ActionResponse assembleFinishGameResponseData(Game game,
+			ActionResponse response) {
+		
+		// TODO
+		
+		return response;
+	}
+
+	private void cancelGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.states[0] = Game.STATE_FINISHED;
+
+		// TODO
+	}
+	
+	private static ActionResponse assembleCancelGameResponseData(Game game,
+			ActionResponse response) {
+		
+		// TODO
+		
+		return response;
+	}
+
+	private void pauseGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.states[0] = Game.STATE_PAUSED;
+
+		// TODO
+	}
+	
+	private static ActionResponse assemblePauseGameResponseData(Game game,
+			ActionResponse response) {
+		
+		// TODO
+		
+		return response;
+	}
+
+	private void restartGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.states[0] = Game.STATE_READY;
+
+		// TODO
+	}
+	
+	private static ActionResponse assembleRestartGameResponseData(Game game,
+			ActionResponse response) {
+		
+		// TODO
+		
+		return response;
+	}
+
+	private void resumeGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.states[0] = Game.STATE_ACTIVE;
+
+		// TODO
+	}
+	
+	private static ActionResponse assembleResumeGameResponseData(Game game,
+			ActionResponse response) {
+		
+		// TODO
+		
+		return response;
+	}
+
+	private void move(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.states[0] = Game.STATE_ACTIVE;
+
+		// TODO
+	}
+	
+	private static ActionResponse assembleMoveResponseData(Game game,
+			ActionResponse response) {
+		
+		// TODO
+		
+		return response;
+	}
+
+	private void throwDice(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.states[0] = Game.STATE_ACTIVE;
+
+		// TODO
+	}
+	
+	private static ActionResponse assembleThrowDiceResponseData(Game game,
+			ActionResponse response) {
+		
+		// TODO
+		
+		return response;
+	}
+
+	private void diceRepeat(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.states[0] = Game.STATE_ACTIVE;
+
+		// TODO
+	}
+	
+	private static ActionResponse assembleDiceRepeatResponseData(Game game,
+			ActionResponse response) {
+		
+		// TODO
+		
+		return response;
+	}
+
+	private void poi(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+
+		// change game state
+		game.states[0] = Game.STATE_ACTIVE;
+		// set active counter to the next counter in List Game.counters
+		game.activeCounter = (game.activeCounter++) % game.counters.size();
+
+	}
+	
+	private static ActionResponse assemblePoiResponseData(Game game,
+			ActionResponse response) {
+		
+		// TODO
+		
+		return response;
+	}
+	
+	/**
 	 * <b>Remark:</b> Game.STATE_CREATED will not be recognized, because
-	 * websocket connection isn't established at this state of game.
+	 * socket connection isn't established at this state of game.
 	 */
 	private void reinitializeGame(ActionRequest actionRequest) {
 
@@ -377,34 +564,46 @@ public class SinglePlayerGameHall extends GameHall {
 		response.initializer = Action.TYPE_REINITIALIZE_GAME;
 
 		// switch over current game state
-		switch (game.state) {
+		switch (game.states[0]) {
 
 		// primary states of the game
 		case Game.STATE_READY:
-			// define socket response data
-			game.counters.size();
-			response.data = new Object[] { game.playground,
-					game.counters.get(game.activeCounter) };
-			// define follower action
-			response.followers = new ArrayList<Action>() {
-				private static final long serialVersionUID = 1L;
-				{
-					add(Ebean.find(Action.class, 1));
-					add(Ebean.find(Action.class, 2));
-				}
-			};
+			response = assembleInitializeGameResponseData(game, response);
 			break;
 
 		case Game.STATE_ACTIVE:
-			// TODO
+			
+			// switch over secondary states of the game
+			switch(game.states[1]) {
+			
+			case Game.STATE_DICING:
+				response = assembleThrowDiceResponseData(game, response);
+				break;
+				
+			case Game.STATE_MOVING:
+				response = assembleMoveResponseData(game, response);
+				break;
+				
+			case Game.STATE_PERFORMING:
+				Point point = game.counters.get(game.activeCounter).position;
+				for(Action action : point.actions) {
+					if(action.type == Action.TYPE_DICE_REPEAT)
+						response = assembleDiceRepeatResponseData(game, response);
+					if(action.type == Action.TYPE_POI)
+						response = assemblePoiResponseData(game, response);
+				}
+				break;
+			
+			}
+			
 			break;
 
 		case Game.STATE_FINISHED:
-			// TODO
+			response = assembleFinishGameResponseData(game, response);
 			break;
 
 		case Game.STATE_PAUSED:
-			// TODO
+			response = assemblePauseGameResponseData(game, response);
 			break;
 
 		}
@@ -414,99 +613,6 @@ public class SinglePlayerGameHall extends GameHall {
 
 		// finally write action response on the socket's out channel
 		writeOut(response, out);
-
-	}
-
-	private void startGame(ActionRequest actionRequest) {
-
-		final Game game = findGame((Long) actionRequest.data[0]);
-		// change game state
-		game.state = Game.STATE_ACTIVE;
-
-		// TODO
-
-	}
-
-	private void finishGame(ActionRequest actionRequest) {
-
-		final Game game = findGame((Long) actionRequest.data[0]);
-		// change game state
-		game.state = Game.STATE_FINISHED;
-
-		// TODO
-	}
-
-	private void cancelGame(ActionRequest actionRequest) {
-
-		final Game game = findGame((Long) actionRequest.data[0]);
-		// change game state
-		game.state = Game.STATE_FINISHED;
-
-		// TODO
-	}
-
-	private void pauseGame(ActionRequest actionRequest) {
-
-		final Game game = findGame((Long) actionRequest.data[0]);
-		// change game state
-		game.state = Game.STATE_PAUSED;
-
-		// TODO
-	}
-
-	private void restartGame(ActionRequest actionRequest) {
-
-		final Game game = findGame((Long) actionRequest.data[0]);
-		// change game state
-		game.state = Game.STATE_READY;
-
-		// TODO
-	}
-
-	private void resumeGame(ActionRequest actionRequest) {
-
-		final Game game = findGame((Long) actionRequest.data[0]);
-		// change game state
-		game.state = Game.STATE_ACTIVE;
-
-		// TODO
-	}
-
-	private void move(ActionRequest actionRequest) {
-
-		final Game game = findGame((Long) actionRequest.data[0]);
-		// change game state
-		game.state = Game.STATE_ACTIVE;
-
-		// TODO
-	}
-
-	private void throwDice(ActionRequest actionRequest) {
-
-		final Game game = findGame((Long) actionRequest.data[0]);
-		// change game state
-		game.state = Game.STATE_ACTIVE;
-
-		// TODO
-	}
-
-	private void diceRepeat(ActionRequest actionRequest) {
-
-		final Game game = findGame((Long) actionRequest.data[0]);
-		// change game state
-		game.state = Game.STATE_ACTIVE;
-
-		// TODO
-	}
-
-	private void poi(ActionRequest actionRequest) {
-
-		final Game game = findGame((Long) actionRequest.data[0]);
-
-		// change game state
-		game.state = Game.STATE_ACTIVE;
-		// set active counter to the next counter in List Game.counters
-		game.activeCounter = (game.activeCounter++) % game.counters.size();
 
 	}
 

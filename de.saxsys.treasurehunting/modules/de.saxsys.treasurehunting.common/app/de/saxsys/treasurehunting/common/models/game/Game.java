@@ -87,7 +87,7 @@ public class Game extends Model {
 	 * The state of the {@link Game}.
 	 */
 	@Required
-	public int state;
+	public int[] states;
 
 	/**
 	 * The horizontal mode flag of the {@link Game}.

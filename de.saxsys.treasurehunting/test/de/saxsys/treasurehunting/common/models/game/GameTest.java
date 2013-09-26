@@ -39,7 +39,7 @@ public class GameTest extends BaseModelTest {
 		// create game
 		Game game = new Game();
 		game.name = "Spiel 1";
-		game.state = Game.STATE_READY;
+		game.states[0] = Game.STATE_READY;
 		game.hMode = Game.H_MODE_SINGLEPLAYER;
 		game.activeCounter = 0;
 		game.counters.add(counter);
