@@ -19,7 +19,7 @@ function initializeSinglePlayerGame(url) {
 		}
 		
 		var responseAction = JSON.parse(event.data);
-		
+
 		initializeGame(responseAction);
 	}
 	
@@ -31,8 +31,18 @@ function initializeSinglePlayerGame(url) {
  * 
  * @param responseAction
  */
+
+
+
 function initializeGame(responseAction) {
-	// show response action
+	//die extrahierte Farbe
+	var color = responseAction.data[1].color;
+	alert(color + " wurde geladen!");
+	
+	//der div Behälter in Zeile 93 von game.scala.html soll eigentlich damit geändert werden...
+	var myDiv = document.getElementById("actualColor");
+	myDiv.style.backgroundColor = '#'+color; //gemäß der Hexadezimalangaben #ffffffff
+	
 	console.log(responseAction);
 }
 

@@ -137,47 +137,41 @@ public class SinglePlayerGameHall extends GameHall {
 	public static void join(Long gameid, final String username,
 			WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
 
-		// Send a Join message
 		try {
-			String result = (String) Await.result(
-					ask(activeGames.get(gameid), 
-							new Join(gameid, findCounter(username).id, out), 1000),
-						Duration.create(10, SECONDS));		
+            final Game game = Ebean.find(Game.class, gameid);
+            // create initial response action
+            ActionResponse response = new ActionResponse();
+            response.initializer = Action.TYPE_INITIALIZE_GAME;                
+            response.data = new Object[] {
+                   game.playground,
+                   game.counters.get(0)
+            };
+            response.followers = new ArrayList<Action>() {
+                   private static final long serialVersionUID = 1L;
+                   {
+                         add(Ebean.find(Action.class, 1));
+                          add(Ebean.find(Action.class, 2));
+                   }
+            };
 
-		// if access was granted
-		if ("OK".equals(result)) {
-			
-			// for every received message
-			in.onMessage(new Callback<JsonNode>() {
-				
-				public void invoke(JsonNode event) throws Throwable {
-					
-//					ObjectMapper mapper = new ObjectMapper();
-//					Action action = mapper.readValue(event, new TypeReference<Action>() {});
-//					
-//					// Sende die Spielfelddaten an die Spielhalle.
-//					gameActor.tell(action);
-				}
-			});
-			
-			// Wenn der Websocket geschlossen wird, ...
-			in.onClose(new Callback0() {
-				
-				public void invoke() {			
-					// Sende eine Quit-Nachricht zum Entfernen des Nutzers aus
-					// der Map.
-//					gameActor.tell(new Quit(user));
-				}
-				
-			});
-		}
-		
-		
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		 
+            // map it to Json
+            ObjectMapper mapper = new ObjectMapper();
+            String sResult = mapper.writeValueAsString(response);
+            JsonFactory factory = new JsonFactory();
+            JsonParser jp = factory.createJsonParser(sResult);
+            JsonNode actualObj = mapper.readTree(jp);
+
+            // send it via web socket
+            out.write(actualObj);
+
+     } catch (JsonGenerationException e) {
+            e.printStackTrace();
+     } catch (JsonMappingException e) {
+            e.printStackTrace();
+     } catch (IOException e) {
+            e.printStackTrace();
+     }
+
 	}
 
 	// Map<User, WebSocket.Out<JsonNode>> members = new HashMap<User,
