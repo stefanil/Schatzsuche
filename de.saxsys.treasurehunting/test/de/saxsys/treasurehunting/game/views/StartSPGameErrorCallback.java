@@ -17,7 +17,8 @@ public class StartSPGameErrorCallback extends Callback {
 	@Override
 	public void invoke(TestBrowser browser) throws Throwable {
 		browser.fill("#gameName").with("  ");
-		browser.click("#btn-startSPGame");
+		browser.await().atMost(10000);
+		browser.click("#btn-startSPGame").await().atMost(10000);
 		assertThat(browser.text("#help-gameName").get(0)).isEqualTo(
 				Messages.get(Lang.forCode("de"),
 						"game.index.sp.conf.gameName.error"));

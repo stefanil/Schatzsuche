@@ -24,7 +24,7 @@ public class NavAdminCallback extends Callback {
 	public void invoke(TestBrowser browser) throws Throwable {
 
 		assertThat(browser.url()).isEqualTo("http://localhost:3333/game");
-		browser.click("#a-nav-admin");
+		browser.click("#a-nav-admin").await().atMost(10000);
 		assertThat(browser.url()).isEqualTo("http://localhost:3333/admin");
 
 		String cssClassGame = browser.find("#li-nav-game").get(0)

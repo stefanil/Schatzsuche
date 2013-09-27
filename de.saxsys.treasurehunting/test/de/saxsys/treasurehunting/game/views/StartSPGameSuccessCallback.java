@@ -16,7 +16,8 @@ public class StartSPGameSuccessCallback extends Callback {
 	@Override
 	public void invoke(TestBrowser browser) throws Throwable {
 		browser.fill("#gameName").with("Spiel 4");
-		browser.click("#btn-startSPGame");
+		browser.await().atMost(10000);
+		browser.click("#btn-startSPGame").await().atMost(10000);
 		assertThat(browser.url()).startsWith(
 				"http://localhost:3333/game/singleplayer");
 	}

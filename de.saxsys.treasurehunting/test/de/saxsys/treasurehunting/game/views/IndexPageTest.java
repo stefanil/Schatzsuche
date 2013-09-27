@@ -47,6 +47,8 @@ public class IndexPageTest {
 	 */
 	@Test
 	public void startSPGameSuccessIE() {
+		System.setProperty("webdriver.ie.driver",
+				"test/de/saxsys/treasurehunting/webdrivers/IEDriverServer.exe");
 		Helpers.running(Helpers.testServer(3333, Helpers.fakeApplication()),
 				InternetExplorerDriver.class, new StartSPGameSuccessCompositeCallback());
 	}
@@ -76,6 +78,8 @@ public class IndexPageTest {
 	 */
 	@Test
 	public void startSPGameErrorIE() {
+		System.setProperty("webdriver.ie.driver",
+				"test/de/saxsys/treasurehunting/webdrivers/IEDriverServer.exe");
 		Helpers.running(Helpers.testServer(3333, Helpers.fakeApplication()),
 				InternetExplorerDriver.class, new StartSPGameErrorCompositeCallback());
 	}
