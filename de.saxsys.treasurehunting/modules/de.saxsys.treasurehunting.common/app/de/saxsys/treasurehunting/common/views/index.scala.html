@@ -26,24 +26,24 @@
     
     <body>      
     	<div id="div-start" class="container well">
-    	
-	      
-	      	<h4 id="index-heading" style="vertical-align:middle;">	   
+
+	      	<h4 id="index-heading">	   
 	      		<img id="img-index-heading" src="@routes.Assets.at("images/logo/SchriftzugmitLogo01.png")" />
-	      		<p style="position:relative; padding-top:7px">@Messages("common.index.heading")(lang)</p>
-	      		</h4>	
-	     
-	      
-	     <div id="lang-chooser" style="position:relative; padding-top:80px">
-	     @i18n.content(lang)
-	     </div> 	     
+	      		<p id="p-heading">@Messages("common.index.heading")(lang)</p>
+	      	</h4>	
+
+	     	<div id="lang-chooser" >
+	    		@i18n.content(lang)
+	     	</div> 	     
 	      
 	      <!-- form-horizontal -->
+	      
 	      @helper.form(routes.CommonController.authenticate, args = 'method -> "post", 'id -> "form-username") { 	      	 
 	      	 
 	      	 @helper.inputText(loginForm("username"),
 	      	   	'_label -> Messages("common.index.login.username.label")(lang), 
 	      	   	'placeholder -> Messages("common.index.login.username.placeholder")(lang))
+	       
 	         
 	         <div id="div-username-submit" class="form-actions">
 	           <button id="btn-start" type="submit" class="btn btn-large btn-block btn-inverse pull-left">

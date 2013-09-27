@@ -1,9 +1,9 @@
 # common
 common.index.title=Schatzsuche - Startseite
-common.index.heading=Willkommen in der Arena!
+common.index.heading=Herzlich willkommen!
 common.index.login.username.label=Nutzername:
-common.index.login.username.placeholder=Dein Name
-common.index.login.username.error=Der Anwendername kann nicht auschließlich aus Leerzeichen bestehen und muss mindestens 5 Zeichen lang sein.
+common.index.login.username.placeholder=Ihr Name
+common.index.login.username.error=Falscheingabe: Bitte überprüfen Sie Ihre Eingabe!
 common.index.login.submit=Weiter
 
 # i18n
@@ -12,7 +12,6 @@ common.lang.a.cz.tooltip=Tschechisch
 common.lang.a.pl.tooltip=Polnisch
 common.lang.a.de.tooltip=Deutsch
 common.lang.a.en.tooltip=Englisch
-
 
 # main template: nav
 common.main.nav.brand=Schatzsuche

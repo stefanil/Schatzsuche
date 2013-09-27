@@ -30,11 +30,9 @@ public class PointTest extends BaseModelTest {
 		Point point = new Point();
 		point.x = 100;
 		point.y = 100;
-		assertThat(point.id).isNull();
 		point.save();
 		assertThat(point.id).isNotNull();
 		point.delete();
-		assertThat(point.id).isNull();
 	}
 
 	/**

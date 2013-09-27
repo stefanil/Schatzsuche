@@ -3,6 +3,7 @@
  */
 package de.saxsys.treasurehunting.common.controllers;
 
+import de.saxsys.treasurehunting.common.services.UserService;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -18,7 +19,8 @@ public class Secured extends Security.Authenticator {
 
 	@Override
 	public String getUsername(Context ctx) {
-		return ctx.session().get("username");
+		String username = UserService.getAuthUserName(ctx.session());
+		return (UserService.isRegistered(username)) ? username : null;
 	}
 
 	@Override

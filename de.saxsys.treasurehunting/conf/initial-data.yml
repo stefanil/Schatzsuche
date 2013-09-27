@@ -3,9 +3,8 @@
 # -------------------
 actions:
 
-- &StartGame !!de.saxsys.treasurehunting.common.models.actions.Action { heading: "Spielstart", info: "Betätige die Schaltfläche, um das Spiel zu starten.", button: "Spiel starten"}
-- &FinishGame !!de.saxsys.treasurehunting.common.models.actions.Action { heading: "Spielende", info: "Du hast den Zielpunkt erreicht und x Karten gesammelt. Prima!\n\nBetätige die untere Schaltfläche, um das Spiel zu starten.", button: "Spiel beenden"}
-
+- &StartGame !!de.saxsys.treasurehunting.common.models.actions.Action { heading: "Spielstart", info: "Betätige die Schaltfläche, um das Spiel zu starten.", button: "Spiel starten", type: 1}
+- &FinishGame !!de.saxsys.treasurehunting.common.models.actions.Action { heading: "Spielende", info: "Du hast den Zielpunkt erreicht und x Karten gesammelt. Prima!\n\nBetätige die untere Schaltfläche, um das Spiel zu starten.", button: "Spiel beenden", type: 2}
 
 # -------------------
 # |   points        |
@@ -58,28 +57,3 @@ playgrounds:
 
 # small
 - &pgSmall !!de.saxsys.treasurehunting.common.models.playgrounds.Playground {name: Small Playground, background: "/assets/images/playgrounds/backgroundSmall.svg", width: 250, height: 330, paths: [*10,*11,*12,*13], startPoint: *a2, endPoint: *e2}
-
-# ----------------------------
-# |   already active users   |
-# ----------------------------
-
-users:
-- &userStefan !!de.saxsys.treasurehunting.common.models.user.User {name: stefan}
-
-# -------------------------------
-# |   already active counters   |
-# -------------------------------
-counters:
-- &counterRed !!de.saxsys.treasurehunting.common.models.game.Counter {color: 0xff0000, cards: 0, position: *a, user: *userStefan}
-- &counterGreen !!de.saxsys.treasurehunting.common.models.game.Counter {color: 0x00ff00, cards: 2, position: *e2, user: *userStefan}
-
-# ----------------------------
-# |   already active games   |
-# ----------------------------
-games:
-
-# singleplayer game where the red counter of user stefan is on the startPoint and just dicing
-- &game1 !!de.saxsys.treasurehunting.common.models.game.Game {name: "Spiel 1", state: 10, hMode: 0, activeCounter: 0, counters: [*counterRed], playground: *pgBig}
-
-# singleplayer game where the green counter of user stefan is on the endPoint and just performing the FinishGame action
-- &game2 !!de.saxsys.treasurehunting.common.models.game.Game {name: "Spiel 2", state: 12, hMode: 0, activeCounter: 0, counters: [*counterGreen], playground: *pgSmall}

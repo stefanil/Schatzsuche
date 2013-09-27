@@ -3,15 +3,48 @@
  */
 package de.saxsys.treasurehunting.game.services.singleplayer;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import play.libs.Akka;
+import play.libs.F.Callback;
+import play.libs.F.Callback0;
+import play.mvc.WebSocket;
+import scala.concurrent.Await;
+import scala.concurrent.duration.Duration;
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
+import static akka.pattern.Patterns.ask;
+import static java.util.concurrent.TimeUnit.*;
+
+import com.avaje.ebean.Ebean;
+
 import de.saxsys.treasurehunting.common.models.actions.Action;
+import de.saxsys.treasurehunting.common.models.actions.ActionRequest;
+import de.saxsys.treasurehunting.common.models.actions.ActionResponse;
 import de.saxsys.treasurehunting.common.models.game.Counter;
 import de.saxsys.treasurehunting.common.models.game.Game;
+import de.saxsys.treasurehunting.common.models.playgrounds.Playground;
+import de.saxsys.treasurehunting.common.models.playgrounds.Point;
 import de.saxsys.treasurehunting.common.services.UserService;
 import de.saxsys.treasurehunting.game.services.GameHall;
+import de.saxsys.treasurehunting.game.services.Join;
 import de.saxsys.treasurehunting.game.services.PlaygroundService;
+import de.saxsys.treasurehunting.game.services.Quit;
 import de.saxsys.treasurehunting.game.services.exceptions.GameCreationException;
+import de.saxsys.treasurehunting.game.services.exceptions.GameJoinException;
 
 /**
  * This class represents a game service for a single player game. It also
@@ -65,23 +98,31 @@ public class SinglePlayerGameHall extends GameHall {
 
 		// do it
 		try {
+			Playground playground = PlaygroundService
+					.findPlayground(playgroundname);
 
 			// create counter
 			Counter counter = new Counter();
 			counter.color = countercolor;
 			counter.cards = 0;
 			counter.user = UserService.findUser(username);
+			counter.position = playground.startPoint;
 
 			// create game
 			Game game = new Game();
 			game.name = gamename;
-			game.state = Game.STATE_READY;
+			game.superState = Game.STATE_CREATED;
+			game.subState = 0;
 			game.hMode = Game.H_MODE_SINGLEPLAYER;
 			game.activeCounter = 0;
 			game.counters.add(counter);
-			game.playground = PlaygroundService.findPlayground(playgroundname);
+			game.playground = playground;
 
 			game.save();
+
+			// caches as active game
+			Props props = new Props(SinglePlayerGameHall.class);
+			activeGames.put(game.id, Akka.system().actorOf(props));
 
 			return game.id;
 
@@ -90,132 +131,541 @@ public class SinglePlayerGameHall extends GameHall {
 		}
 	}
 
-	// ##########################################################################
+	/**
+	 * This operation enables a user given by its name (i.e. the user's ID) to
+	 * join the {@link Game} identified by its ID. For this it sends an
+	 * asynchronous {@link Join} message to the actor (i.e. {@link ActorRef})
+	 * related to the mentioned {@link Game}. This message is handled by the
+	 * {@link SinglePlayerGameHall#onReceive} operation.
+	 * 
+	 * Afterwards it sets the {@link Callback}s for receiving regularly web
+	 * socket messages from the client and for handling the closing of the web
+	 * socket initiated by the client (f.i. if a connection loss appears).
+	 * 
+	 * @param gameid
+	 *            The ID of the {@link Game} the join is related to.
+	 * @param username
+	 *            The name of the {@link User}, who is joining the {@link Game}.
+	 * @param in
+	 *            The web socket's in channel, receiving messages from the
+	 *            client.
+	 * @param out
+	 *            The web socket's out channel for sending messages to the
+	 *            client.
+	 */
+	public static void join(final Long gameid, final String username,
+			WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
 
-	// public static void join(final User user, play.mvc.WebSocket.In<JsonNode>
-	// in,
-	// play.mvc.WebSocket.Out<JsonNode> out) {
-	//
-	// // Send a Join message
-	// String result = null;
-	// // (String) Await.result(
-	// // ask(gameActor, new Join(user, out), 1000),
-	// // Duration.create(10, SECONDS));
-	//
-	// // Wenn der Zutritt genehmigt wurde, ...
-	// if ("OK".equals(result)) {
-	//
-	// // Für jede empfangene Nachricht (Spielfelddaten) ...
-	// in.onMessage(new Callback<JsonNode>() {
-	// public void invoke(JsonNode event) throws Throwable {
-	//
-	// ObjectMapper mapper = new ObjectMapper();
-	// Action action = mapper.readValue(event,
-	// new TypeReference<Action>() {
-	// });
-	//
-	// // Sende die Spielfelddaten an die Spielhalle.
-	// gameActor.tell(action);
-	// }
-	// });
-	//
-	// // Wenn der Websocket geschlossen wird, ...
-	// in.onClose(new Callback0() {
-	// public void invoke() {
-	//
-	// // Sende eine Quit-Nachricht zum Entfernen des Nutzers aus
-	// // der Map.
-	// gameActor.tell(new Quit(user));
-	//
-	// }
-	// });
-	// }
-	// }
-	//
-	// Map<User, WebSocket.Out<JsonNode>> members = new HashMap<User,
-	// WebSocket.Out<JsonNode>>();
-	// // Falsch weil es nicht einen statischen gameActor geben kann
-	// static ActorRef gameActor = Akka.system().actorOf(
-	// new Props(SinglePlayerGameService.class));
-	//
-	// @Override
-	// public void onReceive(Object message) throws Exception {
-	//
-	// // Bei einem Beitrittsgesuch ...
-	// if (message instanceof Join) {
-	//
-	// Join join = (Join) message;
-	// if (members.containsKey(join.user)) {
-	// // getSender().tell("This user is already used");
-	// } else {
-	// members.put(join.user, join.channel);
-	// initializeGame();
-	// }
-	//
-	// } else
-	//
-	// if (message instanceof Action) {
-	// handleClientAction((Action)message);
-	// } else
-	//
-	// // Beim Schließen des Websockets (z.B. infolge eines Routenwechsels) ..
-	// if (message instanceof Quit) {
-	// Quit quit = (Quit) message;
-	// // .. entferne den Websocket aus der Map
-	// members.remove(quit.user);
-	// // ................................ Was passiert danach?
-	// ......................
-	// } else {
-	// unhandled(message);
-	// }
-	// }
+		try {
+			
+			final Long counterId = findCounter(gameid, username).id;
 
-	// ##########################################################################
+			ActorRef actor = activeGames.get(gameid);
+			
+			String result = (String) Await.result(
+					ask(actor, new Join(gameid, counterId,
+							out), 1000000), Duration.create(1000, SECONDS));
 
+			// if access was granted
+			if ("OK".equals(result)) {
+
+				// for every received message
+				in.onMessage(new Callback<JsonNode>() {
+
+					@SuppressWarnings("deprecation")
+					public void invoke(JsonNode event) throws Throwable {
+
+						// parse the ActionRequest
+						ObjectMapper mapper = new ObjectMapper();
+						ActionRequest actionRequest = mapper.readValue(event,
+								new TypeReference<ActionRequest>() {
+								});
+
+						// send the action request the game actor
+						activeGames.get(gameid).tell(actionRequest);
+					}
+				});
+
+				// if the socket was closed by the client or through a
+				// connection loss
+				in.onClose(new Callback0() {
+
+					@SuppressWarnings("deprecation")
+					public void invoke() {
+						// send a Quit message to the game actor to remove the
+						// user's counter from members of the game
+						activeGames.get(gameid).tell(
+								new Quit(gameid, counterId));
+					}
+
+				});
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * This
+	 * 
+	 * @see {@link UntypedActor#onReceive}
+	 */
+	@SuppressWarnings("deprecation")
 	@Override
-	public List<Action> handleClientAction(Action action) {
+	public void onReceive(Object message) throws Exception {
 
-		// switch(action.TYPE){
-		//
-		// case Action.TYPE_STARTGAME:
-		// startGame();
-		// break;
-		//
-		// case Action.TYPE_FINISHGAME:
-		// finishGame();
-		// break;
-		//
-		// }
+		if (message instanceof Join) {
 
-		return null;
+			Join join = (Join) message;
+
+			// if members already contains the counter id, throw an exception
+			if (members.containsKey(join.counterID))
+
+				throw new GameJoinException(
+						"Internal server error: The user has already join the game with its counter.");
+
+			else {
+
+				// put it in relation to the game
+				members.put(join.counterID, join.out);
+
+				// if this is not an active game
+				ActionRequest actionRequest = new ActionRequest();
+				actionRequest.data = new Object[] { join.gameID, join.out };
+
+				if (isActiveGame(join.gameID)) {
+					// if connection loss and active game
+					actionRequest.initializer = Action.TYPE_REINITIALIZE_GAME;
+					// reinitialzie the game
+					reinitializeGame(actionRequest);
+				} else {
+					// if it's not an active game yet
+					actionRequest.initializer = Action.TYPE_INITIALIZE_GAME;
+					// initialize the game
+					initializeGame(actionRequest);
+				}
+				
+				getSender().tell("OK");
+
+			}
+		} else
+
+		if (message instanceof ActionRequest) {
+
+			handleClientAction((ActionRequest) message);
+
+		} else
+
+		// Beim Schließen des Websockets (z.B. infolge eines Routenwechsels) ..
+		if (message instanceof Quit) {
+
+			Quit quit = (Quit) message;
+			// remove game ID and socket out channel from the active members of
+			// the game
+			members.remove(quit.gameID);
+
+		} else {
+			unhandled(message);
+		}
 	}
 
-	private void initializeGame() {
+	/**
+	 * Handles an {@link ActionRequest} for horizontal game mode single player.
+	 * 
+	 * @param actionRequest
+	 *            the {@link ActionRequest} to handle.
+	 * 
+	 * @see {@link GameHall#handleClientAction}
+	 */
+	@Override
+	public void handleClientAction(ActionRequest actionRequest) {
+
+		switch (actionRequest.initializer) {
+
+//		case Action.TYPE_INITIALIZE_GAME:
+//			initializeGame(actionRequest);
+//			break;
+//
+//		case Action.TYPE_REINITIALIZE_GAME:
+//			reinitializeGame(actionRequest);
+//			break;
+
+		case Action.TYPE_START_GAME:
+			startGame(actionRequest);
+			break;
+
+		case Action.TYPE_FINISH_GAME:
+			finishGame(actionRequest);
+			break;
+
+		case Action.TYPE_RESTART_GAME:
+			restartGame(actionRequest);
+			break;
+
+		case Action.TYPE_CANCEL_GAME:
+			cancelGame(actionRequest);
+			break;
+
+		case Action.TYPE_PAUSE_GAME:
+			pauseGame(actionRequest);
+			break;
+
+		case Action.TYPE_RESUME_GAME:
+			resumeGame(actionRequest);
+			break;
+
+		case Action.TYPE_MOVE:
+			move(actionRequest);
+			break;
+
+		case Action.TYPE_THROW_DICE:
+			throwDice(actionRequest);
+			break;
+
+		case Action.TYPE_DICE_REPEAT:
+			diceRepeat(actionRequest);
+			break;
+
+		case Action.TYPE_POI:
+			poi(actionRequest);
+			break;
+
+		}
+	}
+
+	private static void initializeGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.superState = Game.STATE_READY;
+		game.subState = 0;
+		// set active counter to first position in the list of counters
+		game.activeCounter = 0;
+
+		// construct the action response
+		ActionResponse response = new ActionResponse();
+		// define socket request initializing action
+		response.initializer = Action.TYPE_INITIALIZE_GAME;
+		// assemble socket response data
+		response = assembleInitializeGameResponseData(game, response);
+
+		@SuppressWarnings("unchecked")
+		WebSocket.Out<JsonNode> out = (WebSocket.Out<JsonNode>) actionRequest.data[1];
+
+		// finally write action response on the socket's out channel
+		writeOut(response, out);
+
+		// persist the game state
+		game.save();
+	}
+
+	/**
+	 * Assembles action response data for {@link Action.TYPE_INITIALIZE_GAME}.
+	 */
+	private static ActionResponse assembleInitializeGameResponseData(Game game,
+			ActionResponse response) {
+
+		game.counters.size();
+		response.data = new Object[] { game.playground,
+				game.counters.get(game.activeCounter) };
+		// define response data
+		response.data = new Object[] { 
+				game.playground, 
+				new Object[] { 
+					game.counters.get(0), 
+					new Object[] { game.counters.get(0) }  
+				} 
+			};
+		// define follower actions
+		response.followers = new ArrayList<Action>() {
+			private static final long serialVersionUID = 1L;
+			{
+				add(Ebean.find(Action.class, 1));
+				add(Ebean.find(Action.class, 2));
+			}
+		};
+
+		return response;
+	}
+
+	private void startGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.superState = Game.STATE_ACTIVE;
+		game.subState = 0;
+
+		// TODO
 
 	}
 
-	private void startGame() {
+	private static ActionResponse assembleStartGameResponseData(Game game,
+			ActionResponse response) {
+
+		// TODO
+
+		return response;
+	}
+
+	private void finishGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.superState = Game.STATE_FINISHED;
+		game.subState = 0;
+
+		// TODO
+	}
+
+	private static ActionResponse assembleFinishGameResponseData(Game game,
+			ActionResponse response) {
+
+		// TODO
+
+		return response;
+	}
+
+	private void cancelGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.superState = Game.STATE_FINISHED;
+		game.subState = 0;
+
+		// TODO
+	}
+
+	private static ActionResponse assembleCancelGameResponseData(Game game,
+			ActionResponse response) {
+
+		// TODO
+
+		return response;
+	}
+
+	private void pauseGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.superState = Game.STATE_PAUSED;
+		game.subState = 0;
+
+		// TODO
+	}
+
+	private static ActionResponse assemblePauseGameResponseData(Game game,
+			ActionResponse response) {
+
+		// TODO
+
+		return response;
+	}
+
+	private void restartGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.superState = Game.STATE_READY;
+		game.subState = 0;
+
+		// TODO
+	}
+
+	private static ActionResponse assembleRestartGameResponseData(Game game,
+			ActionResponse response) {
+
+		// TODO
+
+		return response;
+	}
+
+	private void resumeGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.superState = Game.STATE_ACTIVE;
+		game.subState = 0;
+
+		// TODO
+	}
+
+	private static ActionResponse assembleResumeGameResponseData(Game game,
+			ActionResponse response) {
+
+		// TODO
+
+		return response;
+	}
+
+	private void move(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.superState = Game.STATE_ACTIVE;
+		game.subState = Game.STATE_MOVING;
+
+		// TODO
+	}
+
+	private static ActionResponse assembleMoveResponseData(Game game,
+			ActionResponse response) {
+
+		// TODO
+
+		return response;
+	}
+
+	private void throwDice(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.superState = Game.STATE_ACTIVE;
+		game.subState = Game.STATE_DICING;
+
+		// TODO
+	}
+
+	private static ActionResponse assembleThrowDiceResponseData(Game game,
+			ActionResponse response) {
+
+		// TODO
+
+		return response;
+	}
+
+	private void diceRepeat(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+		// change game state
+		game.superState = Game.STATE_ACTIVE;
+		game.subState = Game.STATE_PERFORMING_DICE_REPEAT;
+
+		// TODO
+	}
+
+	private static ActionResponse assembleDiceRepeatResponseData(Game game,
+			ActionResponse response) {
+
+		// TODO
+
+		return response;
+	}
+
+	private void poi(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+
+		// change game state
+		game.superState = Game.STATE_ACTIVE;
+		game.subState = Game.STATE_PERFORMING_POI;
+		// set active counter to the next counter in List Game.counters
+		game.activeCounter = (game.activeCounter++) % game.counters.size();
+
+		// TODO
+	}
+
+	private static ActionResponse assemblePoiResponseData(Game game,
+			ActionResponse response) {
+
+		// TODO
+
+		return response;
+	}
+
+	/**
+	 * <b>Remark:</b> Game.STATE_CREATED will not be recognized, because socket
+	 * connection isn't established at this state of game.
+	 */
+	private void reinitializeGame(ActionRequest actionRequest) {
+
+		final Game game = findGame((Long) actionRequest.data[0]);
+
+		// construct the action response
+		ActionResponse response = new ActionResponse();
+		// define socket request initializing action
+		response.initializer = Action.TYPE_REINITIALIZE_GAME;
+
+		// switch over current game state
+		switch (game.superState) {
+
+		// primary states of the game
+		case Game.STATE_READY:
+			response = assembleInitializeGameResponseData(game, response);
+			break;
+
+		case Game.STATE_ACTIVE:
+
+			// switch over secondary states of the game
+			switch (game.subState) {
+
+			case Game.STATE_DICING:
+				response = assembleThrowDiceResponseData(game, response);
+				break;
+
+			case Game.STATE_MOVING:
+				response = assembleMoveResponseData(game, response);
+				break;
+
+			case Game.STATE_PERFORMING_POI:
+				response = assemblePoiResponseData(game, response);
+				break;
+
+			case Game.STATE_PERFORMING_DICE_REPEAT:
+				response = assembleDiceRepeatResponseData(game, response);
+				break;
+
+			}
+
+			break;
+
+		case Game.STATE_FINISHED:
+			response = assembleFinishGameResponseData(game, response);
+			break;
+
+		case Game.STATE_PAUSED:
+			response = assemblePauseGameResponseData(game, response);
+			break;
+
+		}
+
+		@SuppressWarnings("unchecked")
+		WebSocket.Out<JsonNode> out = (WebSocket.Out<JsonNode>) actionRequest.data[1];
+
+		// finally write action response on the socket's out channel
+		writeOut(response, out);
 
 	}
 
-	private void finishGame() {
+	/**
+	 * Writes the ActionResponse out to the socket's out channel.
+	 * 
+	 * @param response
+	 *            The ActionResponse to write out.
+	 * @param out
+	 *            The socket's out channel.
+	 */
+	private static void writeOut(ActionResponse response,
+			WebSocket.Out<JsonNode> out) {
+		try {
+			// map it to Json
+			ObjectMapper mapper = new ObjectMapper();
+			String sResult = mapper.writeValueAsString(response);
+			JsonFactory factory = new JsonFactory();
+			JsonParser jp = factory.createJsonParser(sResult);
+			JsonNode actualObj = mapper.readTree(jp);
 
-	}
+			// send it via web socket
+			out.write(actualObj);
 
-	private void cancelGame() {
-
-	}
-
-	private void pauseGame() {
-
-	}
-
-	private void restartGame() {
-
-	}
-
-	private void resumeGame() {
-
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

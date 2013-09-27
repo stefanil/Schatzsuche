@@ -160,13 +160,27 @@ public abstract class UserService {
 	 * 
 	 * @param session
 	 *            The Session the user is authenticated with.
-	 * @return The authenticated {@link User}'s name or null if the {@link User} could not be found.
+	 * @return The authenticated {@link User}'s name or null if the {@link User}
+	 *         could not be found.
 	 */
 	public static String getAuthUserName(Session session) {
 		User authUser = getAuthUser(session);
-		if(authUser!=null)
+		if (authUser != null)
 			return authUser.name;
 		else
 			return null;
+	}
+
+	/**
+	 * Checks if the user is a registered one by proofing it's existence inside
+	 * the database.
+	 * 
+	 * @param username
+	 *            The user's name.
+	 * @return Returns <code>true</code>, if the user is registered, otherwise
+	 *         <code>false</code>.
+	 */
+	public static boolean isRegistered(String username) {
+		return findUser(username) != null;
 	}
 }

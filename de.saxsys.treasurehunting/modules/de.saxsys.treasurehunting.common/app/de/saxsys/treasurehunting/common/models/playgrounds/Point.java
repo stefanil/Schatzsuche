@@ -1,5 +1,6 @@
 package de.saxsys.treasurehunting.common.models.playgrounds;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -47,7 +48,7 @@ public class Point extends Model implements Comparable<Point> {
 	 * 
 	 */
 	@ManyToMany(cascade=CascadeType.ALL)
-	public List<Action> actions;
+	public List<Action> actions = new ArrayList<Action>();
 
 	/**
 	 * Implementation for {@link Comparable} interface.

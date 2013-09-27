@@ -39,7 +39,6 @@ public class ActionTest extends BaseModelTest {
 				"common.actions.StartGame.info");
 		startGame.button = Messages.get(Lang.forCode("en"),
 				"common.actions.StartGame.button");
-		assertThat(startGame.id).isNull();
 		startGame.save();
 		assertThat(startGame.id).isNotNull();
 		// delete specific action from all points

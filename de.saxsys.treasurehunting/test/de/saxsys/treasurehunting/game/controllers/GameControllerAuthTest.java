@@ -43,7 +43,7 @@ public class GameControllerAuthTest {
 			@Override
 			public void run() {
 				Result result = Helpers.callAction(routes.ref.GameController
-						.singleplayer());
+						.singleplayer(1));
 				assertThat(Helpers.redirectLocation(result)).isEqualTo("/");
 			}
 		});

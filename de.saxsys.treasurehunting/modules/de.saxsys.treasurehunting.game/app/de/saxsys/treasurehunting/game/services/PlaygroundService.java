@@ -8,6 +8,7 @@ import java.util.List;
 
 import play.db.ebean.Model;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.ExpressionList;
 
 import de.saxsys.treasurehunting.common.models.playgrounds.Playground;
@@ -32,9 +33,8 @@ public abstract class PlaygroundService {
 		return new ArrayList<String>() {
 			private static final long serialVersionUID = -3717111435695650045L;
 			{
-				add("Playground 1");
-				add("Playground 2");
-				add("Playground 3");
+				for(Playground playground : Ebean.find(Playground.class).findList())
+					add(playground.name);
 			}
 		};
 	}

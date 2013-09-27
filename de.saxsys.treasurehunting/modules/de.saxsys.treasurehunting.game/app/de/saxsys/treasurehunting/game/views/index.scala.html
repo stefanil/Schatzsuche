@@ -19,10 +19,10 @@
 		@* content *@
 		<div class="row-fluid">
 			<div id="div-welcome-container" class="span12">
-			  <div class="hero-unit">
+			  <div id ="sp-configuration"class="hero-unit">
 	            <h1>@Messages("game.index.welcome.heading")(lang)</h1>
-	            <div style="width:	128px;	height:	128px; float: left;">
-	            	<img id="div-welcome-img" src="@game.controllers.routes.Assets.at("images/logo/Logo_128.png")" />
+	            <div id="logoPlaceholder">
+	            	<img id = "theChest" src="@game.controllers.routes.Assets.at("images/logo/theChest.svg")" />
 	            </div>
 	            <h2>@Messages("game.index.welcome.text")(lang)</h2>
 	            <p>@Messages("game.index.welcome.paragraph1")(lang)</p>
@@ -36,7 +36,7 @@
 		  <div id="div-sp-conf" class="span6 well">
 		   
 		  	<span><h4>@Messages("game.index.sp.conf.heading")(lang)</h4>
-		  			<div id = picholder" style="width:	64px;height:64px; float: left;">
+		  			<div id = picholder">
 	            		<img id="div-avatar" src="@game.controllers.routes.Assets.at("images/game/singleplayer/conf.svg")" />
 	            	</div>
 	         </span>

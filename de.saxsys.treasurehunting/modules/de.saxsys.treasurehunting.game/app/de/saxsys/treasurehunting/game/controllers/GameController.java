@@ -5,14 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonNode;
+
 import play.Logger;
 import play.data.Form;
 import play.data.validation.Constraints.Required;
 import play.data.validation.ValidationError;
 import play.i18n.Messages;
 import play.mvc.Controller;
+import play.mvc.Http.Session;
 import play.mvc.Result;
 import play.mvc.Security;
+import play.mvc.WebSocket;
 import de.saxsys.treasurehunting.common.controllers.Secured;
 import de.saxsys.treasurehunting.common.models.game.Counter;
 import de.saxsys.treasurehunting.common.services.UserService;
@@ -20,6 +24,7 @@ import de.saxsys.treasurehunting.game.services.PlaygroundService;
 import de.saxsys.treasurehunting.game.services.exceptions.GameCreationException;
 import de.saxsys.treasurehunting.game.services.singleplayer.SinglePlayerGameHall;
 import de.saxsys.treasurehunting.game.views.html.index;
+import de.saxsys.treasurehunting.game.views.html.singleplayer.singleplayer;
 
 /**
  * This {@link Controller} implements the game actions.
@@ -136,14 +141,14 @@ public class GameController extends Controller {
 		Map<String, String> spConfMap = spConfForm.data();
 
 		try {
-			SinglePlayerGameHall.createGame(UserService
+			long gameid = SinglePlayerGameHall.createGame(UserService
 					.getAuthUserName(session()), spConfMap.get("gameName"),
 					Integer.parseInt(
 							spConfMap.get("counterColor").substring(2), 16),
 					spConfMap.get("playgroundName"));
 
 			return redirect(de.saxsys.treasurehunting.game.controllers.routes.GameController
-					.singleplayer());
+					.singleplayer(gameid));
 		} catch (GameCreationException e) {
 			e.printStackTrace();
 			Logger.error(e.getMessage());
@@ -157,29 +162,31 @@ public class GameController extends Controller {
 	 * @return The {@link Result}.
 	 */
 	@Security.Authenticated(Secured.class)
-	public static Result singleplayer() {
-		return TODO;
+	public static Result singleplayer(Long game) {
+		return ok(singleplayer
+				.render(SinglePlayerGameHall.findGameName(game)));
 	}
 
-	// /**
-	// * Controller Action for initiating the websocket (called by the Client).
-	// */
-	// public static WebSocket<JsonNode> initializeSinglePlayerGame() {
-	//
-	// final User user = UserService.getAuthUser(session());
-	//
-	// return new WebSocket<JsonNode>() {
-	//
-	// public void onReady(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode>
-	// out){
-	// try {
-	// SinglePlayerGameHall.join(user, in, out);
-	// } catch (Exception ex) {
-	// ex.printStackTrace();
-	// }
-	// }
-	// };
-	// }
+	/**
+	 * Controller Action for initiating the web socket.
+	 */
+	public static WebSocket<JsonNode> initializeSinglePlayerGame(final Long game) {
+
+		final Session session = session();
+		
+		return new WebSocket<JsonNode>() {
+
+			public void onReady(WebSocket.In<JsonNode> in,
+					WebSocket.Out<JsonNode> out) {
+				try {
+					SinglePlayerGameHall.join(game,
+							UserService.getAuthUserName(session), in, out);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		};
+	}
 
 	/**
 	 * .
