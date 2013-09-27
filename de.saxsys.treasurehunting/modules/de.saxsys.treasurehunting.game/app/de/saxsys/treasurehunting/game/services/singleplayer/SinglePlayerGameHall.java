@@ -384,8 +384,8 @@ public class SinglePlayerGameHall extends GameHall {
 		response.followers = new ArrayList<Action>() {
 			private static final long serialVersionUID = 1L;
 			{
-				add(resolveAction(Ebean.find(Action.class, 1)));
-				add(resolveAction(Ebean.find(Action.class, 2)));
+				add(Ebean.find(Action.class, 1));
+				add(Ebean.find(Action.class, 2));
 			}
 		};
 
@@ -668,18 +668,6 @@ public class SinglePlayerGameHall extends GameHall {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private static Action resolveAction(Action action) {
-		
-		action.heading = Messages.get(UserService
-				.getSessionLanguage(Controller.session(), Controller.request()), action.heading);
-		action.info = Messages.get(UserService
-				.getSessionLanguage(Controller.session(), Controller.request()), action.info);
-		action.button = Messages.get(UserService
-				.getSessionLanguage(Controller.session(), Controller.request()), action.button);
-		
-		return action;
 	}
 
 }
