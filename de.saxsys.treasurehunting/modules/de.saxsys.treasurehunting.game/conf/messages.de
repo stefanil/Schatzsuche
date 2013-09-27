@@ -22,6 +22,11 @@ game.template.info.heading=Spielstand
 game.template.info.modename.label=Spielmodus:
 game.template.info.gamename.label=Spielname:
 
+# scores
+game.template.info.scores.heading.color=Spielfigur
+game.template.info.scores.heading.username=Spielername
+game.template.info.scores.heading.cards=Karten
+
 # singleplayer
 game.singleplayer.title=Schatzsuche - Single Player Game
 game.singleplayer.modename=Single Player

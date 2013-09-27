@@ -142,10 +142,10 @@ public class SinglePlayerGameHall extends GameHall {
             // create initial response action
             ActionResponse response = new ActionResponse();
             response.initializer = Action.TYPE_INITIALIZE_GAME;                
-            response.data = new Object[] {
-                   game.playground,
-                   game.counters.get(0)
-            };
+            response.data = new Object[] { 
+    				game.playground, 
+    				new Object[] { game.counters.get(0) } 
+    			};
             response.followers = new ArrayList<Action>() {
                    private static final long serialVersionUID = 1L;
                    {
@@ -262,7 +262,10 @@ public class SinglePlayerGameHall extends GameHall {
 		// create initial response action
 		ActionResponse response = new ActionResponse();
 		response.initializer = Action.TYPE_INITIALIZE_GAME;
-		response.data = new Object[] { game.playground, game.counters.get(0) };
+		response.data = new Object[] { 
+				game.playground, 
+				new Object[] { game.counters.get(0), game.counters.get(0) } 
+			};
 		response.followers = new ArrayList<Action>() {
 			private static final long serialVersionUID = 1L;
 			{

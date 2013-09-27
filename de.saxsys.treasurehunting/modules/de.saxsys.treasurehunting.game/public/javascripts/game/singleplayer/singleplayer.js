@@ -19,31 +19,75 @@ function initializeSinglePlayerGame(url) {
 		}
 		
 		var responseAction = JSON.parse(event.data);
-
-		initializeGame(responseAction);
+		
+		// TODO: switch over initializers
+		initializeScores(responseAction);
 	}
+	
+	// set pause action
+	$("#a-pause").click = function() {
+//		socket.send($.toJSON(playground));
+		pauseGame();
+	};
+	
+	// hide resume game button
+	$("#a-resume").hide();
 	
 	socket.onmessage = receiveEvent;
 }
 
 /**
- * Initializes the single player game.
+ * Initializes the scores for the game.
  * 
  * @param responseAction
  */
-
-
-
-function initializeGame(responseAction) {
-	//die extrahierte Farbe
-	var color = responseAction.data[1].color;
-	alert(color + " wurde geladen!");
-	
-	//der div Behälter in Zeile 93 von game.scala.html soll eigentlich damit geändert werden...
-	var myDiv = document.getElementById("actualColor");
-	myDiv.style.backgroundColor = '#'+color; //gemäß der Hexadezimalangaben #ffffffff
+function initializeScores(responseAction) {
 	
 	console.log(responseAction);
+	
+	for(var i = 0; i < responseAction.data[1].length; i++) {
+		var counter = responseAction.data[1][i];
+		createInfoRow(counter);
+	}
+	
+}
+
+/**
+ * Inserts a info row into the table identified by #table-info concerning the
+ * game scores.
+ * 
+ * @param counter
+ */
+function createInfoRow(counter) {
+	
+	console.log("Creating scores for counter with id "+counter.id);
+	
+	var infoRow =  
+		'<tr id="#counter-'+counter.id+'-color"" class="active">'
+		+'<td class="color" >'
+		+'<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">'
+		+'<circle id="counter-'+counter.id+'-color" cx="8" cy="8" r="8"  fill="#'+Number(counter.color).toString(16)+'" stroke="black" stroke-width=".0" onload="setColor()"/>'
+        +'</svg></td>'
+        +'<td class="name" id="#counter-'+counter.id+'-username">'+counter.user.name+'</td>'
+        +'<td class="cards" id="#counter-'+counter.id+'-cards">'+counter.cards+'</td></tr>';
+	
+	$("#table-info").append(infoRow);
+	
+}
+
+/**
+ * Sets a info row for the scores of the given counter.
+ * 
+ * @param counter
+ *            The counter to set the scores for.
+ */
+function setInfoRow(counter) {
+	
+	console.log("Setting scores for counter with id "+counter.id);
+	
+	$("#counter-"+counter.id+"-color").attr( 'fill',"#"+Number(counter.color).toString(16));
+	$("#counter-"+counter.id+"-cards").text(counter.cards);
+	$("#counter-"+counter.id+"-username").text(counter.user.name);
 }
 
 /**
@@ -65,6 +109,10 @@ function restartGame() {
  */
 function pauseGame() {
 	
+	// on receive action resonse for pause hide pause button and show resume
+	// button
+	$("#a-pause").hide();
+	$("#a-resume").show();
 }
 
 /**
@@ -72,4 +120,7 @@ function pauseGame() {
  */
 function resumeGame() {
 	
+	// hide pause on pressing resume
+	$("#a-pause").show();
+	$("#a-resume").hide();
 }

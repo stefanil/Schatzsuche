@@ -1,20 +1,32 @@
+#div-playground {
+}
+
 #div-ia {
 	min-width: 160px;
 	padding: 10px;
+	min-width: 160px;
 }
 
-#div-resume, #div-pause, #div-restart, #div-cancel {
-	margin-top:5px;
-	margin-left:5px;
-	margin-right:5px;
+#div-game-controls {	
+	overflow:hidden;
+	width: 107px;
+	padding: 10px;
+	float: right;
+}
+
+#div-resume,#div-pause,#div-restart,#div-cancel {
 	width:32px;
 	hight:32px;
-	float:right;
-	
+	margin-right:5px;
+ 	float:left;
 }
 
-#div-resume:hover, #div-pause:hover, #div-restart:hover, #div-cancel:hover, #div-info:hover{
+#div-cancel {
+	margin-right:0px;
+}
+
+#div-resume:hover,#div-pause:hover,#div-restart:hover,#div-cancel:hover,#div-info:hover
+	{
 	box-shadow: 0 0 10px white;
 	transition: all .2s linear;
-	
 }
