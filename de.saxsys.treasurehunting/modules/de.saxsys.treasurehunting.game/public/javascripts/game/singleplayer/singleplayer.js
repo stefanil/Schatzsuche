@@ -62,17 +62,34 @@ function createInfoRow(counter) {
 	
 	console.log("Creating scores for counter with id "+counter.id);
 	
+	var hexColor = hexToRgb(counter.color);
+	
 	var infoRow =  
 		'<tr id="#counter-'+counter.id+'-color"" class="active">'
 		+'<td class="color" >'
 		+'<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">'
-		+'<circle id="counter-'+counter.id+'-color" cx="8" cy="8" r="8"  fill="#'+Number(counter.color).toString(16)+'" stroke="black" stroke-width=".0" onload="setColor()"/>'
+		+'<circle id="counter-'+counter.id+'-color" cx="8" cy="8" r="8"  fill="rgb('+hexColor+')" stroke="black" stroke-width=".0" onload="setColor()"/>'
         +'</svg></td>'
         +'<td class="name" id="#counter-'+counter.id+'-username">'+counter.user.name+'</td>'
         +'<td class="cards" id="#counter-'+counter.id+'-cards">'+counter.cards+'</td></tr>';
 	
 	$("#table-info").append(infoRow);
 	
+}
+
+/**
+ * Pasers a decimal color value into decimal rgb format.
+ * 
+ * @param dec The decimal color value.
+ * @returns Returns a decimal rgb string.
+ */
+function hexToRgb(dec) {
+
+    var r = (dec >> 16) & 255;
+    var g = (dec >> 8) & 255;
+    var b = dec & 255;
+ 
+    return [r, g, b].join();
 }
 
 /**
