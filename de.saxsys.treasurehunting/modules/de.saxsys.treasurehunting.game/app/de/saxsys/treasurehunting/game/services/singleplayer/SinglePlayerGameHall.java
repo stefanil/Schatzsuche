@@ -343,7 +343,6 @@ public class SinglePlayerGameHall extends GameHall {
 		ActionResponse response = new ActionResponse();
 		// define socket request initializing action
 		response.initializer = Action.TYPE_INITIALIZE_GAME;
-<<<<<<< HEAD
 		// assemble socket response data
 		response = assembleInitializeGameResponseData(game, response);
 
@@ -369,7 +368,7 @@ public class SinglePlayerGameHall extends GameHall {
 		// define response data
 		response.data = new Object[] { 
 				game.playground, 
-				new Object[] { +
+				new Object[] { 
 					game.counters.get(0), 
 					new Object[] { game.counters.get(0) }  
 				} 
