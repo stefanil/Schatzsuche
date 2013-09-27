@@ -22,6 +22,11 @@ game.template.info.heading=Scores
 game.template.info.modename.label=Game Mode:
 game.template.info.gamename.label=Game Name:
 
+# scores
+game.template.info.scores.heading.color=Counter
+game.template.info.scores.heading.username=User Name
+game.template.info.scores.heading.cards=Cards
+
 # singleplayer
 game.singleplayer.title=Treasurehunting - Single Player Game
 game.singleplayer.modename=Single Player

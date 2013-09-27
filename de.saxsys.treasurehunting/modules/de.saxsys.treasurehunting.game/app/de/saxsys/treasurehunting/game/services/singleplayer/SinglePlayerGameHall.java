@@ -156,8 +156,8 @@ public class SinglePlayerGameHall extends GameHall {
 	public static void join(final Long gameid, final String username,
 			WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
 
-		// Send a Join message
 		try {
+			
 			final Long counterId = findCounter(gameid, username).id;
 
 			String result = (String) Await.result(
@@ -343,6 +343,7 @@ public class SinglePlayerGameHall extends GameHall {
 		ActionResponse response = new ActionResponse();
 		// define socket request initializing action
 		response.initializer = Action.TYPE_INITIALIZE_GAME;
+<<<<<<< HEAD
 		// assemble socket response data
 		response = assembleInitializeGameResponseData(game, response);
 
@@ -365,7 +366,15 @@ public class SinglePlayerGameHall extends GameHall {
 		game.counters.size();
 		response.data = new Object[] { game.playground,
 				game.counters.get(game.activeCounter) };
-		// define follower action
+		// define response data
+		response.data = new Object[] { 
+				game.playground, 
+				new Object[] { +
+					game.counters.get(0), 
+					new Object[] { game.counters.get(0) }  
+				} 
+			};
+		// define follower actions
 		response.followers = new ArrayList<Action>() {
 			private static final long serialVersionUID = 1L;
 			{
