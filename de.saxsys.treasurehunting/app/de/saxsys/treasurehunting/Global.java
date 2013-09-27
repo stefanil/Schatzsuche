@@ -25,7 +25,7 @@ import de.saxsys.treasurehunting.game.services.PlaygroundService;
  * 
  */
 public class Global extends GlobalSettings {
-	
+
 	@Override
 	public void onStart(Application app) {
 		loadModelData(app);
@@ -35,13 +35,14 @@ public class Global extends GlobalSettings {
 	private void loadModelData(Application app) {
 
 		LinkedHashMap<String, List<Object>> map = null;
-		
+
 		/*
 		 * If the application is not in test mode (DEV (play run) or PROD (play
-		 * start|stage)) and test data do not exist load model by conf/initial-data.yml.
+		 * start|stage)) and test data do not exist load model by
+		 * conf/initial-data.yml.
 		 */
-		if(PlaygroundService.getAllPlaygroundNames().size()==0) {
-			
+		if (PlaygroundService.getAllPlaygroundNames().size() == 0) {
+
 			if (!app.isTest()) {
 				Logger.info("Loading YAML test data from conf/initial-data.yml.");
 				map = (LinkedHashMap<String, List<Object>>) Yaml
@@ -51,11 +52,12 @@ public class Global extends GlobalSettings {
 				Ebean.save(map.get("paths"));
 				Ebean.save(map.get("playgrounds"));
 			}
-	
+
 			/*
-			 * If the application is in test mode and test data does not exist load model by conf/test-data.yml.
+			 * If the application is in test mode and test data does not exist
+			 * load model by conf/test-data.yml.
 			 */
-			if (app.isTest() && UserService.findUser("stefan")==null) {
+			if (app.isTest() && UserService.findUser("stefan") == null) {
 				Logger.info("Loading YAML test data from conf/test-data.yml.");
 				map = (LinkedHashMap<String, List<Object>>) Yaml
 						.load("test-data.yml");
@@ -65,8 +67,6 @@ public class Global extends GlobalSettings {
 				Ebean.save(map.get("playgrounds"));
 				Ebean.save(map.get("users"));
 				Ebean.save(map.get("games"));
-				// counters saved by master bean game
-				// Ebean.save(map.get("counters"));
 			}
 		}
 	}

@@ -112,7 +112,7 @@ public class SinglePlayerGameHall extends GameHall {
 			Game game = new Game();
 			game.name = gamename;
 			game.superState = Game.STATE_CREATED;
-			game.subState = 0; 
+			game.subState = 0;
 			game.hMode = Game.H_MODE_SINGLEPLAYER;
 			game.activeCounter = 0;
 			game.counters.add(counter);
@@ -335,7 +335,7 @@ public class SinglePlayerGameHall extends GameHall {
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
 		game.superState = Game.STATE_READY;
-		game.subState = 0; 
+		game.subState = 0;
 		// set active counter to first position in the list of counters
 		game.activeCounter = 0;
 
@@ -377,8 +377,6 @@ public class SinglePlayerGameHall extends GameHall {
 		return response;
 	}
 
-	
-
 	private void startGame(ActionRequest actionRequest) {
 
 		final Game game = findGame((Long) actionRequest.data[0]);
@@ -389,12 +387,12 @@ public class SinglePlayerGameHall extends GameHall {
 		// TODO
 
 	}
-	
+
 	private static ActionResponse assembleStartGameResponseData(Game game,
 			ActionResponse response) {
-		
+
 		// TODO
-		
+
 		return response;
 	}
 
@@ -404,15 +402,15 @@ public class SinglePlayerGameHall extends GameHall {
 		// change game state
 		game.superState = Game.STATE_FINISHED;
 		game.subState = 0;
-		
+
 		// TODO
 	}
-	
+
 	private static ActionResponse assembleFinishGameResponseData(Game game,
 			ActionResponse response) {
-		
+
 		// TODO
-		
+
 		return response;
 	}
 
@@ -422,15 +420,15 @@ public class SinglePlayerGameHall extends GameHall {
 		// change game state
 		game.superState = Game.STATE_FINISHED;
 		game.subState = 0;
-		
+
 		// TODO
 	}
-	
+
 	private static ActionResponse assembleCancelGameResponseData(Game game,
 			ActionResponse response) {
-		
+
 		// TODO
-		
+
 		return response;
 	}
 
@@ -440,15 +438,15 @@ public class SinglePlayerGameHall extends GameHall {
 		// change game state
 		game.superState = Game.STATE_PAUSED;
 		game.subState = 0;
-		
+
 		// TODO
 	}
-	
+
 	private static ActionResponse assemblePauseGameResponseData(Game game,
 			ActionResponse response) {
-		
+
 		// TODO
-		
+
 		return response;
 	}
 
@@ -461,12 +459,12 @@ public class SinglePlayerGameHall extends GameHall {
 
 		// TODO
 	}
-	
+
 	private static ActionResponse assembleRestartGameResponseData(Game game,
 			ActionResponse response) {
-		
+
 		// TODO
-		
+
 		return response;
 	}
 
@@ -476,15 +474,15 @@ public class SinglePlayerGameHall extends GameHall {
 		// change game state
 		game.superState = Game.STATE_ACTIVE;
 		game.subState = 0;
-		
+
 		// TODO
 	}
-	
+
 	private static ActionResponse assembleResumeGameResponseData(Game game,
 			ActionResponse response) {
-		
+
 		// TODO
-		
+
 		return response;
 	}
 
@@ -494,15 +492,15 @@ public class SinglePlayerGameHall extends GameHall {
 		// change game state
 		game.superState = Game.STATE_ACTIVE;
 		game.subState = Game.STATE_MOVING;
-		
+
 		// TODO
 	}
-	
+
 	private static ActionResponse assembleMoveResponseData(Game game,
 			ActionResponse response) {
-		
+
 		// TODO
-		
+
 		return response;
 	}
 
@@ -512,15 +510,15 @@ public class SinglePlayerGameHall extends GameHall {
 		// change game state
 		game.superState = Game.STATE_ACTIVE;
 		game.subState = Game.STATE_DICING;
-			
+
 		// TODO
 	}
-	
+
 	private static ActionResponse assembleThrowDiceResponseData(Game game,
 			ActionResponse response) {
-		
+
 		// TODO
-		
+
 		return response;
 	}
 
@@ -529,16 +527,16 @@ public class SinglePlayerGameHall extends GameHall {
 		final Game game = findGame((Long) actionRequest.data[0]);
 		// change game state
 		game.superState = Game.STATE_ACTIVE;
-//		game.subState = Game.STATE_
+		game.subState = Game.STATE_PERFORMING_DICE_REPEAT;
 
 		// TODO
 	}
-	
+
 	private static ActionResponse assembleDiceRepeatResponseData(Game game,
 			ActionResponse response) {
-		
+
 		// TODO
-		
+
 		return response;
 	}
 
@@ -548,24 +546,24 @@ public class SinglePlayerGameHall extends GameHall {
 
 		// change game state
 		game.superState = Game.STATE_ACTIVE;
-//		game.subState = Game.STATE_
+		game.subState = Game.STATE_PERFORMING_POI;
 		// set active counter to the next counter in List Game.counters
 		game.activeCounter = (game.activeCounter++) % game.counters.size();
 
 		// TODO
 	}
-	
+
 	private static ActionResponse assemblePoiResponseData(Game game,
 			ActionResponse response) {
-		
+
 		// TODO
-		
+
 		return response;
 	}
-	
+
 	/**
-	 * <b>Remark:</b> Game.STATE_CREATED will not be recognized, because
-	 * socket connection isn't established at this state of game.
+	 * <b>Remark:</b> Game.STATE_CREATED will not be recognized, because socket
+	 * connection isn't established at this state of game.
 	 */
 	private void reinitializeGame(ActionRequest actionRequest) {
 
@@ -585,28 +583,28 @@ public class SinglePlayerGameHall extends GameHall {
 			break;
 
 		case Game.STATE_ACTIVE:
-			
+
 			// switch over secondary states of the game
-			switch(game.subState) {
-			
+			switch (game.subState) {
+
 			case Game.STATE_DICING:
 				response = assembleThrowDiceResponseData(game, response);
 				break;
-				
+
 			case Game.STATE_MOVING:
 				response = assembleMoveResponseData(game, response);
 				break;
-				
+
 			case Game.STATE_PERFORMING_POI:
 				response = assemblePoiResponseData(game, response);
 				break;
-			
+
 			case Game.STATE_PERFORMING_DICE_REPEAT:
 				response = assembleDiceRepeatResponseData(game, response);
 				break;
-			
+
 			}
-			
+
 			break;
 
 		case Game.STATE_FINISHED:
