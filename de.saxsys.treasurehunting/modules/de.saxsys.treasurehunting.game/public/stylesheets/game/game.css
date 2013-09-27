@@ -5,8 +5,11 @@
 
 #div-resume, #div-pause, #div-restart, #div-cancel {
 	margin-top:5px;
+	margin-left:5px;
+	margin-right:5px;
 	width:32px;
 	hight:32px;
+	float:right;
 	
 }
 
