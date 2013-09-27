@@ -26,3 +26,6 @@ common.main.copyright=Saxonia Systems 2013
 common.actions.StartGame.heading=Spielstart
 common.actions.StartGame.info=Betätige die Schaltfläche, um das Spiel zu starten.
 common.actions.StartGame.button=Starten
+common.actions.FinishGame.heading=Spielstart
+common.actions.FinishGame.info="Du hast den Zielpunkt erreicht und x Karten gesammelt. Prima!\n\nBetätige die untere Schaltfläche, um das Spiel zu starten."
+common.actions.FinishGame.button=Spiel beenden
