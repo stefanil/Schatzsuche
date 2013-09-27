@@ -160,9 +160,11 @@ public class SinglePlayerGameHall extends GameHall {
 			
 			final Long counterId = findCounter(gameid, username).id;
 
+			ActorRef actor = activeGames.get(gameid);
+			
 			String result = (String) Await.result(
-					ask(activeGames.get(gameid), new Join(gameid, counterId,
-							out), 1000), Duration.create(10, SECONDS));
+					ask(actor, new Join(gameid, counterId,
+							out), 1000000), Duration.create(1000, SECONDS));
 
 			// if access was granted
 			if ("OK".equals(result)) {
@@ -210,6 +212,7 @@ public class SinglePlayerGameHall extends GameHall {
 	 * 
 	 * @see {@link UntypedActor#onReceive}
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onReceive(Object message) throws Exception {
 
@@ -243,6 +246,8 @@ public class SinglePlayerGameHall extends GameHall {
 					// initialize the game
 					initializeGame(actionRequest);
 				}
+				
+				getSender().tell("OK");
 
 			}
 		} else
@@ -279,13 +284,13 @@ public class SinglePlayerGameHall extends GameHall {
 
 		switch (actionRequest.initializer) {
 
-		case Action.TYPE_INITIALIZE_GAME:
-			initializeGame(actionRequest);
-			break;
-
-		case Action.TYPE_REINITIALIZE_GAME:
-			reinitializeGame(actionRequest);
-			break;
+//		case Action.TYPE_INITIALIZE_GAME:
+//			initializeGame(actionRequest);
+//			break;
+//
+//		case Action.TYPE_REINITIALIZE_GAME:
+//			reinitializeGame(actionRequest);
+//			break;
 
 		case Action.TYPE_START_GAME:
 			startGame(actionRequest);
